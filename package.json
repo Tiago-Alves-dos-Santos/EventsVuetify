@@ -24,6 +24,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@inertiajs/vue2": "^1.0.9",
         "vuetify": "^2.7.0"
     }
 }
