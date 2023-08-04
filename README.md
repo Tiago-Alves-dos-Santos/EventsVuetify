@@ -97,15 +97,15 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 1. FRONT-END
     * HTML 5
     * CSS 3
-    * VUE 3
-    * VUETIFY 3
+    * VUE 2
+    * VUETIFY 2
     * SASS
     * BLADE
     * NODE 16.14.2
     * NPM 8.5.0
 2. BACK-END
     * PHP 8.1.9
-    * LARAVEL 9.5.2
+    * LARAVEL 8.6.12
     * INERTIA 0.6.9
 
 
@@ -210,7 +210,16 @@ Use este espaço para listar os recursos que você considera úteis e aos quais 
 <p align="right">(<a href="#readme-top">Voltar ao topo</a>)</p> -->
 
 ### Observação
- 
+<p>
+    O laravel 9 só suporta o vue 3, até suporta o vue 2, mas da conflito com vite. O vue 3 exige a vuetify 3, porém o vuetify 3 não possui mais o componente 'v-calendar' que vai ser essencial para o projeto, <a href="https://www.reddit.com/r/vuetifyjs/comments/11cuvqa/what_happened_to_the_calendar_in_vuetify_3/?rdt=47689" target="_blank">veja aqui</a> e na  <a href="https://vuetifyjs.com/en/labs/introduction/#up-next" target="_blank">documentação oficial do vuetify</a>.
+    De acordo com documentação oficial o 'v-calendar' ainda vai ser inserido no vuetify 3.
+</p>
+<br>
+<p>
+    Então com situação acima explicada, decidi fazer esse projeto na versão 8 mais recente do laravel pois ela suporta o vue 2 e tem o componente necessario para aplicação.
+    Se fosse realmente necessario usar vue 3, eu usaria laravel 9 ou 10 e criaria o calendario na mão, cada caso é um caso. Nesse caso, para que reinventar a roda!?<br>
+</p>
+
 
 <!-- MARKDOWN -->
 [whatsapp-shield]: https://img.shields.io/badge/WhatsApp-25D366?style=for-the-badge&logo=whatsapp&logoColor=white
