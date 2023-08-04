@@ -101,8 +101,8 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
     * VUETIFY 2
     * SASS
     * BLADE
-    * NODE 16.14.2
-    * NPM 8.5.0
+    * NODE 18.17.0(LTS)
+    * NPM 9.6.7
 2. BACK-END
     * PHP 8.1.9
     * LARAVEL 8.6.12

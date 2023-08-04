@@ -9,9 +9,21 @@
 </head>
 <body>
 
-    <div id="app">
-        <example-component></example-component>
+    <div id="app" style="width: 100%">
+        <v-app app>
+            <example-tify></example-tify>
+            <v-container>
+                <v-alert
+                border="left"
+                color="indigo"
+                dark
+                >
+                I'm an alert with a border left type info
+                </v-alert>
+            </v-container>
+        </v-app>
     </div>
+
     <script src="{{mix('js/app.js')}}"></script>
 </body>
 </html>
