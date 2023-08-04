@@ -212,12 +212,14 @@ Use este espaço para listar os recursos que você considera úteis e aos quais 
 ### Observação
 <p>
     O laravel 9 só suporta o vue 3, até suporta o vue 2, mas da conflito com vite. O vue 3 exige a vuetify 3, porém o vuetify 3 não possui mais o componente 'v-calendar' que vai ser essencial para o projeto, <a href="https://www.reddit.com/r/vuetifyjs/comments/11cuvqa/what_happened_to_the_calendar_in_vuetify_3/?rdt=47689" target="_blank">veja aqui</a> e na  <a href="https://vuetifyjs.com/en/labs/introduction/#up-next" target="_blank">documentação oficial do vuetify</a>.
-    De acordo com documentação oficial o 'v-calendar' ainda vai ser inserido no vuetify 3.
+    De acordo com documentação oficial o 'v-calendar' ainda vai ser inserido no vuetify 3.<br>
+    <i>O primeiro trimestre de 2023 era a meta original, mas devido à complexidade do componente, foi adiado para o segundo trimestre de 2023.</i> - Vuetify3
 </p>
 <br>
 <p>
     Então com situação acima explicada, decidi fazer esse projeto na versão 8 mais recente do laravel pois ela suporta o vue 2 e tem o componente necessario para aplicação.
     Se fosse realmente necessario usar vue 3, eu usaria laravel 9 ou 10 e criaria o calendario na mão, cada caso é um caso. Nesse caso, para que reinventar a roda!?<br>
+    Quando lançarem o component pretendo fazer a migração para laravel 9 e vue 3. <a href="https://laravel.com/docs/9.x/upgrade" target="_blank">Guia de atualização.</a>.
 </p>
 
 
