@@ -10,5 +10,8 @@
     data: ()=>{
 
     },
+    mounted() {
+        console.log(this.$route('index'));
+    },
   }
 </script>

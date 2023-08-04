@@ -3,6 +3,8 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 import vuetify from './vuetify';
 import { createInertiaApp } from '@inertiajs/vue2'
+//ZIGGY
+Vue.prototype.$route = route;
 //INERTIA
 import { Link } from '@inertiajs/vue2'
 Vue.component('Link', Link);

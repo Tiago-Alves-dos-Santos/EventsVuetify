@@ -5,6 +5,7 @@
     <title>Evento Fácil</title>
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet" />
     <script src="{{ mix('/js/app.js') }}" defer></script>
+    @routes
     @inertiaHead
   </head>
   <body>
