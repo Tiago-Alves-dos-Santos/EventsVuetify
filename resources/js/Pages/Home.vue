@@ -1,13 +1,14 @@
 <template>
-    <v-app app>
-        <v-container>
-            <v-alert
-            border="left"
-            color="indigo"
-            dark
-            >
+    <layout-bottom-navigation>
+        <v-alert border="left" color="indigo" dark>
             I'm an alert with a border left type info
-            </v-alert>
-        </v-container>
-    </v-app>
+        </v-alert>
+    </layout-bottom-navigation>
 </template>
+<script>
+  export default {
+    data: ()=>{
+
+    },
+  }
+</script>

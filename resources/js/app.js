@@ -3,9 +3,11 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 import vuetify from './vuetify';
 import { createInertiaApp } from '@inertiajs/vue2'
-//spa
+//INERTIA
 import { Link } from '@inertiajs/vue2'
 Vue.component('Link', Link);
+//LAYOUTS
+Vue.component('LayoutBottomNavigation', require('./layouts/BottomNavigation.vue').default)
 
 
  createInertiaApp({
