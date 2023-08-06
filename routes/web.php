@@ -17,3 +17,6 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Home',[]);
 })->name('index');
+Route::get('/eventos', function () {
+    return Inertia::render('Evento',[]);
+})->name('eventos');

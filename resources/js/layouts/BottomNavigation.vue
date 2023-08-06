@@ -1,13 +1,13 @@
 <template>
     <v-app app>
         <v-bottom-navigation v-model="value" :background-color="color" dark shift absolute>
-            <v-btn>
+            <v-btn @click="navigateUrl($route('index'))">
                 <span>Calendário</span>
 
                 <v-icon>mdi-calendar-clock</v-icon>
             </v-btn>
 
-            <v-btn>
+            <v-btn @click="navigateUrl($route('eventos'))">
                 <span>Eventos</span>
 
                 <v-icon>mdi-calendar-plus</v-icon>
@@ -31,9 +31,16 @@
     </v-app>
 </template>
 <script>
-  export default {
-    data: () => ({ value: 1 }),
+import { router } from '@inertiajs/vue2';
 
+  export default {
+    data: () => ({ value: 0 }),
+    methods: {
+        navigateUrl(url){
+            console.log(url);
+            router.get(url);
+        }
+    },
     computed: {
       color () {
         switch (this.value) {
