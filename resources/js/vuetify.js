@@ -2,6 +2,8 @@ import '@mdi/font/css/materialdesignicons.css'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import pt from 'vuetify/lib/locale/pt'
+import en from 'vuetify/lib/locale/en'
 Vue.use(Vuetify)
 
 export default new Vuetify({
@@ -17,5 +19,9 @@ export default new Vuetify({
                 // error: '#b71c1c',
             },
         },
+    },
+    lang: {
+        locales: { pt, en },
+        current: 'pt',
     },
 })

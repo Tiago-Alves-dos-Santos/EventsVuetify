@@ -14,7 +14,7 @@ Vue.component('LayoutBottomNavigation', require('./layouts/BottomNavigation.vue'
 
  createInertiaApp({
     progress: {
-        delay: 250,
+        delay: 150,
 
         // The color of the progress bar.
         color: '#ff0a0a',

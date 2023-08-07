@@ -15,7 +15,7 @@
             </div>
         </v-sheet>
         <v-sheet height="600">
-            <v-calendar ref="calendar" v-model="value" locale="pt-br" :weekdays="weekday" :type="type" :events="events"
+            <v-calendar ref="calendar" v-model="value" :weekdays="weekday" :type="type" :events="events"
                 :event-overlap-threshold="30" :event-color="getEventColor" @change="getEvents" @click:event="clickEvent"></v-calendar>
         </v-sheet>
     </layout-bottom-navigation>
@@ -45,6 +45,8 @@ export default {
         clickEvent(event){
             console.log(event);
         },
+        props:{
+        },
         getEvents({ start, end }) {
 
             this.events = [
@@ -70,6 +72,8 @@ export default {
         rnd(a, b) {
             return Math.floor((b - a + 1) * Math.random()) + a
         },
+    },
+    mounted() {
     },
 }
 </script>

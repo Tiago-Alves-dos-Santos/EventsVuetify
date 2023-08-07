@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -13,10 +14,10 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group( [ 'prefix' => '/' ], function()
+{
+    Route::get('/', [EventoController::class, 'index'])->name('evento.index');
+    Route::get('/eventos', [EventoController::class, 'eventos'])->name('evento.eventos');
+});
 
-Route::get('/', function () {
-    return Inertia::render('Home',[]);
-})->name('index');
-Route::get('/eventos', function () {
-    return Inertia::render('Evento',[]);
-})->name('eventos');
+

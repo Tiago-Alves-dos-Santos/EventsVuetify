@@ -1,13 +1,13 @@
 <template>
     <v-app app>
-        <v-bottom-navigation v-model="value" :background-color="color" dark shift absolute>
-            <v-btn @click="navigateUrl($route('index'))">
+        <v-bottom-navigation v-model="this.$page.props.pageValue" :background-color="color" dark shift absolute>
+            <v-btn @click="navigateUrl($route('evento.index'))">
                 <span>Calendário</span>
 
                 <v-icon>mdi-calendar-clock</v-icon>
             </v-btn>
 
-            <v-btn @click="navigateUrl($route('eventos'))">
+            <v-btn @click="navigateUrl($route('evento.eventos'))">
                 <span>Eventos</span>
 
                 <v-icon>mdi-calendar-plus</v-icon>
@@ -33,24 +33,26 @@
 <script>
 import { router } from '@inertiajs/vue2';
 
-  export default {
-    data: () => ({ value: 0 }),
+export default {
+    data: () => ({
+    }),
     methods: {
-        navigateUrl(url){
-            console.log(url);
+        navigateUrl(url) {
             router.get(url);
         }
     },
     computed: {
-      color () {
-        switch (this.value) {
-          case 0: return 'blue-grey'
-          case 1: return 'teal'
-          case 2: return 'brown'
-          case 3: return 'indigo'
-          default: return 'blue-grey'
-        }
-      },
+        color() {
+            switch (this.$page.props.pageValue) {
+                case 0: return 'blue-grey'
+                case 1: return 'teal'
+                case 2: return 'brown'
+                case 3: return 'indigo'
+                default: return 'blue-grey'
+            }
+        },
     },
-  }
+    mounted() {
+    },
+}
 </script>
