@@ -1,16 +1,24 @@
 <template>
     <layout-bottom-navigation>
-        <div class="mt-2">
-            <v-data-table locale="pt" :headers="headers" :items="events" item-key="name" class="elevation-1" :search="search"
-                :custom-filter="filter" mobile-breakpoint >
+        <div>
+            <v-row class="mb-3">
+                <v-col cols="12 d-flex justify-end">
+                    <v-btn color="primary" dark @click="show = true">
+                        Novo Evento
+                    </v-btn>
+                    <dialog-event :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation"></dialog-event>
+                </v-col>
+            </v-row>
+            <v-data-table locale="pt" :headers="headers" :items="events" item-key="name" class="elevation-1"
+                :search="search" :custom-filter="filter" mobile-breakpoint>
                 <template v-slot:top>
-                    <v-row class="p-3">
+                    <v-row class="mt-1 pa-3">
                         <v-col cols="6">
                             <v-text-field v-model="search" label="Buscar..."></v-text-field>
                         </v-col>
                         <v-col cols="6">
-                            <v-select v-model="select" :items="items" item-text="text" item-value="value"
-                                label="Eventos"></v-select>
+                            <v-select v-model="select" :items="items" item-text="text" item-value="value" label="Eventos"
+                                solo></v-select>
                         </v-col>
                     </v-row>
                 </template>
@@ -27,25 +35,17 @@
                         mdi-delete
                     </v-icon>
                 </template>
-                <template v-slot:body.append>
-                    <tr>
-                        <td></td>
-                        <td>
-                            <v-text-field v-model="calories" type="number" label="Less than"></v-text-field>
-                        </td>
-                        <td colspan="4"></td>
-                    </tr>
-                </template>
             </v-data-table>
         </div>
     </layout-bottom-navigation>
 </template>
 <script>
+import TypeOperation from '../enum/TypeOperation';
 export default {
     data() {
         return {
+            //tabela
             search: '',
-            calories: '',
             events: [
                 {
                     status: 'Em andamento',
@@ -66,14 +66,18 @@ export default {
                 { text: 'Eventos deste ano', value: 'events_year' },
                 { text: 'Eventos deste mês', value: 'events_month' },
             ],
+            //dialog
+            show: false,
+            typeOperation: TypeOperation.create
         }
     },
     computed: {
-        headers() {
+        headers() { //cabeçalho da tabela
             return [
                 { text: 'Status', value: 'status', },
                 { text: 'Nome', value: 'name', },
                 { text: 'Começo', value: 'start' },
+                { text: 'Fim', value: 'end' },
                 {
                     text: 'Ações',
                     value: 'actions',
@@ -98,6 +102,9 @@ export default {
                 default: return 'blue-grey'
             }
         },
+        closeDialog() {
+            this.show = false;
+        }
     },
 }
 </script>

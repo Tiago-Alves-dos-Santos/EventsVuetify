@@ -16,36 +16,39 @@
         </v-sheet>
         <v-sheet height="600">
             <v-calendar ref="calendar" v-model="value" :weekdays="weekday" :type="type" :events="events"
-                :event-overlap-threshold="30" :event-color="getEventColor" @change="getEvents" @click:event="clickEvent"></v-calendar>
+                :event-overlap-threshold="30" :event-color="getEventColor" @change="getEvents"
+                @click:event="clickEvent"></v-calendar>
         </v-sheet>
     </layout-bottom-navigation>
 </template>
 <script>
 export default {
-    data: () => ({
-        type: 'month',
-        types: [
-            { text: 'Mês', value: 'month' },
-            { text: 'Semana', value: 'week' },
-            { text: 'Dia', value: 'day' },
-            { text: '4 dias', value: '4day' },
-        ],
-        weekday: [0, 1, 2, 3, 4, 5, 6],
-        weekdays: [
-            { text: 'Domingo - Sabádo', value: [0, 1, 2, 3, 4, 5, 6] },
-            { text: 'Segunda - Domingo', value: [1, 2, 3, 4, 5, 6, 0] },
-            { text: 'Segunda - Sexta', value: [1, 2, 3, 4, 5] },
-            { text: 'Segunda, Quarta, Sexta', value: [1, 3, 5] },
-        ],
-        value: '',
-        events: [],
-        colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-    }),
+    data() {
+        return {
+            type: 'month',
+            types: [
+                { text: 'Mês', value: 'month' },
+                { text: 'Semana', value: 'week' },
+                { text: 'Dia', value: 'day' },
+                { text: '4 dias', value: '4day' },
+            ],
+            weekday: [0, 1, 2, 3, 4, 5, 6],
+            weekdays: [
+                { text: 'Domingo - Sabádo', value: [0, 1, 2, 3, 4, 5, 6] },
+                { text: 'Segunda - Domingo', value: [1, 2, 3, 4, 5, 6, 0] },
+                { text: 'Segunda - Sexta', value: [1, 2, 3, 4, 5] },
+                { text: 'Segunda, Quarta, Sexta', value: [1, 3, 5] },
+            ],
+            value: '',
+            events: [],
+            colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+        }
+    },
     methods: {
-        clickEvent(event){
+        clickEvent(event) {
             console.log(event);
         },
-        props:{
+        props: {
         },
         getEvents({ start, end }) {
 
