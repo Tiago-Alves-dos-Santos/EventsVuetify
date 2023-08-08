@@ -25,7 +25,7 @@
                 <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
         </v-bottom-navigation>
-        <v-container>
+        <v-container style="margin-bottom: 90px;">
             <slot></slot>
         </v-container>
     </v-app>
