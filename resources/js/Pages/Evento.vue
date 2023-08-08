@@ -40,7 +40,7 @@
     </layout-bottom-navigation>
 </template>
 <script>
-import TypeOperation from '../enum/TypeOperation';
+import TypeOperation from '../enums/TypeOperation';
 export default {
     data() {
         return {

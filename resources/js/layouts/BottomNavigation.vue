@@ -1,12 +1,12 @@
 <template>
     <v-app app>
         <v-bottom-navigation v-model="this.$page.props.pageValue" :background-color="color" dark shift absolute>
-            <v-btn @click="navigateUrl($route('evento.index'))">
+            <v-btn @click="navigateUrl($route('event.index'))">
                 <span>Calendário</span>
                 <v-icon>mdi-calendar-clock</v-icon>
             </v-btn>
 
-            <v-btn @click="navigateUrl($route('evento.eventos'))">
+            <v-btn @click="navigateUrl($route('event.events'))">
                 <span>Eventos</span>
                 <v-icon>mdi-calendar-plus</v-icon>
             </v-btn>

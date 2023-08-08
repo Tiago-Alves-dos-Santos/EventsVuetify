@@ -7,10 +7,10 @@
 
             <v-card-text>
                 <v-container>
-                    <v-form ref="form">
+                    <v-form ref="form" @submit.prevent="createOrUpdate">
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field label="Nome" tabindex="1"></v-text-field>
+                                <v-text-field label="Nome" tabindex="1" v-model="form.name"></v-text-field>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -75,27 +75,28 @@
                                 <v-color-picker  v-model="form.bgColor" class="ma-2"  hide-mode-switch mode="hexa"></v-color-picker>
                             </v-col>
                         </v-row>
+                        <v-divider></v-divider>
 
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="primary" type="submit">
+                                Salvar
+                            </v-btn>
+                            <v-btn color="error" @click="$emit('closeDialog')">
+                                Cancelar
+                            </v-btn>
+                        </v-card-actions>
                     </v-form>
                 </v-container>
             </v-card-text>
 
-            <v-divider></v-divider>
 
-            <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary">
-                    Salvar
-                </v-btn>
-                <v-btn color="error" @click="$emit('closeDialog')">
-                    Cancelar
-                </v-btn>
-            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
 <script>
-import TypeOperation from '../enum/TypeOperation';
+import { router } from '@inertiajs/vue2';
+import TypeOperation from '../enums/TypeOperation';
 let dateEnd = new Date();
 dateEnd.setMinutes(dateEnd.getMinutes() + 30);
 export default {
@@ -144,6 +145,16 @@ export default {
             const [year, month, day] = date.split('-');
             return `${month}/${day}/${year}`;
         },
+        createOrUpdate(){
+            if(this.typeOperation == TypeOperation.create){
+                let route_url = this.$route('event.create');
+                router.post(route_url, this.form);
+                console.log('form cadastro', route_url);
+            }else{
+                console.log('form atulizar');
+            }
+
+        }
     },
 }
 </script>
