@@ -9,9 +9,10 @@ Vue.prototype.$route = route;
 import { Link } from '@inertiajs/vue2'
 Vue.component('Link', Link);
 //LAYOUTS
-Vue.component('LayoutBottomNavigation', require('./layouts/BottomNavigation.vue').default)
+Vue.component('LayoutBottomNavigation', require('./layouts/BottomNavigation.vue').default);
 //COMPONENTS
-Vue.component('dialog-event', require('./components/DialogEvent.vue').default)
+Vue.component('dialog-event', require('./components/DialogEvent.vue').default);
+Vue.component('alert-confirm', require('./components/AlertConfirm.vue').default);
  createInertiaApp({
     progress: {
         delay: 150,

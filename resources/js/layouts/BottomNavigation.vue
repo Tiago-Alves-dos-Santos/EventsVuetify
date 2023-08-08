@@ -3,25 +3,21 @@
         <v-bottom-navigation v-model="this.$page.props.pageValue" :background-color="color" dark shift absolute>
             <v-btn @click="navigateUrl($route('evento.index'))">
                 <span>Calendário</span>
-
                 <v-icon>mdi-calendar-clock</v-icon>
             </v-btn>
 
             <v-btn @click="navigateUrl($route('evento.eventos'))">
                 <span>Eventos</span>
-
                 <v-icon>mdi-calendar-plus</v-icon>
             </v-btn>
 
             <v-btn>
                 <span>Histórico</span>
-
                 <v-icon>mdi-history</v-icon>
             </v-btn>
 
             <v-btn>
                 <span>Lixeira</span>
-
                 <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
         </v-bottom-navigation>
@@ -34,8 +30,11 @@
 import { router } from '@inertiajs/vue2';
 
 export default {
-    data: () => ({
-    }),
+    data(){
+        return{
+
+        }
+    },
     methods: {
         navigateUrl(url) {
             router.get(url);
