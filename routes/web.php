@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\EventoController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,8 +15,8 @@ use Inertia\Inertia;
 */
 Route::group( [ 'prefix' => '/' ], function()
 {
-    Route::get('/', [EventoController::class, 'index'])->name('evento.index');
-    Route::get('/eventos', [EventoController::class, 'eventos'])->name('evento.eventos');
+    Route::get('/', [EventController::class, 'index'])->name('evento.index');
+    Route::get('/eventos', [EventController::class, 'eventos'])->name('evento.eventos');
 });
 
 

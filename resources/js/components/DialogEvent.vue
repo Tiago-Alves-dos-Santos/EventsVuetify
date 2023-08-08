@@ -104,7 +104,7 @@ export default {
             dialog: false,
             dataTypeOperation: TypeOperation,
             //dataPickers e timer menus
-            menu: [false, false,false,false],
+            menu: [false,false,false,false],
             //formulario
             form: {
                 name: '',
