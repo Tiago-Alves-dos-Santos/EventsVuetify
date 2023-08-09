@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use Inertia\Inertia;
+use App\Class\Settings;
 use Illuminate\Http\Request;
+use Illuminate\Support\MessageBag;
 
 class EventController extends Controller
 {
@@ -23,7 +25,15 @@ class EventController extends Controller
 
     public function create(Request $request)
     {
-        // dd($request->all());
+        $customAttributes = [
+            'name' => 'nome',
+            'pickerInputStart' => 'data inicial',
+            'pickerInputEnd' => 'data final',
+            'time_start' => 'hora inicial',
+            'time_end' => 'hora final',
+            'colorText' => 'cor do texto',
+            'bgColor' => 'cor do fundo do texto',
+        ];
         $request->validate([
             'name' => 'required|min:3|max:100',
             'pickerInputStart' => [
@@ -36,11 +46,16 @@ class EventController extends Controller
             'time_end' => 'required|date_format:H:i|after_or_equal:time_start',
             'colorText' => 'required|max:20',
             'bgColor' => 'required|max:20'
-        ]);
+        ], [
+            'pickerInputStart.after_or_equal' => 'O campo :attribute deve ser uma data posterior ou igual a '.Carbon::now()->startOfDay()->format('d/m/Y')
+        ], $customAttributes);
         try {
-            //code...
+            dd($request->all());
         } catch (\Exception $e) {
-            //throw $th;
+            $errors = new MessageBag();
+            // add your error messages:
+            $errors->add('error', Settings::erroInesperadoAlert(texto:$e->getMessage()));
+
         }
     }
 }

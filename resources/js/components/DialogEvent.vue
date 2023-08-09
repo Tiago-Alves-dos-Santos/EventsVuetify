@@ -149,7 +149,7 @@ export default {
         formatDate(date) {
             if (!date) return null;
             const [year, month, day] = date.split('-');
-            return `${month}/${day}/${year}`;
+            return `${day}/${month}/${year}`;
         },
         createOrUpdate(){
             if(this.typeOperation == TypeOperation.create){
