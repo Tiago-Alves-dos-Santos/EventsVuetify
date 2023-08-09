@@ -53,8 +53,7 @@ class EventController extends Controller
             dd($request->all());
         } catch (\Exception $e) {
             $errors = new MessageBag();
-            // add your error messages:
-            $errors->add('error', Settings::erroInesperadoAlert(texto:$e->getMessage()));
+            $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
 
         }
     }

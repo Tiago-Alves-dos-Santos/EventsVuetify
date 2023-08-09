@@ -6,6 +6,9 @@
                     <v-btn color="primary" dark @click="show = true">
                         Novo Evento
                     </v-btn>
+                    <v-btn color="primary" dark @click="openAlert">
+                        teste
+                    </v-btn>
                     <dialog-event :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation"></dialog-event>
                 </v-col>
             </v-row>
@@ -36,11 +39,16 @@
                     </v-icon>
                 </template>
             </v-data-table>
+            <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question" :data="data_confirm"></alert-confirm>
+            <!-- <alert-confirm :tipoAlerta="tipoAlerts.alert" :show="this.$page.props.flash.message.show"  :data="this.$page.props.flash.message" @evtClose="closeConfirm"></alert-confirm> -->
         </div>
     </layout-bottom-navigation>
 </template>
 <script>
 import TypeOperation from '../enums/TypeOperation';
+import TypeAlert from '../enums/TypeAlert';
+import TypeAlertIcon from '../enums/TypeAlertIcon';
+import Settings from '../objects/Settings.js';
 export default {
     data() {
         return {
@@ -68,7 +76,10 @@ export default {
             ],
             //dialog
             show: false,
-            typeOperation: TypeOperation.create
+            typeOperation: TypeOperation.create,
+            //alert
+            typeAlertObj: TypeAlert,
+            data_confirm: ''
         }
     },
     computed: {
@@ -104,6 +115,9 @@ export default {
         },
         closeDialog() {
             this.show = false;
+        },
+        openAlert(){
+
         }
     },
 }

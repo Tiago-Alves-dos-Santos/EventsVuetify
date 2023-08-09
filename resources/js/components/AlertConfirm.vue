@@ -43,7 +43,7 @@
             <v-btn
               color="success darken-1"
               style="color:white"
-              @click="closeAlertConfirm()"
+              @click="close()"
             >
               OK
             </v-btn>
@@ -60,7 +60,7 @@
             <v-btn
               color="error darken-1"
               style="color:white"
-              @click="closeAlertConfirm()"
+              @click="close()"
             >
               NÃO
             </v-btn>
@@ -84,7 +84,7 @@
             <v-btn
               color="error darken-1"
               style="color:white"
-              @click="closeAlertConfirm()"
+              @click="close()"
             >
               CANCELAR
             </v-btn>
@@ -106,23 +106,39 @@ export default {
         }
     },
     props: {
-        typeAlert: Number,//TypeAlert
-        data: Object,//AlertConfirm
-        show: Boolean,
+        typeAlert: {
+            type: Number,
+            required: true
+        },//TypeAlert
+        data: {
+            type: Object, //Seetings.alertData
+            required: true
+        },
+        show: {
+            type: Boolean,
+            default: false
+        },
         yesCallback: Function,
         noCallback:Function
 
     },
     methods:{
-        closeAlertConfirm(){
-            // this.show = false;
-            this.$emit('closeAlertConfirm');
+        open(){
+            this.dialog = true;
+        },
+        close(){
+            if(this.show){
+                this.$emit('close');
+            }else{
+                this.dialog = false;
+            }
+
         },
         responseYes(){
             if(this.yesCallback){
                 this.yesCallback();
             }else{
-                this.closeAlertConfirm();
+                this.close();
                 console.log("Função 'yesCallback' não adicionada ");
             }
 
@@ -131,7 +147,7 @@ export default {
             if(this.noCallback){
                 this.noCallback();
             }else{
-                this.closeAlertConfirm();
+                this.close();
                 console.log("Função 'noCallback' não adicionada ");
             }
         }
