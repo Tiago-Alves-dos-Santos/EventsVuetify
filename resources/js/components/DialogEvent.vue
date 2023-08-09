@@ -10,7 +10,8 @@
                     <v-form ref="form" @submit.prevent="createOrUpdate">
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field label="Nome" tabindex="1" v-model="form.name"></v-text-field>
+                                <v-text-field label="Nome" tabindex="1" prepend-icon="mdi-pencil" v-model="form.name"></v-text-field>
+                                <span class="message-error" v-if="$page.props.errors.name">{{$page.props.errors.name}}</span>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -23,6 +24,7 @@
                                     </template>
                                     <v-date-picker v-model="form.pickerInputStart" @input="menu[0] = false"></v-date-picker>
                                 </v-menu>
+                                <span class="message-error" v-if="$page.props.errors.pickerInputStart">{{$page.props.errors.pickerInputStart}}</span>
                             </v-col>
                             <v-col cols="6">
                                 <v-menu ref="menu1" v-model="menu[1]" :close-on-content-click="false" :nudge-right="40"
@@ -36,7 +38,7 @@
                                     <v-time-picker v-if="menu[1]" v-model="form.time_start" full-width
                                         @click:minute="$refs.menu1.save(form.time_start)"></v-time-picker>
                                 </v-menu>
-
+                                <span class="message-error" v-if="$page.props.errors.time_start">{{$page.props.errors.time_start}}</span>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -49,6 +51,7 @@
                                     </template>
                                     <v-date-picker v-model="form.pickerInputEnd" @input="menu[2] = false"></v-date-picker>
                                 </v-menu>
+                                <span class="message-error" v-if="$page.props.errors.pickerInputEnd">{{$page.props.errors.pickerInputEnd}}</span>
                             </v-col>
                             <v-col cols="6">
                                 <v-menu ref="menu3" v-model="menu[3]" :close-on-content-click="false" :nudge-right="40"
@@ -62,6 +65,7 @@
                                     <v-time-picker v-if="menu[3]" v-model="form.time_end" full-width
                                         @click:minute="$refs.menu3.save(form.time_end)"></v-time-picker>
                                 </v-menu>
+                                <span class="message-error" v-if="$page.props.errors.time_end">{{$page.props.errors.time_end}}</span>
 
                             </v-col>
                         </v-row>
@@ -69,10 +73,12 @@
                             <v-col cols="6" class="d-flex justify-center flex-column">
                                 <label for="">Cor do texto</label>
                                 <v-color-picker v-model="form.colorText" class="ma-2" hide-mode-switch mode="hexa"></v-color-picker>
+                                <span class="message-error" v-if="$page.props.errors.colorText">{{$page.props.errors.colorText}}</span>
                             </v-col>
                             <v-col cols="6" class="d-flex justify-center flex-column">
                                 <label for="">Fundo do texto</label>
                                 <v-color-picker  v-model="form.bgColor" class="ma-2"  hide-mode-switch mode="hexa"></v-color-picker>
+                                <span class="message-error" v-if="$page.props.errors.bgColor">{{$page.props.errors.bgColor}}</span>
                             </v-col>
                         </v-row>
                         <v-divider></v-divider>
@@ -115,7 +121,7 @@ export default {
                 time_end: dateEnd.getHours() + ":" + String(dateEnd.getMinutes()).padStart(2, '0'),
                 colorText: '#ffffff',
                 bgColor:'#0008ff'
-            }
+            },
         }
     },
     props: {
@@ -129,7 +135,7 @@ export default {
         show: {
             type: Boolean,
             default: false
-        }
+        },
     },
     computed: {
         pickerInputStartDateFormatted() {
