@@ -6,9 +6,7 @@
                     <v-btn color="primary" dark @click="show = true">
                         Novo Evento
                     </v-btn>
-                    <v-btn color="primary" dark @click="openAlert">
-                        teste
-                    </v-btn>
+
                     <dialog-event :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation"></dialog-event>
                 </v-col>
             </v-row>
