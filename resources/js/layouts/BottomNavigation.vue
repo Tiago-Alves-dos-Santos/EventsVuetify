@@ -1,7 +1,7 @@
 <template>
     <v-app app>
         <v-bottom-navigation v-model="this.$page.props.pageValue" :background-color="color" dark shift absolute>
-            <v-btn @click="navigateUrl($route('event.index'))">
+            <v-btn @click="navigateUrl($route('index'))">
                 <span>Calendário</span>
                 <v-icon>mdi-calendar-clock</v-icon>
             </v-btn>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Class\Constants;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use App\Class\Settings;
@@ -67,6 +68,9 @@ class EventController extends Controller
             //     'status' => $status
             // ]);
             Event::create($request->all());
+            return redirect()->back()->with([
+                'message' => Settings::alert('Sucesso','Usuario cadastrado com sucesso', Constants::FEEDBACK_INFO)
+            ]);
         } catch (\Exception $e) {
             dd($e->getMessage());
             $errors = new MessageBag();

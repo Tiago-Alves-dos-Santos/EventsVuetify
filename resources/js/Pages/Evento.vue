@@ -41,7 +41,7 @@ import Settings from '../objects/Settings.js';
                 </template>
             </v-data-table>
             <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question"></alert-confirm>
-            <!-- <alert-confirm :tipoAlerta="tipoAlerts.alert" :show="this.$page.props.flash.message.show"  :data="this.$page.props.flash.message" @evtClose="closeConfirm"></alert-confirm> -->
+            <alert-confirm :tipoAlerta="typeAlertObj.alert" :show="this.$page.props.flash.message.show"  :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
         </div>
     </layout-bottom-navigation>
 </template>
@@ -116,6 +116,9 @@ export default {
         },
         closeDialog() {
             this.show = false;
+        },
+        closeAlert(){
+            this.$page.props.flash.message.show = false;
         },
         openAlert(){
 

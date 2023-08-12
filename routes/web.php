@@ -15,7 +15,7 @@ use App\Http\Controllers\EventController;
 */
 Route::group( [ 'prefix' => '/' ], function()
 {
-    Route::get('/', [EventController::class, 'index'])->name('event.index');
+    Route::get('/', [EventController::class, 'index'])->name('index');
     Route::get('/events', [EventController::class, 'eventos'])->name('event.events');
     Route::post('/events/create', [EventController::class, 'create'])->name('event.create');
 });
