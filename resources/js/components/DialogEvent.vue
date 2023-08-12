@@ -22,9 +22,9 @@
                                         <v-text-field v-model="pickerInputStartDateFormatted" label="Começo"
                                             prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="form.pickerInputStart" @input="menu[0] = false"></v-date-picker>
+                                    <v-date-picker v-model="form.date_start" @input="menu[0] = false"></v-date-picker>
                                 </v-menu>
-                                <span class="message-error" v-if="$page.props.errors.pickerInputStart">{{$page.props.errors.pickerInputStart}}</span>
+                                <span class="message-error" v-if="$page.props.errors.date_start">{{$page.props.errors.date_start}}</span>
                             </v-col>
                             <v-col cols="6">
                                 <v-menu ref="menu1" v-model="menu[1]" :close-on-content-click="false" :nudge-right="40"
@@ -49,9 +49,9 @@
                                         <v-text-field v-model="pickerInputEndDateFormatted" label="Fim"
                                             prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="form.pickerInputEnd" @input="menu[2] = false"></v-date-picker>
+                                    <v-date-picker v-model="form.date_end" @input="menu[2] = false"></v-date-picker>
                                 </v-menu>
-                                <span class="message-error" v-if="$page.props.errors.pickerInputEnd">{{$page.props.errors.pickerInputEnd}}</span>
+                                <span class="message-error" v-if="$page.props.errors.date_end">{{$page.props.errors.date_end}}</span>
                             </v-col>
                             <v-col cols="6">
                                 <v-menu ref="menu3" v-model="menu[3]" :close-on-content-click="false" :nudge-right="40"
@@ -72,13 +72,13 @@
                         <v-row>
                             <v-col cols="6" class="d-flex justify-center flex-column">
                                 <label for="">Cor do texto</label>
-                                <v-color-picker v-model="form.colorText" class="ma-2" hide-mode-switch mode="hexa"></v-color-picker>
-                                <span class="message-error" v-if="$page.props.errors.colorText">{{$page.props.errors.colorText}}</span>
+                                <v-color-picker v-model="form.text_color" class="ma-2" hide-mode-switch mode="hexa"></v-color-picker>
+                                <span class="message-error" v-if="$page.props.errors.text_color">{{$page.props.errors.text_color}}</span>
                             </v-col>
                             <v-col cols="6" class="d-flex justify-center flex-column">
                                 <label for="">Fundo do texto</label>
-                                <v-color-picker  v-model="form.bgColor" class="ma-2"  hide-mode-switch mode="hexa"></v-color-picker>
-                                <span class="message-error" v-if="$page.props.errors.bgColor">{{$page.props.errors.bgColor}}</span>
+                                <v-color-picker  v-model="form.text_background" class="ma-2"  hide-mode-switch mode="hexa"></v-color-picker>
+                                <span class="message-error" v-if="$page.props.errors.text_background">{{$page.props.errors.text_background}}</span>
                             </v-col>
                         </v-row>
                         <v-divider></v-divider>
@@ -115,12 +115,12 @@ export default {
             //formulario
             form: {
                 name: '',
-                pickerInputStart: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
-                pickerInputEnd: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+                date_start: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+                date_end: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
                 time_start: (new Date()).getHours() + ":" + String((new Date()).getMinutes()).padStart(2, '0'),
                 time_end: dateEnd.getHours() + ":" + String(dateEnd.getMinutes()).padStart(2, '0'),
-                colorText: '#ffffff',
-                bgColor:'#0008ff'
+                text_color: '#ffffff',
+                text_background:'#0008ff'
             },
         }
     },
@@ -139,10 +139,10 @@ export default {
     },
     computed: {
         pickerInputStartDateFormatted() {
-            return this.formatDate(this.form.pickerInputStart)
+            return this.formatDate(this.form.date_start)
         },
         pickerInputEndDateFormatted() {
-            return this.formatDate(this.form.pickerInputEnd)
+            return this.formatDate(this.form.date_end)
         },
     },
     methods: {

@@ -96,6 +96,7 @@
 <script>
 import TypeAlert from '../enums/TypeOperation'
 import TypeAlertIcon from '../enums/TypeAlertIcon'
+import Settings from '../objects/Settings';
 
 export default {
     data() {
@@ -111,8 +112,10 @@ export default {
             required: true
         },//TypeAlert
         data: {
-            type: Object, //Seetings.alertData
-            required: true
+            type: [Object, Array], //Seetings.alertData
+            default: () => {
+                return Settings.alertData('Data object null','prop data esta nula',TypeAlertIcon.error)
+            }
         },
         show: {
             type: Boolean,

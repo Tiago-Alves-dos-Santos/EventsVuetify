@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use Inertia\Inertia;
 use App\Class\Settings;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -27,31 +28,47 @@ class EventController extends Controller
     {
         $customAttributes = [
             'name' => 'nome',
-            'pickerInputStart' => 'data inicial',
-            'pickerInputEnd' => 'data final',
+            'date_start' => 'data inicial',
+            'date_end' => 'data final',
             'time_start' => 'hora inicial',
             'time_end' => 'hora final',
-            'colorText' => 'cor do texto',
-            'bgColor' => 'cor do fundo do texto',
+            'text_color' => 'cor do texto',
+            'text_background' => 'cor do fundo do texto',
         ];
         $request->validate([
             'name' => 'required|min:3|max:100',
-            'pickerInputStart' => [
+            'date_start' => [
                 'required',
                 'date',
                 'after_or_equal:' . Carbon::now()->startOfDay()
             ],
-            'pickerInputEnd' => 'required|date|after_or_equal:pickerInputStart',
+            'date_end' => 'required|date|after_or_equal:date_start',
             'time_start' => 'required|date_format:H:i',
             'time_end' => 'required|date_format:H:i|after_or_equal:time_start',
-            'colorText' => 'required|max:20',
-            'bgColor' => 'required|max:20'
+            'text_color' => 'required|max:20',
+            'text_background' => 'required|max:20'
         ], [
             'pickerInputStart.after_or_equal' => 'O campo :attribute deve ser uma data posterior ou igual a '.Carbon::now()->startOfDay()->format('d/m/Y')
         ], $customAttributes);
+
         try {
-            dd($request->all());
+            // $event = Event::create([
+            //     'name' => $request->name,
+            //     'date_start' => $request->date_start,
+            //     'time_start' => $request->time_start,
+            //     'date_end' => $request->date_end,
+            //     'time_end' => $request->time_end,
+            //     'text_color' => $request->text_color,
+            //     'text_background' => $request->text_background,
+            //     'status' => 'canceled'
+            // ]);
+            // $status = Event::staticCompareDatesGetEventStatus($event);
+            // Event::find($event->id)->update([
+            //     'status' => $status
+            // ]);
+            Event::create($request->all());
         } catch (\Exception $e) {
+            dd($e->getMessage());
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
 
