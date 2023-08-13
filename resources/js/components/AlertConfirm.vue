@@ -94,7 +94,7 @@
     </v-row>
   </template>
 <script>
-import TypeAlert from '../enums/TypeOperation'
+import TypeAlert from '../enums/TypeAlert'
 import TypeAlertIcon from '../enums/TypeAlertIcon'
 import Settings from '../objects/Settings';
 

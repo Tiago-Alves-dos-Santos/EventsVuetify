@@ -22,7 +22,7 @@
                                         <v-text-field v-model="pickerInputStartDateFormatted" label="Começo"
                                             prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="form.date_start" @input="menu[0] = false"></v-date-picker>
+                                    <v-date-picker v-model="form.date_start" ref="startDatePicker" @input="menu[0] = false"></v-date-picker>
                                 </v-menu>
                                 <span class="message-error" v-if="$page.props.errors.date_start">{{$page.props.errors.date_start}}</span>
                             </v-col>
@@ -35,7 +35,7 @@
                                             prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs"
                                             v-on="on"></v-text-field>
                                     </template>
-                                    <v-time-picker v-if="menu[1]" v-model="form.time_start" full-width
+                                    <v-time-picker v-if="menu[1]" ref="startTimePicker" v-model="form.time_start" full-width
                                         @click:minute="$refs.menu1.save(form.time_start)"></v-time-picker>
                                 </v-menu>
                                 <span class="message-error" v-if="$page.props.errors.time_start">{{$page.props.errors.time_start}}</span>
@@ -49,7 +49,7 @@
                                         <v-text-field v-model="pickerInputEndDateFormatted" label="Fim"
                                             prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="form.date_end" @input="menu[2] = false"></v-date-picker>
+                                    <v-date-picker v-model="form.date_end" ref="endDatePicker" @input="menu[2] = false"></v-date-picker>
                                 </v-menu>
                                 <span class="message-error" v-if="$page.props.errors.date_end">{{$page.props.errors.date_end}}</span>
                             </v-col>
@@ -62,7 +62,7 @@
                                             prepend-icon="mdi-clock-time-four-outline" readonly v-bind="attrs"
                                             v-on="on"></v-text-field>
                                     </template>
-                                    <v-time-picker v-if="menu[3]" v-model="form.time_end" full-width
+                                    <v-time-picker v-if="menu[3]" ref="endTimePicker" v-model="form.time_end" full-width
                                         @click:minute="$refs.menu3.save(form.time_end)"></v-time-picker>
                                 </v-menu>
                                 <span class="message-error" v-if="$page.props.errors.time_end">{{$page.props.errors.time_end}}</span>
@@ -140,9 +140,11 @@ export default {
     computed: {
         pickerInputStartDateFormatted() {
             return this.formatDate(this.form.date_start)
+
         },
         pickerInputEndDateFormatted() {
             return this.formatDate(this.form.date_end)
+
         },
     },
     methods: {
@@ -154,12 +156,28 @@ export default {
         createOrUpdate(){
             if(this.typeOperation == TypeOperation.create){
                 let route_url = this.$route('event.create');
-                router.post(route_url, this.form);
+                router.post(route_url, this.form,{
+                    onSuccess: page => {
+                        this.$emit('close');
+                        this.defaultValuesForm();
+                    }
+                });
                 console.log('form cadastro', route_url);
             }else{
                 console.log('form atulizar');
             }
-
+        },
+        defaultValuesForm(){
+            this.form = {
+                name: '',
+                date_start: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+                date_end: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+                time_start: String(new Date().getHours()).padStart(2, '0') + ":" + String((new Date()).getMinutes()).padStart(2, '0'),
+                time_end: String(dateEnd.getHours()).padStart(2, '0') + ":" + String(dateEnd.getMinutes()).padStart(2, '0'),
+                text_color: '#ffffff',
+                text_background:'#0008ff'
+            };
+            console.log(this.form);
         }
     },
 }

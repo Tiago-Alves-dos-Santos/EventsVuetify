@@ -10,7 +10,7 @@ import Settings from '../objects/Settings.js';
                         Novo Evento
                     </v-btn>
 
-                    <dialog-event :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation"></dialog-event>
+                    <dialog-event :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
                 </v-col>
             </v-row>
             <v-data-table locale="pt" :headers="headers" :items="events" item-key="name" class="elevation-1"
@@ -41,7 +41,7 @@ import Settings from '../objects/Settings.js';
                 </template>
             </v-data-table>
             <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question"></alert-confirm>
-            <alert-confirm :tipoAlerta="typeAlertObj.alert" :show="this.$page.props.flash.message.show"  :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
+            <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"  :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
         </div>
     </layout-bottom-navigation>
 </template>
