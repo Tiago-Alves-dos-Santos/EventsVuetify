@@ -10,8 +10,10 @@
                     <v-form ref="form" @submit.prevent="createOrUpdate">
                         <v-row>
                             <v-col cols="12">
-                                <v-text-field label="Nome" tabindex="1" prepend-icon="mdi-pencil" v-model="form.name"></v-text-field>
-                                <span class="message-error" v-if="$page.props.errors.name">{{$page.props.errors.name}}</span>
+                                <v-text-field label="Nome" tabindex="1" prepend-icon="mdi-pencil"
+                                    v-model="form.name"></v-text-field>
+                                <span class="message-error"
+                                    v-if="$page.props.errors.name">{{ $page.props.errors.name }}</span>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -22,9 +24,11 @@
                                         <v-text-field v-model="pickerInputStartDateFormatted" label="Começo"
                                             prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="form.date_start" ref="startDatePicker" @input="menu[0] = false"></v-date-picker>
+                                    <v-date-picker v-model="form.date_start" ref="startDatePicker"
+                                        @input="menu[0] = false"></v-date-picker>
                                 </v-menu>
-                                <span class="message-error" v-if="$page.props.errors.date_start">{{$page.props.errors.date_start}}</span>
+                                <span class="message-error"
+                                    v-if="$page.props.errors.date_start">{{ $page.props.errors.date_start }}</span>
                             </v-col>
                             <v-col cols="6">
                                 <v-menu ref="menu1" v-model="menu[1]" :close-on-content-click="false" :nudge-right="40"
@@ -38,7 +42,8 @@
                                     <v-time-picker v-if="menu[1]" ref="startTimePicker" v-model="form.time_start" full-width
                                         @click:minute="$refs.menu1.save(form.time_start)"></v-time-picker>
                                 </v-menu>
-                                <span class="message-error" v-if="$page.props.errors.time_start">{{$page.props.errors.time_start}}</span>
+                                <span class="message-error"
+                                    v-if="$page.props.errors.time_start">{{ $page.props.errors.time_start }}</span>
                             </v-col>
                         </v-row>
                         <v-row>
@@ -49,9 +54,11 @@
                                         <v-text-field v-model="pickerInputEndDateFormatted" label="Fim"
                                             prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on"></v-text-field>
                                     </template>
-                                    <v-date-picker v-model="form.date_end" ref="endDatePicker" @input="menu[2] = false"></v-date-picker>
+                                    <v-date-picker v-model="form.date_end" ref="endDatePicker"
+                                        @input="menu[2] = false"></v-date-picker>
                                 </v-menu>
-                                <span class="message-error" v-if="$page.props.errors.date_end">{{$page.props.errors.date_end}}</span>
+                                <span class="message-error"
+                                    v-if="$page.props.errors.date_end">{{ $page.props.errors.date_end }}</span>
                             </v-col>
                             <v-col cols="6">
                                 <v-menu ref="menu3" v-model="menu[3]" :close-on-content-click="false" :nudge-right="40"
@@ -65,27 +72,32 @@
                                     <v-time-picker v-if="menu[3]" ref="endTimePicker" v-model="form.time_end" full-width
                                         @click:minute="$refs.menu3.save(form.time_end)"></v-time-picker>
                                 </v-menu>
-                                <span class="message-error" v-if="$page.props.errors.time_end">{{$page.props.errors.time_end}}</span>
+                                <span class="message-error"
+                                    v-if="$page.props.errors.time_end">{{ $page.props.errors.time_end }}</span>
 
                             </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="6" class="d-flex justify-center flex-column">
                                 <label for="">Cor do texto</label>
-                                <v-color-picker v-model="form.text_color" class="ma-2" hide-mode-switch mode="hexa"></v-color-picker>
-                                <span class="message-error" v-if="$page.props.errors.text_color">{{$page.props.errors.text_color}}</span>
+                                <v-color-picker v-model="form.text_color" class="ma-2" hide-mode-switch
+                                    mode="hexa"></v-color-picker>
+                                <span class="message-error"
+                                    v-if="$page.props.errors.text_color">{{ $page.props.errors.text_color }}</span>
                             </v-col>
                             <v-col cols="6" class="d-flex justify-center flex-column">
                                 <label for="">Fundo do texto</label>
-                                <v-color-picker  v-model="form.text_background" class="ma-2"  hide-mode-switch mode="hexa"></v-color-picker>
-                                <span class="message-error" v-if="$page.props.errors.text_background">{{$page.props.errors.text_background}}</span>
+                                <v-color-picker v-model="form.text_background" class="ma-2" hide-mode-switch
+                                    mode="hexa"></v-color-picker>
+                                <span class="message-error"
+                                    v-if="$page.props.errors.text_background">{{ $page.props.errors.text_background }}</span>
                             </v-col>
                         </v-row>
                         <v-divider></v-divider>
 
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn color="primary" type="submit">
+                            <v-btn color="primary" type="submit" :loading="load_form" :disabled="load_form">
                                 Salvar
                             </v-btn>
                             <v-btn color="error" @click="$emit('closeDialog')">
@@ -111,7 +123,7 @@ export default {
             dialog: false,
             dataTypeOperation: TypeOperation,
             //dataPickers e timer menus
-            menu: [false,false,false,false],
+            menu: [false, false, false, false],
             //formulario
             form: {
                 name: '',
@@ -120,8 +132,9 @@ export default {
                 time_start: String(new Date().getHours()).padStart(2, '0') + ":" + String((new Date()).getMinutes()).padStart(2, '0'),
                 time_end: String(dateEnd.getHours()).padStart(2, '0') + ":" + String(dateEnd.getMinutes()).padStart(2, '0'),
                 text_color: '#ffffff',
-                text_background:'#0008ff'
+                text_background: '#0008ff'
             },
+            load_form: false,
         }
     },
     props: {
@@ -139,12 +152,10 @@ export default {
     },
     computed: {
         pickerInputStartDateFormatted() {
-            return this.formatDate(this.form.date_start)
-
+            return this.formatDate(this.form.date_start);
         },
         pickerInputEndDateFormatted() {
-            return this.formatDate(this.form.date_end)
-
+            return this.formatDate(this.form.date_end);
         },
     },
     methods: {
@@ -153,21 +164,26 @@ export default {
             const [year, month, day] = date.split('-');
             return `${day}/${month}/${year}`;
         },
-        createOrUpdate(){
-            if(this.typeOperation == TypeOperation.create){
+        createOrUpdate() {
+            if (this.typeOperation == TypeOperation.create) {
                 let route_url = this.$route('event.create');
-                router.post(route_url, this.form,{
+                router.post(route_url, this.form, {
+                    onStart: () => {
+                        this.load_form = true;
+                    },
                     onSuccess: page => {
                         this.$emit('close');
                         this.defaultValuesForm();
+                    },
+                    onFinish: visit => {
+                        this.load_form = false;
                     }
                 });
-                console.log('form cadastro', route_url);
-            }else{
+            } else {
                 console.log('form atulizar');
             }
         },
-        defaultValuesForm(){
+        defaultValuesForm() {
             this.form = {
                 name: '',
                 date_start: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
@@ -175,7 +191,7 @@ export default {
                 time_start: String(new Date().getHours()).padStart(2, '0') + ":" + String((new Date()).getMinutes()).padStart(2, '0'),
                 time_end: String(dateEnd.getHours()).padStart(2, '0') + ":" + String(dateEnd.getMinutes()).padStart(2, '0'),
                 text_color: '#ffffff',
-                text_background:'#0008ff'
+                text_background: '#0008ff'
             };
             console.log(this.form);
         }
