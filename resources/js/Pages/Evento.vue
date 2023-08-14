@@ -13,7 +13,7 @@ import Settings from '../objects/Settings.js';
                     <dialog-event :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
                 </v-col>
             </v-row>
-            <v-data-table locale="pt" :headers="headers" :items="events" item-key="name" class="elevation-1"
+            <v-data-table locale="pt" :headers="headers" :items="this.$page.props.events" item-key="name" class="elevation-1"
                 :search="search" :custom-filter="filter" mobile-breakpoint>
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
@@ -51,24 +51,11 @@ import TypeAlert from '../enums/TypeAlert';
 import TypeAlertIcon from '../enums/TypeAlertIcon';
 
 export default {
+
     data() {
         return {
             //tabela
             search: '',
-            events: [
-                {
-                    status: 'Em andamento',
-                    name: 'Aniversario 1',
-                    start: '02/02/2001 as 15',
-                    end: '02/02/2001 as 16',
-                },
-                {
-                    status: 'Concluido',
-                    name: 'Reunião',
-                    start: '02/03/2001 as 17',
-                    end: '02/03/2001 as 18',
-                },
-            ],
             select: { text: 'Eventos deste ano', value: 'events_year' },
             items: [
                 { text: 'Todos os eventos', value: 'events_all' },
@@ -83,13 +70,14 @@ export default {
             data_confirm: null,
         }
     },
+    observe: ['events'],
     computed: {
         headers() { //cabeçalho da tabela
             return [
                 { text: 'Status', value: 'status', },
                 { text: 'Nome', value: 'name', },
-                { text: 'Começo', value: 'start' },
-                { text: 'Fim', value: 'end' },
+                { text: 'Começo', value: 'date_start' },
+                { text: 'Fim', value: 'date_end' },
                 {
                     text: 'Ações',
                     value: 'actions',
@@ -109,9 +97,11 @@ export default {
         },
         getColor(status) {
             switch (status) {
-                case 'Em andamento': return 'blue-grey'
-                case 'Concluido': return 'green'
-                default: return 'blue-grey'
+                case 'Em andamento': return '#0D47A1'
+                case 'Agendado': return 'yellow'
+                case 'Concluído': return 'blue'
+                case 'Cancelado': return 'red'
+                default: return 'purple'
             }
         },
         closeDialog() {
@@ -120,9 +110,9 @@ export default {
         closeAlert(){
             this.$page.props.flash.message.show = false;
         },
-        openAlert(){
-
-        }
+    },
+    mounted() {
+        // console.log(this.$page);
     },
 }
 </script>

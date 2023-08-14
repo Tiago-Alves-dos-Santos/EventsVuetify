@@ -193,7 +193,6 @@ export default {
                 text_color: '#ffffff',
                 text_background: '#0008ff'
             };
-            console.log(this.form);
         }
     },
 }

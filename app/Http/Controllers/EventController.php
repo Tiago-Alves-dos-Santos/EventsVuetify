@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Class\Constants;
 use Carbon\Carbon;
 use Inertia\Inertia;
-use App\Class\Settings;
 use App\Models\Event;
+use App\Class\Settings;
+use App\Class\Constants;
+use App\Enums\EventStatus;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 
@@ -15,13 +17,23 @@ class EventController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('Home', [
-            'pageValue' => 0
+            'pageValue' => 0,
+
         ]);
     }
-    public function eventos(Request $request)
+    public function viewEventos(Request $request)
     {
+        $events = Event::get();
+        $events = $events->map(function ($event) {
+            $event->date_start = Carbon::parse($event->date_start . ' ' . $event->time_start)->format('d/m/Y H:i:s');
+            $event->date_end = Carbon::parse($event->date_end . ' ' . $event->time_end)->format('d/m/Y H:i:s');
+            $event->getStatusInPortuguesBr();
+            return $event;
+        });
+
         return Inertia::render('Evento', [
-            'pageValue' => 1
+            'pageValue' => 1,
+            'events' => $events,
         ]);
     }
 
@@ -49,33 +61,18 @@ class EventController extends Controller
             'text_color' => 'required|max:20',
             'text_background' => 'required|max:20'
         ], [
-            'pickerInputStart.after_or_equal' => 'O campo :attribute deve ser uma data posterior ou igual a '.Carbon::now()->startOfDay()->format('d/m/Y')
+            'pickerInputStart.after_or_equal' => 'O campo :attribute deve ser uma data posterior ou igual a ' . Carbon::now()->startOfDay()->format('d/m/Y')
         ], $customAttributes);
 
         try {
-            // $event = Event::create([
-            //     'name' => $request->name,
-            //     'date_start' => $request->date_start,
-            //     'time_start' => $request->time_start,
-            //     'date_end' => $request->date_end,
-            //     'time_end' => $request->time_end,
-            //     'text_color' => $request->text_color,
-            //     'text_background' => $request->text_background,
-            //     'status' => 'canceled'
-            // ]);
-            // $status = Event::staticCompareDatesGetEventStatus($event);
-            // Event::find($event->id)->update([
-            //     'status' => $status
-            // ]);
             Event::create($request->all());
             return redirect()->back()->with([
-                'message' => Settings::alert('Sucesso','Usuario cadastrado com sucesso', Constants::FEEDBACK_INFO)
+                'message' => Settings::alert('Sucesso', 'Usuario cadastrado com sucesso', Constants::FEEDBACK_INFO)
             ]);
         } catch (\Exception $e) {
             dd($e->getMessage());
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
-
         }
     }
 }
