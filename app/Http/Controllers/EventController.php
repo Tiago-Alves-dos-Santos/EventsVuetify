@@ -25,8 +25,8 @@ class EventController extends Controller
     {
         $events = Event::get();
         $events = $events->map(function ($event) {
-            $event->date_start =  $event->date_start.' '.$event->time_start;
-            $event->date_end =  $event->date_end.' '.$event->time_end;
+            $event->date_start_formated =  $event->date_start.' '.$event->time_start;
+            $event->date_end_formated =  $event->date_end.' '.$event->time_end;
             $event->getStatusInPortuguesBr();
             return $event;
         });

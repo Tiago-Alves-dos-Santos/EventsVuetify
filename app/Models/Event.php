@@ -17,11 +17,11 @@ class Event extends Model
     protected $guarded = [];
     protected $table = 'events';
     /*****************************************MUTATORS*******************************************/
-    public function setDateStartAttribute($value)
+    public function setDateStarFormatedtAttribute($value)
     {
         $this->attributes['date_start_formated'] = $value;
     }
-    public function setDateEndAttribute($value)
+    public function setDateEndFormatedAttribute($value)
     {
         $this->attributes['date_end_formated'] = $value;
     }

@@ -10,7 +10,7 @@ import Settings from '../objects/Settings.js';
                         Novo Evento
                     </v-btn>
 
-                    <dialog-event :show="show" :event="event" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
+                    <dialog-event ref="dialogForm" :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
                 </v-col>
             </v-row>
             <v-data-table locale="pt" :headers="headers" :items="$page.props.events" item-key="name" class="elevation-1"
@@ -69,8 +69,6 @@ export default {
             //alert
             typeAlertObj: TypeAlert,
             data_confirm: null,
-            //models
-            event:null
         }
     },
     observe: ['events'],
@@ -111,8 +109,9 @@ export default {
             this.typeOperation = typeOperation;
             this.event = null;
             this.show = true;
+            this.$refs.dialogForm.defaultValuesForm();
             if(typeOperation == this.typeOperationObj.update && object){
-                this.event = object;
+                this.$refs.dialogForm.updateOperation(this.typeOperation,object);
             }
 
         },
@@ -124,7 +123,6 @@ export default {
         },
     },
     mounted() {
-        // console.log(this.$page);
     },
 }
 </script>

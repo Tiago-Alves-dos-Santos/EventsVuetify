@@ -115,6 +115,7 @@
 <script>
 import { router } from '@inertiajs/vue2';
 import TypeOperation from '../enums/TypeOperation';
+import Settings from '../objects/Settings';
 let dateEnd = new Date();
 dateEnd.setMinutes(dateEnd.getMinutes() + 30);
 export default {
@@ -135,6 +136,7 @@ export default {
                 text_background: '#0008ff'
             },
             load_form: false,
+            event: {}
         }
     },
     props: {
@@ -149,10 +151,6 @@ export default {
             type: Boolean,
             default: false
         },
-        event: {
-            type:Object,
-            default: null
-        }
     },
     computed: {
         pickerInputStartDateFormatted() {
@@ -162,18 +160,18 @@ export default {
             return this.formatDate(this.form.date_end);
         },
     },
-    watch:{
-        typeOperation(value){
-            if(value == TypeOperation.update){
-                console.log(this.event)
-            }
-        }
-    },
     methods: {
         formatDate(date) {
             if (!date) return null;
             const [year, month, day] = date.split('-');
             return `${day}/${month}/${year}`;
+        },
+        updateOperation(typeOperation,object){
+            // console.log('updateOperation',this.typeOperation,TypeOperation.update,this.typeOperation == TypeOperation.update);
+            if(typeOperation == TypeOperation.update){
+                this.event = object;
+                this.valuesFormUpdate();
+            }
         },
         createOrUpdate() {
             if (this.typeOperation == TypeOperation.create) {
@@ -206,14 +204,16 @@ export default {
             };
         },
         valuesFormUpdate(){
+            // Hora no formato que você possui (por exemplo, "15:30")
+
             this.form = {
                 name: this.event.name,
-                date_start: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
-                date_end: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
-                time_start: String(new Date().getHours()).padStart(2, '0') + ":" + String((new Date()).getMinutes()).padStart(2, '0'),
-                time_end: String(dateEnd.getHours()).padStart(2, '0') + ":" + String(dateEnd.getMinutes()).padStart(2, '0'),
-                text_color: '#ffffff',
-                text_background: '#0008ff'
+                date_start: new Date(this.event.date_start).toISOString().substring(0, 10),
+                date_end:  new Date(this.event.date_end).toISOString().substring(0, 10),
+                time_start: Settings.convertTimeString(this.event.time_start),
+                time_end: Settings.convertTimeString(this.event.time_end),
+                text_color: this.event.text_color,
+                text_background: this.event.text_background
             };
         }
     },
