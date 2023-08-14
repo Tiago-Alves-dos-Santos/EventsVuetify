@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Exception;
 use Carbon\Carbon;
 use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use InvalidFormatException;
 
 class Event extends Model
 {
@@ -16,6 +16,35 @@ class Event extends Model
     //permitido total atribuição em massa
     protected $guarded = [];
     protected $table = 'events';
+    /*****************************************MUTATORS*******************************************/
+    public function setDateStartAttribute($value)
+    {
+        $this->attributes['date_start_formated'] = $value;
+    }
+    public function setDateEndAttribute($value)
+    {
+        $this->attributes['date_end_formated'] = $value;
+    }
+
+    public function getDateStartFormatedAttribute()
+    {
+        return  Carbon::parse($this->attributes['date_start_formated'])->format('d/m/Y H:i:s');
+    }
+    public function getDateStartFormatedCalendarAttribute()
+    {
+        return  Carbon::parse($this->attributes['date_start_formated'])->toDateTimeLocalString();
+    }
+    public function getDateEndFormatedAttribute()
+    {
+        return  Carbon::parse($this->attributes['date_end_formated'])->format('d/m/Y H:i:s');
+    }
+    public function getDateEndFormatedCalendarAttribute()
+    {
+        return  Carbon::parse($this->attributes['date_end_formated'])->toDateTimeLocalString();
+    }
+
+    /*************************************METODOS STATICS*******************************************/
+
     /**
      * Função retorna um EventStatus baseado no data e tempo de inicio e final
      *
@@ -73,8 +102,9 @@ class Event extends Model
         }
         return $result;
     }
+    /*************************************METODOS*******************************************/
     /**
-     *
+     * Função retorna um EventStatus baseado no data e tempo de inicio e final
      *
      * @return EventStatus
      */
@@ -83,11 +113,14 @@ class Event extends Model
         $this->status = self::staticCompareDatesGetEventStatus($this);
         return $this->status;
     }
-
-    public function getStatusInPortuguesBr() : string {
-        $this->status = self::staticGetStatusInPortuguesBr($this->status);
-        return $this->status;
+    /**
+     * Função retorna um EventStatus baseado no data e tempo de inicio e final
+     *
+     * @return string
+     */
+    public function getStatusInPortuguesBr(): string
+    {
+        $this->attributes['status_br'] = self::staticGetStatusInPortuguesBr($this->status);
+        return $this->attributes['status_br'];
     }
-
-
 }

@@ -6,14 +6,14 @@ import Settings from '../objects/Settings.js';
         <div>
             <v-row class="mb-3">
                 <v-col cols="12 d-flex justify-end">
-                    <v-btn color="primary" dark @click="show = true">
+                    <v-btn color="primary" dark @click="openDialog(typeOperationObj.create)">
                         Novo Evento
                     </v-btn>
 
-                    <dialog-event :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
+                    <dialog-event :show="show" :event="event" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
                 </v-col>
             </v-row>
-            <v-data-table locale="pt" :headers="headers" :items="this.$page.props.events" item-key="name" class="elevation-1"
+            <v-data-table locale="pt" :headers="headers" :items="$page.props.events" item-key="name" class="elevation-1"
                 :search="search" :custom-filter="filter" mobile-breakpoint>
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
@@ -26,13 +26,13 @@ import Settings from '../objects/Settings.js';
                         </v-col>
                     </v-row>
                 </template>
-                <template v-slot:item.status="{ item }">
-                    <v-chip :color="getColor(item.status)" dark>
-                        {{ item.status }}
+                <template v-slot:item.status_br="{ item }">
+                    <v-chip :color="getColor(item.status_br)" dark>
+                        {{ item.status_br }}
                     </v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-icon small class="mr-2">
+                    <v-icon small class="mr-2" @click="openDialog(typeOperationObj.update, item)">
                         mdi-pencil
                     </v-icon>
                     <v-icon small>
@@ -65,19 +65,22 @@ export default {
             //dialog
             show: false,
             typeOperation: TypeOperation.create,
+            typeOperationObj: TypeOperation,
             //alert
             typeAlertObj: TypeAlert,
             data_confirm: null,
+            //models
+            event:null
         }
     },
     observe: ['events'],
     computed: {
         headers() { //cabeçalho da tabela
             return [
-                { text: 'Status', value: 'status', },
+                { text: 'Status', value: 'status_br', },
                 { text: 'Nome', value: 'name', },
-                { text: 'Começo', value: 'date_start' },
-                { text: 'Fim', value: 'date_end' },
+                { text: 'Começo', value: 'date_start_formated' },
+                { text: 'Fim', value: 'date_end_formated' },
                 {
                     text: 'Ações',
                     value: 'actions',
@@ -103,6 +106,15 @@ export default {
                 case 'Cancelado': return 'red'
                 default: return 'purple'
             }
+        },
+        openDialog(typeOperation, object = null){
+            this.typeOperation = typeOperation;
+            this.event = null;
+            this.show = true;
+            if(typeOperation == this.typeOperationObj.update && object){
+                this.event = object;
+            }
+
         },
         closeDialog() {
             this.show = false;

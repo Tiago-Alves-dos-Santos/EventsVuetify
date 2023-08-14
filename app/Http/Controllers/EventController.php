@@ -25,8 +25,8 @@ class EventController extends Controller
     {
         $events = Event::get();
         $events = $events->map(function ($event) {
-            $event->date_start = Carbon::parse($event->date_start . ' ' . $event->time_start)->format('d/m/Y H:i:s');
-            $event->date_end = Carbon::parse($event->date_end . ' ' . $event->time_end)->format('d/m/Y H:i:s');
+            $event->date_start =  $event->date_start.' '.$event->time_start;
+            $event->date_end =  $event->date_end.' '.$event->time_end;
             $event->getStatusInPortuguesBr();
             return $event;
         });

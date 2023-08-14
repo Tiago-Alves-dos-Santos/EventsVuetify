@@ -149,6 +149,10 @@ export default {
             type: Boolean,
             default: false
         },
+        event: {
+            type:Object,
+            default: null
+        }
     },
     computed: {
         pickerInputStartDateFormatted() {
@@ -157,6 +161,13 @@ export default {
         pickerInputEndDateFormatted() {
             return this.formatDate(this.form.date_end);
         },
+    },
+    watch:{
+        typeOperation(value){
+            if(value == TypeOperation.update){
+                console.log(this.event)
+            }
+        }
     },
     methods: {
         formatDate(date) {
@@ -186,6 +197,17 @@ export default {
         defaultValuesForm() {
             this.form = {
                 name: '',
+                date_start: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+                date_end: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
+                time_start: String(new Date().getHours()).padStart(2, '0') + ":" + String((new Date()).getMinutes()).padStart(2, '0'),
+                time_end: String(dateEnd.getHours()).padStart(2, '0') + ":" + String(dateEnd.getMinutes()).padStart(2, '0'),
+                text_color: '#ffffff',
+                text_background: '#0008ff'
+            };
+        },
+        valuesFormUpdate(){
+            this.form = {
+                name: this.event.name,
                 date_start: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
                 date_end: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
                 time_start: String(new Date().getHours()).padStart(2, '0') + ":" + String((new Date()).getMinutes()).padStart(2, '0'),
