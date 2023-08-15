@@ -16,8 +16,10 @@ class EventController extends Controller
 {
     public function index(Request $request)
     {
+        $events = Event::get();
         return Inertia::render('Home', [
             'pageValue' => 0,
+            'events' => $events
 
         ]);
     }

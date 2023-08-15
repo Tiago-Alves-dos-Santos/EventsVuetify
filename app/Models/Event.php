@@ -30,17 +30,9 @@ class Event extends Model
     {
         return  Carbon::parse($this->attributes['date_start_formated'])->format('d/m/Y H:i:s');
     }
-    public function getDateStartFormatedCalendarAttribute()
-    {
-        return  Carbon::parse($this->attributes['date_start_formated'])->toDateTimeLocalString();
-    }
     public function getDateEndFormatedAttribute()
     {
         return  Carbon::parse($this->attributes['date_end_formated'])->format('d/m/Y H:i:s');
-    }
-    public function getDateEndFormatedCalendarAttribute()
-    {
-        return  Carbon::parse($this->attributes['date_end_formated'])->toDateTimeLocalString();
     }
 
     /*************************************METODOS STATICS*******************************************/

@@ -1,6 +1,6 @@
 <template>
     <layout-bottom-navigation>
-        <v-sheet tile height="54" class="d-flex">
+        <v-sheet tile height="54" class="d-flex flex-column">
             <div style="width: 100%;" class="d-flex justify-center">
                 <v-btn icon class="ma-2" @click="$refs.calendar.prev()">
                     <v-icon>mdi-chevron-left</v-icon>
@@ -13,15 +13,22 @@
                     <v-icon>mdi-chevron-right</v-icon>
                 </v-btn>
             </div>
+            <div style="width: 100%; text-transform: uppercase;" class="d-flex flex-column align-center justify-center">
+                {{ this.titleCalendar }}
+                <v-btn color="primary" class="mt-2" @click="value = Date.now()">
+                    Hoje
+                </v-btn>
+            </div>
         </v-sheet>
-        <v-sheet height="600">
-            <v-calendar ref="calendar" v-model="value" :weekdays="weekday" :type="type" :events="events"
-                :event-overlap-threshold="30" :event-color="getEventColor" @change="getEvents"
-                @click:event="clickEvent"></v-calendar>
+        <v-sheet height="600" style="margin-top: 90px;">
+            <v-calendar ref="calendar" v-model="value" :weekdays="weekday" :type="type" :events="$page.props.events"
+                :event-overlap-threshold="30" :event-color="getEventColor" :event-text-color="getEventTextColor"
+                @change="getEvents" @click:event="clickEvent"></v-calendar>
         </v-sheet>
     </layout-bottom-navigation>
 </template>
 <script>
+import Settings from '../objects/Settings';
 export default {
     data() {
         return {
@@ -39,9 +46,15 @@ export default {
                 { text: 'Segunda - Sexta', value: [1, 2, 3, 4, 5] },
                 { text: 'Segunda, Quarta, Sexta', value: [1, 3, 5] },
             ],
-            value: '',
-            events: [],
-            colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
+            value: Date.now(),
+        }
+    },
+    computed: {
+        titleCalendar() {
+            let monthIndex = new Date(this.value).getMonth();
+            let year = new Date(this.value).getFullYear();
+            let monthNames = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format;
+            return `${monthNames(new Date(0, monthIndex))} - ${year}`;
         }
     },
     methods: {
@@ -52,31 +65,37 @@ export default {
         },
         getEvents({ start, end }) {
 
-            this.events = [
-                {
-                    name: 'Evento 1',
-                    details: 'Detalhes do Evento 1',
-                    start: '2023-08-06T13:20:34',
-                    end: '2023-08-06T23:59:59',
-                    color: this.colors[this.rnd(0, this.colors.length - 1)],
-                },
-                {
-                    name: 'Evento 2',
-                    details: 'Detalhes do Evento 2',
-                    start: '2023-08-10T00:00:00',
-                    end: '2023-08-11T23:59:59',
-                    color: this.colors[this.rnd(0, this.colors.length - 1)],
-                },
-            ];
+            let events_array = [];
+            for (const propriedade in this.$page.props.events) {
+                let events = {
+                    status: this.$page.props.events[propriedade].status,
+                    name: this.$page.props.events[propriedade].name + ' - ' + Settings.convertTimeString(this.$page.props.events[propriedade].time_end),
+                    start: this.$page.props.events[propriedade].date_start + 'T' + this.$page.props.events[propriedade].time_start,
+                    end: this.$page.props.events[propriedade].date_end + 'T' + this.$page.props.events[propriedade].time_end,
+                    color: this.$page.props.events[propriedade].text_background,
+                    textColor: this.$page.props.events[propriedade].text_color,
+                }
+                // console.log(new Date(this.$page.props.events[propriedade].date_end+'T'+this.$page.props.events[propriedade].time_end));
+
+                events_array.push(events);
+            }
+            this.$page.props.events = events_array;
+
         },
         getEventColor(event) {
             return event.color
         },
-        rnd(a, b) {
-            return Math.floor((b - a + 1) * Math.random()) + a
+        getEventTextColor(event) {
+            return event.textColor
+        },
+        titleCalendar() {
+            let monthIndex = new Date(this.value).getMonth();
+            let monthNames = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format;
+            return monthNames(new Date(0, monthIndex));
         },
     },
     mounted() {
+        // console.log(this.$page.props.events);
     },
 }
 </script>

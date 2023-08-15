@@ -13,11 +13,9 @@ use App\Http\Controllers\EventController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::group( [ 'prefix' => '/' ], function()
-{
-    Route::get('/', [EventController::class, 'index'])->name('index');
-    Route::get('/events', [EventController::class, 'viewEventos'])->name('event.events');
+
+Route::get('/', [EventController::class, 'index'])->name('index');
+Route::group(['prefix' => '/events'], function () {
+    Route::get('/', [EventController::class, 'viewEventos'])->name('event.events');
     Route::post('/events/create', [EventController::class, 'create'])->name('event.create');
 });
-
-
