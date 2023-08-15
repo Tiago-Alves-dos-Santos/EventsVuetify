@@ -10,7 +10,7 @@ import Settings from '../objects/Settings.js';
                         Novo Evento
                     </v-btn>
 
-                    <dialog-event :show="show" :event="event" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
+                    <dialog-event ref="dialogForm" :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
                 </v-col>
             </v-row>
             <v-data-table locale="pt" :headers="headers" :items="$page.props.events" item-key="name" class="elevation-1"
@@ -18,7 +18,7 @@ import Settings from '../objects/Settings.js';
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
                         <v-col cols="6">
-                            <v-text-field v-model="search" label="Buscar..."></v-text-field>
+                            <v-text-field v-model="search" lab  el="Buscar..."></v-text-field>
                         </v-col>
                         <v-col cols="6">
                             <v-select v-model="select" :items="items" item-text="text" item-value="value" label="Eventos"
@@ -69,8 +69,6 @@ export default {
             //alert
             typeAlertObj: TypeAlert,
             data_confirm: null,
-            //models
-            event:null
         }
     },
     observe: ['events'],
@@ -91,8 +89,9 @@ export default {
     },
     methods: {
         filter(value, search, item) {
-            value = value.toLocaleLowerCase();
-            search = search.toLocaleLowerCase();
+            // console.log(value,item);
+            // value = value.toLocaleLowerCase();
+            // search = search.toLocaleLowerCase();
             return value != null &&
                 search != null &&
                 typeof value === 'string' &&
@@ -111,8 +110,9 @@ export default {
             this.typeOperation = typeOperation;
             this.event = null;
             this.show = true;
+            this.$refs.dialogForm.defaultValuesForm();
             if(typeOperation == this.typeOperationObj.update && object){
-                this.event = object;
+                this.$refs.dialogForm.updateOperation(this.typeOperation,object);
             }
 
         },
@@ -124,7 +124,6 @@ export default {
         },
     },
     mounted() {
-        // console.log(this.$page);
     },
 }
 </script>

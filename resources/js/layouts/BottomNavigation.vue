@@ -6,7 +6,7 @@
                 <v-icon>mdi-calendar-clock</v-icon>
             </v-btn>
 
-            <v-btn @click="navigateUrl($route('event.events'))">
+            <v-btn @click="navigateUrl($route('event.viewEventos'))">
                 <span>Eventos</span>
                 <v-icon>mdi-calendar-plus</v-icon>
             </v-btn>

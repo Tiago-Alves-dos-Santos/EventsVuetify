@@ -157,8 +157,6 @@ export default {
     },
     watch:{
         show(oldValue, newValue){
-            // console.log('Novo valor:', newValue);
-            // console.log('Valor antigo:', oldValue);
             this.dialog = (newValue == this.dialog)?!newValue:newValue;
         },
     },
