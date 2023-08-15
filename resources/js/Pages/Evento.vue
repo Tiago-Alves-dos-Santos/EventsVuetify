@@ -18,7 +18,7 @@ import Settings from '../objects/Settings.js';
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
                         <v-col cols="6">
-                            <v-text-field v-model="search" label="Buscar..."></v-text-field>
+                            <v-text-field v-model="search" lab  el="Buscar..."></v-text-field>
                         </v-col>
                         <v-col cols="6">
                             <v-select v-model="select" :items="items" item-text="text" item-value="value" label="Eventos"
@@ -89,8 +89,9 @@ export default {
     },
     methods: {
         filter(value, search, item) {
-            value = value.toLocaleLowerCase();
-            search = search.toLocaleLowerCase();
+            // console.log(value,item);
+            // value = value.toLocaleLowerCase();
+            // search = search.toLocaleLowerCase();
             return value != null &&
                 search != null &&
                 typeof value === 'string' &&

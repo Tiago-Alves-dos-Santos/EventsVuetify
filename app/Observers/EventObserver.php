@@ -26,7 +26,12 @@ class EventObserver
      */
     public function updated(Event $event)
     {
-        //
+        $event->withoutEvents(function () use ($event) {
+            $event->compareDatesGetEventStatus();
+            $event->save();
+        });
+
+
     }
 
     /**

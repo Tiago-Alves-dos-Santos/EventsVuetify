@@ -16,6 +16,7 @@ use App\Http\Controllers\EventController;
 
 Route::get('/', [EventController::class, 'index'])->name('index');
 Route::group(['prefix' => '/events'], function () {
-    Route::get('/', [EventController::class, 'viewEventos'])->name('event.events');
+    Route::get('/', [EventController::class, 'viewEventos'])->name('event.viewEventos');
     Route::post('/events/create', [EventController::class, 'create'])->name('event.create');
+    Route::put('/events/update', [EventController::class, 'update'])->name('event.update');
 });
