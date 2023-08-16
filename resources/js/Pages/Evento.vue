@@ -10,7 +10,8 @@ import Settings from '../objects/Settings.js';
                         Novo Evento
                     </v-btn>
                     <!-- Dialog -->
-                    <dialog-event ref="dialogForm" :show="show" :typeOperation="typeOperation" @close="closeDialog" @openAlert="openAlert"></dialog-event>
+                    <dialog-event ref="dialogForm" :show="show" :typeOperation="typeOperation" @close="closeDialog"
+                        @openAlert="openAlert"></dialog-event>
                 </v-col>
             </v-row>
             <!-- DataTable -->
@@ -19,7 +20,7 @@ import Settings from '../objects/Settings.js';
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
                         <v-col cols="6">
-                            <v-text-field v-model="search" lab  el="Buscar..."></v-text-field>
+                            <v-text-field v-model="search" lab el="Buscar..."></v-text-field>
                         </v-col>
                         <v-col cols="6">
                             <v-select v-model="select" :items="items" item-text="text" item-value="value" label="Eventos"
@@ -33,18 +34,28 @@ import Settings from '../objects/Settings.js';
                     </v-chip>
                 </template>
                 <template v-slot:item.actions="{ item }">
-                    <v-icon small class="mr-2" @click="openDialog(typeOperationObj.update, item)">
+                    <v-icon small class="" @click="openDialog(typeOperationObj.update, item)">
                         mdi-pencil
                     </v-icon>
                     <v-icon small @click="deleteEventQuestion(item)">
                         mdi-delete
                     </v-icon>
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-icon small v-bind="attrs" v-on="on" @click="eventForCalendar(item)">
+                                mdi-calendar-clock
+                            </v-icon>
+                        </template>
+                        <span>Ver no calendário</span>
+                    </v-tooltip>
                 </template>
             </v-data-table>
             <!-- Alerts -->
-            <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question" :data="data_confirm" :yesCallback="deleteEvent"></alert-confirm>
+            <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
+                :yesCallback="deleteEvent"></alert-confirm>
             <alert-confirm ref="alert_client" :typeAlert="typeAlertObj.alert" :data="data_confirm"></alert-confirm>
-            <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"  :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
+            <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"
+                :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
         </div>
     </layout-bottom-navigation>
 </template>
@@ -152,6 +163,10 @@ export default {
                 }
             });
         },
+        eventForCalendar(event){
+            let route_url = this.$route('index');
+            router.get(route_url, {valueCalendar: event.date_start});
+        }
     },
     mounted() {
     },

@@ -21,7 +21,7 @@
             </div>
         </v-sheet>
         <v-sheet height="600" style="margin-top: 90px;">
-            <v-calendar ref="calendar" v-model="value" :weekdays="weekday" :type="type" :events="$page.props.events"
+            <v-calendar ref="calendar" v-model="$page.props.valueCalendar" color="primary" :weekdays="weekday" :type="type" :events="$page.props.events"
                 :event-overlap-threshold="30" :event-color="getEventColor" :event-text-color="getEventTextColor"
                 @change="getEvents" @click:event="clickEvent"></v-calendar>
         </v-sheet>
@@ -48,13 +48,13 @@ export default {
             //valores de calendario
             type: 'month',
             weekday: [0, 1, 2, 3, 4, 5, 6],
-            value: Date.now(),
+            // value: Date.now(),
         }
     },
     computed: {
         titleCalendar() {//retorna o mês e o ano do calendario, como string
-            let monthIndex = new Date(this.value).getMonth();
-            let year = new Date(this.value).getFullYear();
+            let monthIndex = new Date(this.$page.props.valueCalendar).getMonth();
+            let year = new Date(this.$page.props.valueCalendar).getFullYear();
             let monthNames = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format;
             return `${monthNames(new Date(0, monthIndex))} - ${year}`;
         }

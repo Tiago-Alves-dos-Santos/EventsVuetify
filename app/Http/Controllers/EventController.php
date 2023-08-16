@@ -16,6 +16,8 @@ class EventController extends Controller
 {
     public function index(Request $request)
     {
+        $valueCalendar = $request->valueCalendar ?? Carbon::now();
+
         $events = Event::get();
         //montagem de array de acordo com oq v-calendar pede
         $events = $events->map(function ($event) {
@@ -29,7 +31,8 @@ class EventController extends Controller
         });
         return Inertia::render('Home', [
             'pageValue' => 0,
-            'events' => $events
+            'events' => $events,
+            'valueCalendar' => $valueCalendar
 
         ]);
     }
