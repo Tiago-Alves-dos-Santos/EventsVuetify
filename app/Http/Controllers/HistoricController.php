@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
-class HistoricoController extends Controller
+class HistoricController extends Controller
 {
-    //
+    public function index(Request $request)
+    {
+        return Inertia::render('Historic', [
+            'pageValue' => 2
+        ]);
+    }
 }

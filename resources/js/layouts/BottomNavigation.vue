@@ -11,7 +11,7 @@
                 <v-icon>mdi-calendar-plus</v-icon>
             </v-btn>
 
-            <v-btn>
+            <v-btn @click="navigateUrl($route('historic.index'))">
                 <span>Histórico</span>
                 <v-icon>mdi-history</v-icon>
             </v-btn>
