@@ -36,13 +36,13 @@ import Settings from '../objects/Settings.js';
                     <v-icon small class="mr-2" @click="openDialog(typeOperationObj.update, item)">
                         mdi-pencil
                     </v-icon>
-                    <v-icon small>
+                    <v-icon small @click="deleteEventQuestion(item)">
                         mdi-delete
                     </v-icon>
                 </template>
             </v-data-table>
             <!-- Alerts -->
-            <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question"></alert-confirm>
+            <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question" :data="data_confirm" :yesCallback="deleteEvent"></alert-confirm>
             <alert-confirm ref="alert_client" :typeAlert="typeAlertObj.alert" :data="data_confirm"></alert-confirm>
             <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"  :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
         </div>
@@ -52,7 +52,8 @@ import Settings from '../objects/Settings.js';
 import TypeOperation from '../enums/TypeOperation';
 import TypeAlert from '../enums/TypeAlert';
 import TypeAlertIcon from '../enums/TypeAlertIcon';
-
+import Settings from '../objects/Settings.js';
+import { router } from '@inertiajs/vue2'
 export default {
 
     data() {
@@ -72,6 +73,8 @@ export default {
             //alert
             typeAlertObj: TypeAlert,
             data_confirm: {},
+            //model
+            event: {}
         }
     },
     computed: {
@@ -132,10 +135,23 @@ export default {
         closeAlert(){
             this.$page.props.flash.message.show = false;
         },
-        openAlert(object){
+        openAlert(object = null){
             this.data_confirm = object;
             this.$refs.alert_client.open();
-        }
+        },
+        deleteEventQuestion(event){
+            this.event = event;
+            this.data_confirm = Settings.alertData('Atenção!', 'Deseja prosseguir com a deleção do evento: '+event.name+'?', TypeAlertIcon.question);
+            this.$refs.question_delete_event.open();
+        },
+        deleteEvent(){
+            let route_url = this.$route('event.delete', {id: this.event.id});
+            router.delete(route_url, {
+                onSuccess: page => {
+                    this.$refs.question_delete_event.close();
+                }
+            });
+        },
     },
     mounted() {
     },

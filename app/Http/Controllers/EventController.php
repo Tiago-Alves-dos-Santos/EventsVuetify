@@ -83,9 +83,9 @@ class EventController extends Controller
         try {
             Event::create($request->all());
             return redirect()->back()->with([
-                'message' => Settings::alert('Sucesso', 'Usuario cadastrado com sucesso', Constants::FEEDBACK_INFO)
+                'message' => Settings::alert('Sucesso', 'Evento cadastrado com sucesso', Constants::FEEDBACK_INFO)
             ]);
-        } catch (\Exception $e) {//erros não trabalhados front-end
+        } catch (\Exception $e) { //erros não trabalhados front-end
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);
@@ -129,11 +129,24 @@ class EventController extends Controller
         ], $customAttributes);
         try {
             //usei o find para capturar o observer
-            Event::find($request->id)->update($request->except(['old_date_start', 'id']));//except, não necessarios para atualização em array
+            Event::find($request->id)->update($request->except(['old_date_start', 'id'])); //except, não necessarios para atualização em array
             return redirect()->back()->with([
-                'message' => Settings::alert('Sucesso', 'Usuario atualizado com sucesso', Constants::FEEDBACK_INFO)
+                'message' => Settings::alert('Sucesso', 'Evento atualizado com sucesso', Constants::FEEDBACK_INFO)
             ]);
-        } catch (\Exception $e) {//erros não trabalhados front-end
+        } catch (\Exception $e) { //erros não trabalhados front-end
+            $errors = new MessageBag();
+            $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
+            return redirect()->back()->withErrors($errors);
+        }
+    }
+    public function delete(Request $request)
+    {
+        try {
+            Event::find($request->id)->delete();
+            return redirect()->back()->with([
+                'message' => Settings::alert('Sucesso', 'Evento deletado com sucesso', Constants::FEEDBACK_INFO)
+            ]);
+        } catch (\Exception $e) { //erros não trabalhados front-end
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);

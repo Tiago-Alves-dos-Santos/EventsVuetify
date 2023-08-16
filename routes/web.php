@@ -19,4 +19,5 @@ Route::group(['prefix' => '/events'], function () {
     Route::get('/', [EventController::class, 'viewEventos'])->name('event.viewEventos');
     Route::post('/events/create', [EventController::class, 'create'])->name('event.create');
     Route::put('/events/update', [EventController::class, 'update'])->name('event.update');
+    Route::delete('/events/delete/{id}', [EventController::class, 'delete'])->name('event.delete');
 });
