@@ -131,7 +131,7 @@ export default {
             this.event = null;
             this.show = true;
             //setando valores padrões do formulario
-            this.$refs.dialogForm.defaultValuesForm();
+            // this.$refs.dialogForm.defaultValuesForm();
             if(typeOperation == this.typeOperationObj.update && object){
                 //caso update,abre dialog populado por event(object)
                 this.$refs.dialogForm.updateOperation(typeOperation,object);

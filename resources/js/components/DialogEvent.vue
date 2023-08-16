@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="this.show" width="800" @click:outside="$emit('closeDialog')">
+    <v-dialog v-model="this.show" width="800" @click:outside="$emit('close')">
         <v-card>
             <!-- Titulo Dialog -->
             <v-card-title class="text-h5 grey lighten-2">
@@ -102,7 +102,7 @@
                             <v-btn color="primary" type="submit" :loading="load_form" :disabled="load_form">
                                 Salvar
                             </v-btn>
-                            <v-btn color="error" @click="$emit('closeDialog')">
+                            <v-btn color="error" @click="$emit('close')">
                                 Cancelar
                             </v-btn>
                         </v-card-actions>
