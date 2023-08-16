@@ -86,7 +86,6 @@ class EventController extends Controller
                 'message' => Settings::alert('Sucesso', 'Usuario cadastrado com sucesso', Constants::FEEDBACK_INFO)
             ]);
         } catch (\Exception $e) {//erros não trabalhados front-end
-            dd($e->getMessage());
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);
@@ -129,13 +128,12 @@ class EventController extends Controller
             'date_start.after_or_equal' => 'O campo :attribute deve ser uma data posterior ou igual a ' . Carbon::now()->startOfDay()->format('d/m/Y'),
         ], $customAttributes);
         try {
-            //usei o find para capturar o observer,
+            //usei o find para capturar o observer
             Event::find($request->id)->update($request->except(['old_date_start', 'id']));//except, não necessarios para atualização em array
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Usuario atualizado com sucesso', Constants::FEEDBACK_INFO)
             ]);
         } catch (\Exception $e) {//erros não trabalhados front-end
-            dd($e->getMessage());
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);

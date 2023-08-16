@@ -184,6 +184,9 @@ export default {
                     onSuccess: page => {
                         this.$emit('close');
                     },
+                    onError: errors => {
+                        this.$emit('openAlert', errors.error);
+                    },
                     onFinish: visit => {
                         this.load_form = false;
                     }
@@ -203,7 +206,7 @@ export default {
                         this.$emit('close');
                     },
                     onError: errors => {
-
+                        this.$emit('openAlert', errors.error);
                     },
                     onFinish: visit => {
                         this.load_form = false;

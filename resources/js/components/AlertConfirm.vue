@@ -143,7 +143,7 @@ export default {
                 this.close();
                 console.log("Função 'noCallback' não adicionada ");
             }
-        }
+        },
     },
     watch:{
         show(oldValue, newValue){

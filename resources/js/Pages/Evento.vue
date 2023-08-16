@@ -10,7 +10,7 @@ import Settings from '../objects/Settings.js';
                         Novo Evento
                     </v-btn>
                     <!-- Dialog -->
-                    <dialog-event ref="dialogForm" :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
+                    <dialog-event ref="dialogForm" :show="show" :typeOperation="typeOperation" @close="closeDialog" @openAlert="openAlert"></dialog-event>
                 </v-col>
             </v-row>
             <!-- DataTable -->
@@ -43,6 +43,7 @@ import Settings from '../objects/Settings.js';
             </v-data-table>
             <!-- Alerts -->
             <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question"></alert-confirm>
+            <alert-confirm ref="alert_client" :typeAlert="typeAlertObj.alert" :data="data_confirm"></alert-confirm>
             <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"  :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
         </div>
     </layout-bottom-navigation>
@@ -70,7 +71,7 @@ export default {
             typeOperationObj: TypeOperation,
             //alert
             typeAlertObj: TypeAlert,
-            data_confirm: null,
+            data_confirm: {},
         }
     },
     computed: {
@@ -131,6 +132,10 @@ export default {
         closeAlert(){
             this.$page.props.flash.message.show = false;
         },
+        openAlert(object){
+            this.data_confirm = object;
+            this.$refs.alert_client.open();
+        }
     },
     mounted() {
     },
