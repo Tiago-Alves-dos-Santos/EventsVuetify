@@ -14,7 +14,7 @@ class EventObserver
      */
     public function created(Event $event)
     {
-        $event->compareDatesGetEventStatus();
+        $event->compareDatesGetEventStatus();//atualização de status de acordo com as datas
         $event->save();
     }
 
@@ -26,12 +26,11 @@ class EventObserver
      */
     public function updated(Event $event)
     {
+        //evitando loop gerado ao cadastrar com save
         $event->withoutEvents(function () use ($event) {
             $event->compareDatesGetEventStatus();
             $event->save();
         });
-
-
     }
 
     /**

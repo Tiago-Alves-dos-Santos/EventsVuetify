@@ -32,25 +32,27 @@ import Settings from '../objects/Settings';
 export default {
     data() {
         return {
-            type: 'month',
+            //valores de select, modificar calendario
             types: [
                 { text: 'Mês', value: 'month' },
                 { text: 'Semana', value: 'week' },
                 { text: 'Dia', value: 'day' },
                 { text: '4 dias', value: '4day' },
             ],
-            weekday: [0, 1, 2, 3, 4, 5, 6],
             weekdays: [
                 { text: 'Domingo - Sabádo', value: [0, 1, 2, 3, 4, 5, 6] },
                 { text: 'Segunda - Domingo', value: [1, 2, 3, 4, 5, 6, 0] },
                 { text: 'Segunda - Sexta', value: [1, 2, 3, 4, 5] },
                 { text: 'Segunda, Quarta, Sexta', value: [1, 3, 5] },
             ],
+            //valores de calendario
+            type: 'month',
+            weekday: [0, 1, 2, 3, 4, 5, 6],
             value: Date.now(),
         }
     },
     computed: {
-        titleCalendar() {
+        titleCalendar() {//retorna o mês e o ano do calendario, como string
             let monthIndex = new Date(this.value).getMonth();
             let year = new Date(this.value).getFullYear();
             let monthNames = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format;
@@ -58,40 +60,19 @@ export default {
         }
     },
     methods: {
-        clickEvent(event) {
+        clickEvent(event) {//clicar no evento do calendario, não implementada
             console.log(event);
         },
-        props: {
-        },
+        //retornando o evento em mudança de calendario
         getEvents({ start, end }) {
-
-            let events_array = [];
-            for (const propriedade in this.$page.props.events) {
-                let events = {
-                    status: this.$page.props.events[propriedade].status,
-                    name: this.$page.props.events[propriedade].name + ' - ' + Settings.convertTimeString(this.$page.props.events[propriedade].time_end),
-                    start: this.$page.props.events[propriedade].date_start + 'T' + this.$page.props.events[propriedade].time_start,
-                    end: this.$page.props.events[propriedade].date_end + 'T' + this.$page.props.events[propriedade].time_end,
-                    color: this.$page.props.events[propriedade].text_background,
-                    textColor: this.$page.props.events[propriedade].text_color,
-                }
-                // console.log(new Date(this.$page.props.events[propriedade].date_end+'T'+this.$page.props.events[propriedade].time_end));
-
-                events_array.push(events);
-            }
-            this.$page.props.events = events_array;
-
+            this.$page.props.events;
         },
+        //cores do evento
         getEventColor(event) {
             return event.color
         },
         getEventTextColor(event) {
             return event.textColor
-        },
-        titleCalendar() {
-            let monthIndex = new Date(this.value).getMonth();
-            let monthNames = new Intl.DateTimeFormat('pt-BR', { month: 'long' }).format;
-            return monthNames(new Date(0, monthIndex));
         },
     },
     mounted() {

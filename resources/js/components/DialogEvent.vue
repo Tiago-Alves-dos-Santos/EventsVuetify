@@ -1,12 +1,14 @@
 <template>
     <v-dialog v-model="this.show" width="800" @click:outside="$emit('closeDialog')">
         <v-card>
+            <!-- Titulo Dialog -->
             <v-card-title class="text-h5 grey lighten-2">
                 {{ dataTypeOperation.create == typeOperation ? 'Cadastro Evento' : 'Atualizar Evento' }}
             </v-card-title>
 
             <v-card-text>
                 <v-container>
+                    <!-- Formulario -->
                     <v-form ref="form" @submit.prevent="createOrUpdate">
                         <v-row>
                             <v-col cols="12">
@@ -121,9 +123,8 @@ dateEnd.setMinutes(dateEnd.getMinutes() + 30);
 export default {
     data() {
         return {
-            dialog: false,
             dataTypeOperation: TypeOperation,
-            //dataPickers e timer menus
+            //dataPickers e timer menus [date_start,time_start,date_end,time_end]
             menu: [false, false, false, false],
             //formulario
             form: {
@@ -136,23 +137,24 @@ export default {
                 text_background: '#0008ff'
             },
             load_form: false,
+            //model event, passado por 'ref' updateOperation
             event: {}
         }
     },
     props: {
-        typeOperation: {
+        typeOperation: {//tipo de operação valida pelos enums(create,update)
             type: Number,
             validator: function (value) {
                 return Object.values(TypeOperation).includes(value);
             },
             required: true
         },
-        show: {
+        show: {//exibir dialog
             type: Boolean,
             default: false
         },
     },
-    computed: {
+    computed: { //datas formatadas selecionados v-date-picker
         pickerInputStartDateFormatted() {
             return this.formatDate(this.form.date_start);
         },
@@ -161,20 +163,19 @@ export default {
         },
     },
     methods: {
-        formatDate(date) {
+        formatDate(date) {//formatar data usado no computed
             if (!date) return null;
             const [year, month, day] = date.split('-');
             return `${day}/${month}/${year}`;
         },
-        updateOperation(typeOperation, object) {
-            // console.log('updateOperation',this.typeOperation,TypeOperation.update,this.typeOperation == TypeOperation.update);
+        updateOperation(typeOperation, object) {//metodo de referencia, atualiza dialog de acordo com event(object) passado
             if (typeOperation == TypeOperation.update) {
                 this.event = object;
                 this.valuesFormUpdate();
             }
         },
-        createOrUpdate() {
-            if (this.typeOperation == TypeOperation.create) {
+        createOrUpdate() {//cadastra ou atualiza de acordo com a operação selecionada
+            if (this.typeOperation == TypeOperation.create) {//cadastro
                 let route_url = this.$route('event.create');
                 router.post(route_url, this.form, {
                     onStart: () => {
@@ -182,13 +183,12 @@ export default {
                     },
                     onSuccess: page => {
                         this.$emit('close');
-                        this.defaultValuesForm();
                     },
                     onFinish: visit => {
                         this.load_form = false;
                     }
                 });
-            } else {
+            } else {//atualiza
                 console.log('form atulizar');
                 let route_url = this.$route('event.update');
                 router.put(route_url, {
@@ -201,7 +201,9 @@ export default {
                     },
                     onSuccess: page => {
                         this.$emit('close');
-                        this.defaultValuesForm();
+                    },
+                    onError: errors => {
+
                     },
                     onFinish: visit => {
                         this.load_form = false;
@@ -209,7 +211,7 @@ export default {
                 });
             }
         },
-        defaultValuesForm() {
+        defaultValuesForm() {//seta valores default no form
             this.form = {
                 name: '',
                 date_start: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substring(0, 10),
@@ -221,8 +223,8 @@ export default {
             };
         },
         valuesFormUpdate() {
-            // Hora no formato que você possui (por exemplo, "15:30")
-
+            // hora no formato que você possui (por exemplo, "15:30")
+            //dados passado pelo event(object)
             this.form = {
                 name: this.event.name,
                 date_start: new Date(this.event.date_start).toISOString().substring(0, 10),

@@ -9,10 +9,11 @@ import Settings from '../objects/Settings.js';
                     <v-btn color="primary" dark @click="openDialog(typeOperationObj.create)">
                         Novo Evento
                     </v-btn>
-
+                    <!-- Dialog -->
                     <dialog-event ref="dialogForm" :show="show" @closeDialog="closeDialog" :typeOperation="typeOperation" @close="closeDialog"></dialog-event>
                 </v-col>
             </v-row>
+            <!-- DataTable -->
             <v-data-table locale="pt" :headers="headers" :items="$page.props.events" item-key="name" class="elevation-1"
                 :search="search" :custom-filter="filter" mobile-breakpoint>
                 <template v-slot:top>
@@ -40,6 +41,7 @@ import Settings from '../objects/Settings.js';
                     </v-icon>
                 </template>
             </v-data-table>
+            <!-- Alerts -->
             <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question"></alert-confirm>
             <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"  :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
         </div>
@@ -71,7 +73,6 @@ export default {
             data_confirm: null,
         }
     },
-    observe: ['events'],
     computed: {
         headers() { //cabeçalho da tabela
             return [
@@ -88,6 +89,7 @@ export default {
         },
     },
     methods: {
+        //filtro da tabela - ajustar
         filter(value, search, item) {
             // console.log(value,item);
             // value = value.toLocaleLowerCase();
@@ -97,6 +99,7 @@ export default {
                 typeof value === 'string' &&
                 value.toString().indexOf(search) !== -1
         },
+        //cor status do evento
         getColor(status) {
             switch (status) {
                 case 'Em andamento': return '#0D47A1'
@@ -106,19 +109,25 @@ export default {
                 default: return 'purple'
             }
         },
+        //abrir dialog de create ou update
         openDialog(typeOperation, object = null){
+            //define o tipo da operação
             this.typeOperation = typeOperation;
             this.event = null;
             this.show = true;
+            //setando valores padrões do formulario
             this.$refs.dialogForm.defaultValuesForm();
             if(typeOperation == this.typeOperationObj.update && object){
-                this.$refs.dialogForm.updateOperation(this.typeOperation,object);
+                //caso update,abre dialog populado por event(object)
+                this.$refs.dialogForm.updateOperation(typeOperation,object);
             }
 
         },
+        //fechar dialog
         closeDialog() {
             this.show = false;
         },
+        //fechar Alerts
         closeAlert(){
             this.$page.props.flash.message.show = false;
         },

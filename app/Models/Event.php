@@ -15,7 +15,6 @@ class Event extends Model
     use HasFactory, SoftDeletes;
     //permitido total atribuição em massa
     protected $guarded = [];
-    protected $table = 'events';
     /*****************************************MUTATORS*******************************************/
     public function setDateStarFormatedtAttribute($value)
     {
@@ -65,13 +64,14 @@ class Event extends Model
     /**
      * Função retorna um EventStatus baseado no data e tempo de inicio e final
      *
-     * @param EventStatus $status
+     * @param string $status
      * @return string
      */
-    public static function staticGetStatusInPortuguesBr($status): string
+    public static function staticGetStatusInPortuguesBr(string $status): string
     {
         $result = '';
         $reflectionClass = new \ReflectionClass(EventStatus::class);
+        //tranformando enum em array de objetos
         $statusArray = $reflectionClass->getConstants();
 
         switch ($status) {
