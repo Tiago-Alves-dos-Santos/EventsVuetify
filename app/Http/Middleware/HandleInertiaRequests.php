@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'flash' => [
+                //session message tem que ter valor false por default
                 'message' => fn () => session('message') ?? ['show' => false],
             ],
             'fixo' => [

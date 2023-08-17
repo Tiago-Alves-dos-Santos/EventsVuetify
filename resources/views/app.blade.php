@@ -5,12 +5,12 @@
     <title>Evento Fácil</title>
     <link rel="icon" href="{{ asset('img/favico.png') }}">
     <link href="{{ mix('/css/app.css') }}" rel="stylesheet" />
-    {{-- <script src="{{ mix('/js/app.js') }}" defer></script> --}}
+    <script src="{{ mix('/js/app.js') }}" defer></script>
     @inertiaHead
+    {{-- Pacote ziggy --}}
     @routes
   </head>
   <body>
     @inertia
-    <script src="{{mix('js/app.js')}}"></script>
   </body>
 </html>

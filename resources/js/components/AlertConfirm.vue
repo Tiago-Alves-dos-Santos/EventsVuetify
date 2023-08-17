@@ -5,16 +5,6 @@
         persistent
         max-width="500"
       >
-        <!-- <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="primary"
-            dark
-            v-bind="attrs"
-            v-on="on"
-          >
-            Open Dialog
-          </v-btn>
-        </template> -->
         <v-card>
           <div style="width: 100%;" class="d-flex justify-center" v-if="this.typeAlertIcon.info == this.data.icon">
             <v-icon size="70" color="blue darken-2">mdi-information</v-icon>
@@ -153,7 +143,7 @@ export default {
                 this.close();
                 console.log("Função 'noCallback' não adicionada ");
             }
-        }
+        },
     },
     watch:{
         show(oldValue, newValue){

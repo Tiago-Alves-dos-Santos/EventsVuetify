@@ -20,7 +20,7 @@ class CreateEventsTable extends Migration
             $table->time('time_start');
             $table->date('date_end');
             $table->time('time_end');
-            $table->enum('status', ['progress','future','concluded','canceled']);
+            $table->enum('status', ['progress','future','concluded','canceled'])->nullable();
             $table->string('text_color', 20);
             $table->string('text_background', 20);
             $table->timestamps();

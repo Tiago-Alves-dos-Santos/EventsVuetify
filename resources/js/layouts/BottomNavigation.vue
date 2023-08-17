@@ -11,7 +11,7 @@
                 <v-icon>mdi-calendar-plus</v-icon>
             </v-btn>
 
-            <v-btn>
+            <v-btn @click="navigateUrl($route('historic.index'))">
                 <span>Histórico</span>
                 <v-icon>mdi-history</v-icon>
             </v-btn>
@@ -43,10 +43,10 @@ export default {
     computed: {
         color() {
             switch (this.$page.props.pageValue) {
-                case 0: return 'blue-grey'
-                case 1: return 'teal'
-                case 2: return 'brown'
-                case 3: return 'indigo'
+                case 0: return 'indigo darken-4'
+                case 1: return 'pink darken-4'
+                case 2: return 'purple darken-4'
+                case 3: return 'deep-purple darken-4'
                 default: return 'blue-grey'
             }
         },
