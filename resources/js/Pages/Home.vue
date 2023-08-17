@@ -15,7 +15,7 @@
             </div>
             <div style="width: 100%; text-transform: uppercase;" class="d-flex flex-column align-center justify-center">
                 {{ this.titleCalendar }}
-                <v-btn color="primary" class="mt-2" @click="value = Date.now()">
+                <v-btn color="primary" class="mt-2" @click="$page.props.valueCalendar = Date.now()">
                     Hoje
                 </v-btn>
             </div>

@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Event;
+use App\Models\Historic;
 
 class EventObserver
 {
@@ -16,6 +17,7 @@ class EventObserver
     {
         $event->compareDatesGetEventStatus();//atualização de status de acordo com as datas
         $event->save();
+        Historic::create(['registry' => "O evento {$event->name} foi criado"]);
     }
 
     /**
@@ -31,6 +33,7 @@ class EventObserver
             $event->compareDatesGetEventStatus();
             $event->save();
         });
+        Historic::create(['registry' => "O evento {$event->name} foi atualizado"]);
     }
 
     /**
@@ -41,7 +44,7 @@ class EventObserver
      */
     public function deleted(Event $event)
     {
-        //
+        Historic::create(['registry' => "O evento {$event->name} foi deletado"]);
     }
 
     /**
@@ -52,7 +55,7 @@ class EventObserver
      */
     public function restored(Event $event)
     {
-        //
+        Historic::create(['registry' => "O evento {$event->name} foi restaurado"]);
     }
 
     /**
@@ -63,6 +66,6 @@ class EventObserver
      */
     public function forceDeleted(Event $event)
     {
-        //
+        Historic::create(['registry' => "O evento {$event->name} foi deletado permanentemente"]);
     }
 }

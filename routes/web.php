@@ -24,4 +24,5 @@ Route::group(['prefix' => '/events'], function () {
 });
 Route::group(['prefix' => '/historic'], function () {
     Route::get('/', [HistoricController::class, 'index'])->name('historic.index');
+    Route::delete('/truncate', [HistoricController::class, 'truncate'])->name('historic.truncate');
 });

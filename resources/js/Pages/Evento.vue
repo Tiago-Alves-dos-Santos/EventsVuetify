@@ -1,6 +1,3 @@
-<script>
-import Settings from '../objects/Settings.js';
-</script>
 <template>
     <layout-bottom-navigation>
         <div>
@@ -20,7 +17,7 @@ import Settings from '../objects/Settings.js';
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
                         <v-col cols="6">
-                            <v-text-field v-model="search" lab el="Buscar..."></v-text-field>
+                            <v-text-field v-model="search" label="Buscar..."></v-text-field>
                         </v-col>
                         <v-col cols="6">
                             <v-select v-model="select" :items="items" item-text="text" item-value="value" label="Eventos"
