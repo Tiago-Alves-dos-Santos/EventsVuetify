@@ -79,7 +79,7 @@ class Event extends Model
             case $statusArray['FUTURE']->value:
                 $result = 'Agendado';
                 break;
-            case $statusArray['FUTURE']->value:
+            case $statusArray['CONCLUDED']->value:
                 $result = 'Concluído';
                 break;
             case $statusArray['FUTURE']->value:

@@ -80,14 +80,14 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col cols="6" class="d-flex justify-center flex-column">
+                            <v-col sm="12" md="6" class="d-flex justify-center flex-column pr-sm-3">
                                 <label for="">Cor do texto</label>
                                 <v-color-picker v-model="form.text_color" class="ma-2" hide-mode-switch
                                     mode="hexa"></v-color-picker>
                                 <span class="message-error" v-if="$page.props.errors.text_color">{{
                                     $page.props.errors.text_color }}</span>
                             </v-col>
-                            <v-col cols="6" class="d-flex justify-center flex-column">
+                            <v-col sm="12" md="6" class="d-flex justify-center flex-column pr-sm-3">
                                 <label for="">Fundo do texto</label>
                                 <v-color-picker v-model="form.text_background" class="ma-2" hide-mode-switch
                                     mode="hexa"></v-color-picker>
