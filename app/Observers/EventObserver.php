@@ -16,8 +16,10 @@ class EventObserver
      */
     public function created(Event $event)
     {
-        $event->compareDatesGetEventStatus();
-        $event->save();
+        //where para evitar de ir para metodo update
+        Event::where('id', $event->id)->update([
+            'status' => Event::staticCompareDatesGetEventStatus($event)
+        ]);
         Historic::create(['registry' => "O evento {$event->name} foi criado"]);
     }
 
@@ -29,7 +31,7 @@ class EventObserver
      */
     public function updated(Event $event)
     {
-        //evitando loop gerado ao cadastrar com save
+        //evitando loop caso cadastrar com save
         $event->withoutEvents(function () use ($event) {
             if(!($event->status == EventStatus::CANCELED->value)){
                 $event->compareDatesGetEventStatus();

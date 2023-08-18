@@ -21,9 +21,10 @@
             </div>
         </v-sheet>
         <v-sheet height="600" style="margin-top: 90px;">
-            <v-calendar ref="calendar" v-model="$page.props.valueCalendar" color="primary" :weekdays="weekday" :type="type" :events="$page.props.events"
-                :event-overlap-threshold="30" :event-color="getEventColor" :event-text-color="getEventTextColor"
-                @change="getEvents" @click:event="clickEvent"></v-calendar>
+            <v-calendar ref="calendar" v-model="$page.props.valueCalendar" color="primary" :weekdays="weekday" :type="type"
+                :events="$page.props.events" :event-overlap-threshold="30" :event-color="getEventColor"
+                :event-text-color="getEventTextColor" @change="getEvents" @click:event="clickEvent" @click:more="showMore"
+                @click:date="showMore"></v-calendar>
         </v-sheet>
     </layout-bottom-navigation>
 </template>
@@ -74,6 +75,10 @@ export default {
         getEventTextColor(event) {
             return event.textColor
         },
+        showMore({date}) {
+            this.$page.props.valueCalendar = date;
+            this.type = 'day';
+        }
     },
     mounted() {
         // console.log(this.$page.props.events);
