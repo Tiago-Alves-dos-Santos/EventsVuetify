@@ -41,7 +41,13 @@ class VerifyStatusEvent extends Command
      */
     public function handle()
     {
-
+        //chunk para evitar erro de tempo de execução,
+        Event::where('status','!=','concluded')->chunk(200, function ($events) {
+            foreach ($events as $value) {
+                $value->compareDatesGetEventStatus();
+                $value->save();
+            }
+        });
         return 0;
     }
 }
