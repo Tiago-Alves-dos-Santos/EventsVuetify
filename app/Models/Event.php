@@ -68,21 +68,18 @@ class Event extends Model
     public static function staticGetStatusInPortuguesBr(string $status): string
     {
         $result = '';
-        $reflectionClass = new \ReflectionClass(EventStatus::class);
-        //tranformando enum em array de objetos
-        $statusArray = $reflectionClass->getConstants();
 
         switch ($status) {
-            case $statusArray['PROGRESS']->value:
+            case EventStatus::PROGRESS->value:
                 $result = 'Em andamento';
                 break;
-            case $statusArray['FUTURE']->value:
+            case EventStatus::FUTURE->value:
                 $result = 'Agendado';
                 break;
-            case $statusArray['CONCLUDED']->value:
+            case EventStatus::CONCLUDED->value:
                 $result = 'Concluído';
                 break;
-            case $statusArray['FUTURE']->value:
+            case EventStatus::CANCELED->value:
                 $result = 'Cancelado';
                 break;
 

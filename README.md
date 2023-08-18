@@ -85,11 +85,8 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
     - [x] Concluído 
     - [x] Cancelado
 - [x] Controle de status de evento automático(CRON JOBS)
+- [ ] Execução em tempo real
 - [x] Testes unitários, usando a abordagem TDD
-- [x] Multi linguagens suportadas
-    - [x] English
-    - [x] Português-BR
-    - [ ] Português
 
 <p align="right">(<a href="#readme-top">Voltar ao topo</a>)</p>
 
