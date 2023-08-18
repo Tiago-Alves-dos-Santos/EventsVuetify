@@ -29,7 +29,6 @@
     </layout-bottom-navigation>
 </template>
 <script>
-import Settings from '../objects/Settings';
 export default {
     data() {
         return {
@@ -81,7 +80,6 @@ export default {
         }
     },
     mounted() {
-        // console.log(this.$page.props.events);
     },
 }
 </script>

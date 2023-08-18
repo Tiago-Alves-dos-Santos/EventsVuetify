@@ -38,7 +38,6 @@ class EventObserver
                 $event->save();
             }
         });
-        Historic::create(['registry' => "O evento {$event->name} foi atualizado"]);
     }
 
     /**

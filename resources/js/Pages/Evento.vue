@@ -3,7 +3,10 @@
         <div>
             <v-row class="mb-3">
                 <v-col cols="12 d-flex justify-end">
-                    <v-btn color="primary" dark @click="openDialog(typeOperationObj.create)">
+                    <v-btn color="secondary" class="mr-2" dark >
+                        Recarregar
+                    </v-btn>
+                    <v-btn color="primary" class="" dark @click="openDialog(typeOperationObj.create)">
                         Novo Evento
                     </v-btn>
                     <!-- Dialog -->

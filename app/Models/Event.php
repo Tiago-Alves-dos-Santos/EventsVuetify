@@ -41,20 +41,20 @@ class Event extends Model
      * @param string $time_start
      * @param string $date_end
      * @param string $time_end
-     * @return EventStatus
+     * @return string
      */
-    public static function staticCompareDatesGetEventStatus(Event $event): EventStatus
+    public static function staticCompareDatesGetEventStatus(Event $event): string
     {
         $carbonStart = Carbon::parse($event->date_start . ' ' . $event->time_start);
         $carbonEnd = Carbon::parse($event->date_end . ' ' . $event->time_end);
         $carbonNow = Carbon::now();
 
         if ($carbonStart->greaterThan($carbonNow)) { //inicio > atual == futuro
-            return EventStatus::FUTURE;
+            return EventStatus::FUTURE->value;
         } else if ($carbonStart->lessThanOrEqualTo($carbonNow) && $carbonEnd->greaterThan($carbonNow)) { //inicio <= atual && fim > atual == andamento
-            return EventStatus::PROGRESS;
+            return EventStatus::PROGRESS->value;
         } else if ($carbonEnd->lessThanOrEqualTo($carbonNow)) { //fim <= atual = concluido
-            return EventStatus::CONCLUDED;
+            return EventStatus::CONCLUDED->value;
         }
 
         throw new \Exception('O evento atual não possui datas que atendam as condições de definição de status');
@@ -93,9 +93,9 @@ class Event extends Model
     /**
      * Função retorna um EventStatus baseado no data e tempo de inicio e final
      *
-     * @return EventStatus
+     * @return string
      */
-    public function compareDatesGetEventStatus(): EventStatus
+    public function compareDatesGetEventStatus(): string
     {
         $this->status = self::staticCompareDatesGetEventStatus($this);
         return $this->status;

@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Event;
 use App\Class\Settings;
 use App\Class\Constants;
+use App\Models\Historic;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
@@ -133,6 +134,7 @@ class EventController extends Controller
         try {
             //usei o find para capturar o observer
             Event::find($request->id)->update($request->except(['old_date_start', 'id'])); //except, não necessarios para atualização em array
+            Historic::create(['registry' => "O evento ".Event::find($request->id)->name."foi editado"]);
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento atualizado com sucesso', Constants::FEEDBACK_INFO)
             ]);
