@@ -102,8 +102,11 @@
                             <v-btn color="primary" type="submit" :loading="load_form" :disabled="load_form">
                                 Salvar
                             </v-btn>
-                            <v-btn color="error" @click="$emit('close')">
+                            <v-btn color="error" v-if="dataTypeOperation.update == typeOperation ">
                                 Cancelar
+                            </v-btn>
+                            <v-btn color="error" @click="$emit('close')">
+                                Fechar
                             </v-btn>
                         </v-card-actions>
                     </v-form>
