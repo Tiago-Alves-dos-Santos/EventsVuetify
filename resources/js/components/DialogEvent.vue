@@ -102,7 +102,8 @@
                             <v-btn color="primary" type="submit" :loading="load_form" :disabled="load_form">
                                 Salvar
                             </v-btn>
-                            <v-btn color="error" v-if="dataTypeOperation.update == typeOperation ">
+                            <v-btn color="error" v-if="dataTypeOperation.update == typeOperation && (event.status != 'concluded' && event.status != 'canceled')"
+                            @click="$emit('cancelEventQuestion', event)">
                                 Cancelar
                             </v-btn>
                             <v-btn color="error" @click="$emit('close')">
@@ -240,7 +241,8 @@ export default {
                 text_color: this.event.text_color,
                 text_background: this.event.text_background
             };
-        }
+        },
+
     },
 }
 </script>

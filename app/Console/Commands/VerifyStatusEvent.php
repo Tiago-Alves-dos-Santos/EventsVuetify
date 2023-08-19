@@ -40,15 +40,17 @@ class VerifyStatusEvent extends Command
      */
     public function handle()
     {
-        //chunk para evitar erro de tempo de execução,
-        Event::whereNotIn('status',['concluded','canceled'])->chunk(200, function ($events) { //eventos não cancelados e concluidos
+        //definindo colunas para melhorar desempenho
+        Event::select('id','name','date_start','time_start','date_end','time_end','status')
+        ->whereNotIn('status',['concluded','canceled'])//chunk para evitar erro de tempo de execução,
+        ->chunk(200, function ($events) { //eventos não cancelados e concluidos
             foreach ($events as $value) {
                 $old_status = $value->status;
                 $value->compareDatesGetEventStatus();//atualizando status
                 if($old_status != $value->status){//caso novo valor diferente do antigo
                     $value->save();
                     Historic::create([
-                        'registry' => "O evento {$value->name} foi editado pela rotina de ".Event::staticGetStatusInPortuguesBr($old_status)." para ". Event::staticGetStatusInPortuguesBr($value->status)
+                        'registry' => "O evento {$value->name} foi editado pela rotina de <span style='color:red'>".Event::staticGetStatusInPortuguesBr($old_status)."</span> para <span style='color:red'>". Event::staticGetStatusInPortuguesBr($value->status)."</span>"
                     ]);
                 }
             }

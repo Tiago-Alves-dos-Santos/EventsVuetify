@@ -16,7 +16,7 @@ class EventObserver
      */
     public function created(Event $event)
     {
-        //where para evitar de ir para metodo update
+        //where para evitar de ir para metodo update, porem perde desempenho
         Event::where('id', $event->id)->update([
             'status' => Event::staticCompareDatesGetEventStatus($event)
         ]);
@@ -38,6 +38,7 @@ class EventObserver
                 $event->save();
             }
         });
+        //não tem historico aqui, pois utilizo o save em rotina 'VerifyStatusEvent', isso ficaria colocando registros desnecessarios em historico
     }
 
     /**

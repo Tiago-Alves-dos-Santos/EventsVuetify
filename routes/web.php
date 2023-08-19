@@ -21,6 +21,7 @@ Route::group(['prefix' => '/events'], function () {
     Route::post('/events/create', [EventController::class, 'create'])->name('event.create');
     Route::put('/events/update', [EventController::class, 'update'])->name('event.update');
     Route::delete('/events/delete/{id}', [EventController::class, 'delete'])->name('event.delete');
+    Route::delete('/events/cancel/{id}', [EventController::class, 'cancel'])->name('event.cancel');
 });
 Route::group(['prefix' => '/historic'], function () {
     Route::get('/', [HistoricController::class, 'index'])->name('historic.index');

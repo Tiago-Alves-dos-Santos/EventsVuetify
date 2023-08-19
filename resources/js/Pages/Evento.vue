@@ -3,7 +3,7 @@
         <div>
             <v-row class="mb-3">
                 <v-col cols="12 d-flex justify-end">
-                    <v-btn color="secondary" class="mr-2" dark >
+                    <v-btn color="secondary" class="mr-2" dark>
                         Recarregar
                     </v-btn>
                     <v-btn color="primary" class="" dark @click="openDialog(typeOperationObj.create)">
@@ -11,7 +11,7 @@
                     </v-btn>
                     <!-- Dialog -->
                     <dialog-event ref="dialogForm" :show="show" :typeOperation="typeOperation" @close="closeDialog"
-                        @openAlert="openAlert"></dialog-event>
+                        @openAlert="openAlert" @cancelEventQuestion="cancelEventQuestion"></dialog-event>
                 </v-col>
             </v-row>
             <!-- DataTable -->
@@ -53,6 +53,8 @@
             <!-- Alerts -->
             <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
                 :yesCallback="deleteEvent"></alert-confirm>
+            <alert-confirm ref="question_cancel_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
+                :yesCallback="cancelEvent"></alert-confirm>
             <alert-confirm ref="alert_client" :typeAlert="typeAlertObj.alert" :data="data_confirm"></alert-confirm>
             <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"
                 :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
@@ -125,16 +127,14 @@ export default {
             }
         },
         //abrir dialog de create ou update
-        openDialog(typeOperation, object = null){
+        openDialog(typeOperation, object = null) {
             //define o tipo da operação
             this.typeOperation = typeOperation;
             this.event = null;
             this.show = true;
-            //setando valores padrões do formulario
-            // this.$refs.dialogForm.defaultValuesForm();
-            if(typeOperation == this.typeOperationObj.update && object){
+            if (typeOperation == this.typeOperationObj.update && object) {
                 //caso update,abre dialog populado por event(object)
-                this.$refs.dialogForm.updateOperation(typeOperation,object);
+                this.$refs.dialogForm.updateOperation(typeOperation, object);
             }
 
         },
@@ -143,29 +143,47 @@ export default {
             this.show = false;
         },
         //fechar Alerts
-        closeAlert(){
+        closeAlert() {
             this.$page.props.flash.message.show = false;
         },
-        openAlert(object = null){
+        openAlert(object = null) {
             this.data_confirm = object;
             this.$refs.alert_client.open();
         },
-        deleteEventQuestion(event){
+        cancelEventQuestion(event) {
             this.event = event;
-            this.data_confirm = Settings.alertData('Atenção!', 'Deseja prosseguir com a deleção do evento: '+event.name+'?', TypeAlertIcon.question);
+            this.data_confirm = Settings.alertData(
+                'Atenção!',
+                "Deseja prosseguir com o cancelamento do evento: " + event.name + "? <br> Após o cancelamento do evento não é possivel reverter.",
+                TypeAlertIcon.question
+            );
+            this.$refs.question_cancel_event.open();
+        },
+        cancelEvent() {
+            let route_url = this.$route('event.cancel', { id: this.event.id });
+            router.delete(route_url, {
+                onSuccess: page => {
+                    this.$refs.question_cancel_event.close();
+                    this.closeDialog();
+                }
+            });
+        },
+        deleteEventQuestion(event) {
+            this.event = event;
+            this.data_confirm = Settings.alertData('Atenção!', 'Deseja prosseguir com a deleção do evento: ' + event.name + '?', TypeAlertIcon.question);
             this.$refs.question_delete_event.open();
         },
-        deleteEvent(){
-            let route_url = this.$route('event.delete', {id: this.event.id});
+        deleteEvent() {
+            let route_url = this.$route('event.delete', { id: this.event.id });
             router.delete(route_url, {
                 onSuccess: page => {
                     this.$refs.question_delete_event.close();
                 }
             });
         },
-        eventForCalendar(event){
+        eventForCalendar(event) {
             let route_url = this.$route('index');
-            router.get(route_url, {valueCalendar: event.date_start});
+            router.get(route_url, { valueCalendar: event.date_start });
         }
     },
     mounted() {

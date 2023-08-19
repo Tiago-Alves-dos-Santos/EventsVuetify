@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use App\Models\Event;
 use App\Class\Settings;
 use App\Class\Constants;
+use App\Enums\EventStatus;
 use App\Models\Historic;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -134,11 +135,34 @@ class EventController extends Controller
         try {
             //usei o find para capturar o observer
             Event::find($request->id)->update($request->except(['old_date_start', 'id'])); //except, não necessarios para atualização em array
-            Historic::create(['registry' => "O evento ".Event::find($request->id)->name."foi editado"]);
+            Historic::create(['registry' => "O evento " . Event::find($request->id)->name . " foi editado"]);
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento atualizado com sucesso', Constants::FEEDBACK_INFO)
             ]);
         } catch (\Exception $e) { //erros não trabalhados front-end
+            $errors = new MessageBag();
+            $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
+            return redirect()->back()->withErrors($errors);
+        }
+    }
+    public function cancel(Request $request)
+    {
+        try {
+            $event = Event::find($request->id);
+            if ($event->status == EventStatus::CANCELED->value || $event->status == EventStatus::CONCLUDED->value) {
+                return redirect()->back()->with([
+                    'message' => Settings::alert('Atenção!', 'Eventos concluidos ou cancelados não podem ser cancelados', Constants::FEEDBACK_WARNING)
+                ]);
+            } else {
+                $event->update([
+                    'status' => 'canceled'
+                ]);
+                Historic::create(['registry' => "O evento " . Event::find($request->id)->name . " foi cancelado"]);
+                return redirect()->back()->with([
+                    'message' => Settings::alert('Sucesso', 'Evento cancelado com sucesso', Constants::FEEDBACK_INFO)
+                ]);
+            }
+        } catch (\Exception $e) {
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);
