@@ -31,6 +31,7 @@ class Event extends Model
     {
         return  Carbon::parse($this->attributes['date_end_formated'])->format('d/m/Y H:i:s');
     }
+    /*************************************ESCOPOS LOCAIS*******************************************/
 
     /*************************************METODOS STATICS*******************************************/
 

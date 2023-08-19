@@ -3,6 +3,9 @@
         <div>
             <v-row class="mb-3">
                 <v-col cols="12 d-flex justify-end">
+                    <v-btn color="deep-orange darken-4" class="mr-2" dark @click="toggleDeletedEvents">
+                        {{ $page.props.visibleDeletedEvents ? 'Ativos':'Deletados' }}
+                    </v-btn>
                     <v-btn color="secondary" class="mr-2" dark @click="reload()">
                         Recarregar
                     </v-btn>
@@ -33,21 +36,36 @@
                         {{ item.status_br }}
                     </v-chip>
                 </template>
+                <div>
+
+                </div>
                 <template v-slot:item.actions="{ item }">
-                    <v-icon small class="" @click="openDialog(typeOperationObj.update, item)">
-                        mdi-pencil
-                    </v-icon>
-                    <v-icon small @click="deleteEventQuestion(item)">
-                        mdi-delete
-                    </v-icon>
-                    <v-tooltip top>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-icon small v-bind="attrs" v-on="on" @click="eventForCalendar(item)">
-                                mdi-calendar-clock
-                            </v-icon>
-                        </template>
-                        <span>Ver no calendário</span>
-                    </v-tooltip>
+                    <div v-if="!visibleDeletedEvents">
+                        <v-icon small class="" @click="openDialog(typeOperationObj.update, item)">
+                            mdi-pencil
+                        </v-icon>
+                        <v-icon small @click="deleteEventQuestion(item)">
+                            mdi-delete
+                        </v-icon>
+                        <v-tooltip top>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon small v-bind="attrs" v-on="on" @click="eventForCalendar(item)">
+                                    mdi-calendar-clock
+                                </v-icon>
+                            </template>
+                            <span>Ver no calendário</span>
+                        </v-tooltip>
+                    </div>
+                    <div v-else>
+                        <v-tooltip top>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon small v-bind="attrs" v-on="on">
+                                    mdi-delete-restore
+                                </v-icon>
+                            </template>
+                            <span>Restaurar</span>
+                        </v-tooltip>
+                    </div>
                 </template>
             </v-data-table>
             <!-- Alerts -->
@@ -87,7 +105,9 @@ export default {
             typeAlertObj: TypeAlert,
             data_confirm: {},
             //model
-            event: {}
+            event: {},
+            //mostrar registros deletados
+            visibleDeletedEvents: false
         }
     },
     computed: {
@@ -187,6 +207,15 @@ export default {
         },
         reload(){
             router.reload();
+        },
+        toggleDeletedEvents(){
+            this.$page.props.visibleDeletedEvents = !this.$page.props.visibleDeletedEvents;
+            let route_url = this.$route('event.viewEvents');
+            if(this.$page.props.visibleDeletedEvents == true){
+                console.log('eventos deletados');
+            }else{//eventos ativos
+                console.log('eventos ativos');
+            }
         }
     },
     mounted() {

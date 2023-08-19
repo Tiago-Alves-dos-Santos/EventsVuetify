@@ -22,7 +22,7 @@ class EventController extends Controller
         $valueCalendar = $request->valueCalendar ?? Carbon::now();
 
         $events = Event::get();
-        //montagem de array de acordo com oq v-calendar pede
+        //montagem de array de acordo com o que v-calendar pede e com acrescimos de cor
         $events = $events->map(function ($event) {
             return [
                 'name' => $event->name,
@@ -36,11 +36,11 @@ class EventController extends Controller
             'pageValue' => 0,
             'events' => $events,
             'valueCalendar' => $valueCalendar
-
         ]);
     }
-    public function viewEventos(Request $request)
+    public function viewEvents(Request $request)
     {
+        $visibleDeletedEvents = $request->visibleDeletedEvents ?? false;
         $events = Event::get();
         //formatação de datas e status em português
         $events = $events->map(function ($event) {
@@ -54,7 +54,8 @@ class EventController extends Controller
         return Inertia::render('Evento', [
             'pageValue' => 1,
             'events' => $events,
-            'eventStatus' => $reflectionClass->getConstants()
+            'eventStatus' => $reflectionClass->getConstants(), //retorna os atributos do enum
+            'visibleDeletedEvents' => $visibleDeletedEvents
         ]);
     }
 
@@ -84,7 +85,6 @@ class EventController extends Controller
             'text_color' => 'required|max:20',
             'text_background' => 'required|max:20'
         ], [
-            //formatação de data para mensagem de erro
             'date_start.after_or_equal' => 'O campo :attribute deve ser uma data posterior ou igual a ' . Carbon::now()->startOfDay()->format('d/m/Y')
         ], $customAttributes);
 
@@ -93,7 +93,7 @@ class EventController extends Controller
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento cadastrado com sucesso', Constants::FEEDBACK_INFO)
             ]);
-        } catch (\Exception $e) { //erros não trabalhados front-end
+        } catch (\Exception $e) {
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);
@@ -142,7 +142,7 @@ class EventController extends Controller
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento atualizado com sucesso', Constants::FEEDBACK_INFO)
             ]);
-        } catch (\Exception $e) { //erros não trabalhados front-end
+        } catch (\Exception $e) {
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);
@@ -178,7 +178,7 @@ class EventController extends Controller
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento deletado com sucesso', Constants::FEEDBACK_INFO)
             ]);
-        } catch (\Exception $e) { //erros não trabalhados front-end
+        } catch (\Exception $e) {
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);
