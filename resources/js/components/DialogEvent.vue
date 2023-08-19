@@ -159,7 +159,7 @@ export default {
             default: false
         },
         eventStatus: {
-            type: String,
+            type: Object,
             required: true
         }
     },
@@ -201,7 +201,6 @@ export default {
                     }
                 });
             } else {//atualiza
-                console.log('form atulizar');
                 let route_url = this.$route('event.update');
                 router.put(route_url, {
                     id: this.event.id,

@@ -40,8 +40,13 @@ class EventController extends Controller
     }
     public function viewEvents(Request $request)
     {
-        $visibleDeletedEvents = $request->visibleDeletedEvents ?? false;
-        $events = Event::get();
+        $visibleDeletedEvents = (bool)$request->visibleDeletedEvents ?? false;
+        if($visibleDeletedEvents){
+            $events = Event::onlyTrashed()->get();
+        }else{
+            $events = Event::get();
+        }
+
         //formatação de datas e status em português
         $events = $events->map(function ($event) {
             $event->date_start_formated =  $event->date_start . ' ' . $event->time_start;

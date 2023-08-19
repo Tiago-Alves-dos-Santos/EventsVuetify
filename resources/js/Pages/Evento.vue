@@ -3,18 +3,21 @@
         <div>
             <v-row class="mb-3">
                 <v-col cols="12 d-flex justify-end">
-                    <v-btn color="deep-orange darken-4" class="mr-2" dark @click="toggleDeletedEvents">
-                        {{ $page.props.visibleDeletedEvents ? 'Ativos':'Deletados' }}
+                    <v-btn color="deep-orange darken-4" class="mr-2" style="color:white" @click="toggleDeletedEvents"
+                        :loading="loads.visibleDeletedEvents" :disabled="loads.visibleDeletedEvents">
+                        {{ $page.props.visibleDeletedEvents ? 'Ativos' : 'Deletados' }}
                     </v-btn>
-                    <v-btn color="secondary" class="mr-2" dark @click="reload()">
+                    <v-btn color="primary" class="mr-2" @click="reload()" :loading="loads.reload"
+                        :disabled="loads.reload">
                         Recarregar
                     </v-btn>
-                    <v-btn color="primary" class="" dark @click="openDialog(typeOperationObj.create)">
+                    <v-btn color="primary" class="" @click="openDialog(typeOperationObj.create)">
                         Novo Evento
                     </v-btn>
                     <!-- Dialog -->
                     <dialog-event ref="dialogForm" :show="show" :typeOperation="typeOperation" @close="closeDialog"
-                        @openAlert="openAlert" :eventStatus="$page.props.eventStatus" @cancelEventQuestion="cancelEventQuestion"></dialog-event>
+                        @openAlert="openAlert" :eventStatus="$page.props.eventStatus"
+                        @cancelEventQuestion="cancelEventQuestion"></dialog-event>
                 </v-col>
             </v-row>
             <!-- DataTable -->
@@ -40,7 +43,7 @@
 
                 </div>
                 <template v-slot:item.actions="{ item }">
-                    <div v-if="!visibleDeletedEvents">
+                    <div v-if="!$page.props.visibleDeletedEvents">
                         <v-icon small class="" @click="openDialog(typeOperationObj.update, item)">
                             mdi-pencil
                         </v-icon>
@@ -97,6 +100,11 @@ export default {
                 { text: 'Eventos deste ano', value: 'events_year' },
                 { text: 'Eventos deste mês', value: 'events_month' },
             ],
+            //loads
+            loads: {
+                reload: false,
+                visibleDeletedEvents: false
+            },
             //dialog
             show: false,
             typeOperation: TypeOperation.create,
@@ -205,17 +213,27 @@ export default {
             let route_url = this.$route('index');
             router.get(route_url, { valueCalendar: event.date_start });
         },
-        reload(){
-            router.reload();
+        reload() {
+            router.reload({
+                onStart: visit => this.loads.reload = true,
+                onFinish: visit => this.loads.reload = false,
+            });
         },
-        toggleDeletedEvents(){
+        toggleDeletedEvents() {
             this.$page.props.visibleDeletedEvents = !this.$page.props.visibleDeletedEvents;
-            let route_url = this.$route('event.viewEvents');
-            if(this.$page.props.visibleDeletedEvents == true){
-                console.log('eventos deletados');
-            }else{//eventos ativos
-                console.log('eventos ativos');
+            let value = this.$page.props.visibleDeletedEvents;
+            if (this.$page.props.visibleDeletedEvents == false) {//ativos
+                value = '';
             }
+            router.get(this.$route('event.viewEvents', [value]),{} ,{
+                onStart: () => this.loads.visibleDeletedEvents = true,
+                onFinish: visit => this.loads.visibleDeletedEvents = false,
+            });
+        }
+    },
+    watch: {
+        load_reload(value){
+            console.log(value)
         }
     },
     mounted() {

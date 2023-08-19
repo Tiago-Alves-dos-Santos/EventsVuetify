@@ -32,6 +32,11 @@ class Event extends Model
         return  Carbon::parse($this->attributes['date_end_formated'])->format('d/m/Y H:i:s');
     }
     /*************************************ESCOPOS LOCAIS*******************************************/
+    // public function scopePopular($query)
+    // {
+    //     return $query->where('votes', '>', 100);
+    // }
+
 
     /*************************************METODOS STATICS*******************************************/
 
