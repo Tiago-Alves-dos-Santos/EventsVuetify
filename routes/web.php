@@ -17,10 +17,11 @@ use App\Http\Controllers\HistoricController;
 
 Route::get('/', [EventController::class, 'index'])->name('index');
 Route::group(['prefix' => '/events'], function () {
-    Route::get('/', [EventController::class, 'viewEventos'])->name('event.viewEventos');
+    Route::get('/{visibleDeletedEvents?}', [EventController::class, 'viewEvents'])->name('event.viewEvents');
     Route::post('/events/create', [EventController::class, 'create'])->name('event.create');
     Route::put('/events/update', [EventController::class, 'update'])->name('event.update');
     Route::delete('/events/delete/{id}', [EventController::class, 'delete'])->name('event.delete');
+    Route::delete('/events/cancel/{id}', [EventController::class, 'cancel'])->name('event.cancel');
 });
 Route::group(['prefix' => '/historic'], function () {
     Route::get('/', [HistoricController::class, 'index'])->name('historic.index');

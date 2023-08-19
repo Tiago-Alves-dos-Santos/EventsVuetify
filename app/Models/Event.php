@@ -31,6 +31,12 @@ class Event extends Model
     {
         return  Carbon::parse($this->attributes['date_end_formated'])->format('d/m/Y H:i:s');
     }
+    /*************************************ESCOPOS LOCAIS*******************************************/
+    // public function scopePopular($query)
+    // {
+    //     return $query->where('votes', '>', 100);
+    // }
+
 
     /*************************************METODOS STATICS*******************************************/
 
@@ -41,20 +47,20 @@ class Event extends Model
      * @param string $time_start
      * @param string $date_end
      * @param string $time_end
-     * @return EventStatus
+     * @return string
      */
-    public static function staticCompareDatesGetEventStatus(Event $event): EventStatus
+    public static function staticCompareDatesGetEventStatus(Event $event): string
     {
         $carbonStart = Carbon::parse($event->date_start . ' ' . $event->time_start);
         $carbonEnd = Carbon::parse($event->date_end . ' ' . $event->time_end);
         $carbonNow = Carbon::now();
 
         if ($carbonStart->greaterThan($carbonNow)) { //inicio > atual == futuro
-            return EventStatus::FUTURE;
+            return EventStatus::FUTURE->value;
         } else if ($carbonStart->lessThanOrEqualTo($carbonNow) && $carbonEnd->greaterThan($carbonNow)) { //inicio <= atual && fim > atual == andamento
-            return EventStatus::PROGRESS;
+            return EventStatus::PROGRESS->value;
         } else if ($carbonEnd->lessThanOrEqualTo($carbonNow)) { //fim <= atual = concluido
-            return EventStatus::CONCLUDED;
+            return EventStatus::CONCLUDED->value;
         }
 
         throw new \Exception('O evento atual não possui datas que atendam as condições de definição de status');
@@ -68,21 +74,18 @@ class Event extends Model
     public static function staticGetStatusInPortuguesBr(string $status): string
     {
         $result = '';
-        $reflectionClass = new \ReflectionClass(EventStatus::class);
-        //tranformando enum em array de objetos
-        $statusArray = $reflectionClass->getConstants();
 
         switch ($status) {
-            case $statusArray['PROGRESS']->value:
+            case EventStatus::PROGRESS->value:
                 $result = 'Em andamento';
                 break;
-            case $statusArray['FUTURE']->value:
+            case EventStatus::FUTURE->value:
                 $result = 'Agendado';
                 break;
-            case $statusArray['FUTURE']->value:
+            case EventStatus::CONCLUDED->value:
                 $result = 'Concluído';
                 break;
-            case $statusArray['FUTURE']->value:
+            case EventStatus::CANCELED->value:
                 $result = 'Cancelado';
                 break;
 
@@ -96,9 +99,9 @@ class Event extends Model
     /**
      * Função retorna um EventStatus baseado no data e tempo de inicio e final
      *
-     * @return EventStatus
+     * @return string
      */
-    public function compareDatesGetEventStatus(): EventStatus
+    public function compareDatesGetEventStatus(): string
     {
         $this->status = self::staticCompareDatesGetEventStatus($this);
         return $this->status;

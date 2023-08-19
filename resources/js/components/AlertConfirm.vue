@@ -27,7 +27,7 @@
             {{ this.data.titulo }}
           </v-card-title>
 
-          <v-card-text>{{this.data.texto}}</v-card-text>
+          <v-card-text v-html="this.data.texto"></v-card-text>
           <v-card-actions v-if="this.typeAlert == this.typeAlertObj.alert">
             <v-spacer></v-spacer>
             <v-btn

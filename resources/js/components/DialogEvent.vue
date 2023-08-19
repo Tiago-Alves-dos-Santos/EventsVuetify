@@ -80,14 +80,14 @@
                             </v-col>
                         </v-row>
                         <v-row>
-                            <v-col cols="6" class="d-flex justify-center flex-column">
+                            <v-col sm="12" md="6" class="d-flex justify-center flex-column pr-sm-3">
                                 <label for="">Cor do texto</label>
                                 <v-color-picker v-model="form.text_color" class="ma-2" hide-mode-switch
                                     mode="hexa"></v-color-picker>
                                 <span class="message-error" v-if="$page.props.errors.text_color">{{
                                     $page.props.errors.text_color }}</span>
                             </v-col>
-                            <v-col cols="6" class="d-flex justify-center flex-column">
+                            <v-col sm="12" md="6" class="d-flex justify-center flex-column pr-sm-3">
                                 <label for="">Fundo do texto</label>
                                 <v-color-picker v-model="form.text_background" class="ma-2" hide-mode-switch
                                     mode="hexa"></v-color-picker>
@@ -102,8 +102,13 @@
                             <v-btn color="primary" type="submit" :loading="load_form" :disabled="load_form">
                                 Salvar
                             </v-btn>
-                            <v-btn color="error" @click="$emit('close')">
+                            <v-btn color="error" v-if="dataTypeOperation.update == typeOperation &&
+                                (event.status != eventStatus.CONCLUDED && event.status != eventStatus.CANCELED)"
+                                @click="$emit('cancelEventQuestion', event)">
                                 Cancelar
+                            </v-btn>
+                            <v-btn color="error" @click="$emit('close')">
+                                Fechar
                             </v-btn>
                         </v-card-actions>
                     </v-form>
@@ -153,6 +158,10 @@ export default {
             type: Boolean,
             default: false
         },
+        eventStatus: {
+            type: Object,
+            required: true
+        }
     },
     computed: { //datas formatadas selecionados v-date-picker
         pickerInputStartDateFormatted() {
@@ -192,7 +201,6 @@ export default {
                     }
                 });
             } else {//atualiza
-                console.log('form atulizar');
                 let route_url = this.$route('event.update');
                 router.put(route_url, {
                     id: this.event.id,
@@ -237,7 +245,8 @@ export default {
                 text_color: this.event.text_color,
                 text_background: this.event.text_background
             };
-        }
+        },
+
     },
 }
 </script>

@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Enums\EventStatus;
 use App\Models\Event;
 use App\Models\Historic;
 
@@ -15,8 +16,10 @@ class EventObserver
      */
     public function created(Event $event)
     {
-        $event->compareDatesGetEventStatus();//atualização de status de acordo com as datas
-        $event->save();
+        //where para evitar de ir para metodo update, porem perde desempenho
+        Event::where('id', $event->id)->update([
+            'status' => Event::staticCompareDatesGetEventStatus($event)
+        ]);
         Historic::create(['registry' => "O evento {$event->name} foi criado"]);
     }
 
@@ -28,12 +31,14 @@ class EventObserver
      */
     public function updated(Event $event)
     {
-        //evitando loop gerado ao cadastrar com save
+        //evitando loop caso cadastrar com save
         $event->withoutEvents(function () use ($event) {
-            $event->compareDatesGetEventStatus();
-            $event->save();
+            if(!($event->status == EventStatus::CANCELED->value)){
+                $event->compareDatesGetEventStatus();
+                $event->save();
+            }
         });
-        Historic::create(['registry' => "O evento {$event->name} foi atualizado"]);
+        //não tem historico aqui, pois utilizo o save em rotina 'VerifyStatusEvent', isso ficaria colocando registros desnecessarios em historico
     }
 
     /**

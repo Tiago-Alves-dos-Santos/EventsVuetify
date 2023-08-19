@@ -8,9 +8,12 @@ use Inertia\Inertia;
 use App\Models\Event;
 use App\Class\Settings;
 use App\Class\Constants;
+use App\Enums\EventStatus;
+use App\Models\Historic;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
+use ReflectionClass;
 
 class EventController extends Controller
 {
@@ -19,7 +22,7 @@ class EventController extends Controller
         $valueCalendar = $request->valueCalendar ?? Carbon::now();
 
         $events = Event::get();
-        //montagem de array de acordo com oq v-calendar pede
+        //montagem de array de acordo com o que v-calendar pede e com acrescimos de cor
         $events = $events->map(function ($event) {
             return [
                 'name' => $event->name,
@@ -33,12 +36,17 @@ class EventController extends Controller
             'pageValue' => 0,
             'events' => $events,
             'valueCalendar' => $valueCalendar
-
         ]);
     }
-    public function viewEventos(Request $request)
+    public function viewEvents(Request $request)
     {
-        $events = Event::get();
+        $visibleDeletedEvents = (bool)$request->visibleDeletedEvents ?? false;
+        if($visibleDeletedEvents){
+            $events = Event::onlyTrashed()->get();
+        }else{
+            $events = Event::get();
+        }
+
         //formatação de datas e status em português
         $events = $events->map(function ($event) {
             $event->date_start_formated =  $event->date_start . ' ' . $event->time_start;
@@ -46,10 +54,13 @@ class EventController extends Controller
             $event->getStatusInPortuguesBr();
             return $event;
         });
-
+        //nativa do php, usada para trabalhar com classes e suas propiedades
+        $reflectionClass = new ReflectionClass(EventStatus::class);
         return Inertia::render('Evento', [
             'pageValue' => 1,
             'events' => $events,
+            'eventStatus' => $reflectionClass->getConstants(), //retorna os atributos do enum
+            'visibleDeletedEvents' => $visibleDeletedEvents
         ]);
     }
 
@@ -79,7 +90,6 @@ class EventController extends Controller
             'text_color' => 'required|max:20',
             'text_background' => 'required|max:20'
         ], [
-            //formatação de data para mensagem de erro
             'date_start.after_or_equal' => 'O campo :attribute deve ser uma data posterior ou igual a ' . Carbon::now()->startOfDay()->format('d/m/Y')
         ], $customAttributes);
 
@@ -88,7 +98,7 @@ class EventController extends Controller
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento cadastrado com sucesso', Constants::FEEDBACK_INFO)
             ]);
-        } catch (\Exception $e) { //erros não trabalhados front-end
+        } catch (\Exception $e) {
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);
@@ -133,10 +143,34 @@ class EventController extends Controller
         try {
             //usei o find para capturar o observer
             Event::find($request->id)->update($request->except(['old_date_start', 'id'])); //except, não necessarios para atualização em array
+            Historic::create(['registry' => "O evento " . Event::find($request->id)->name . " foi editado"]);
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento atualizado com sucesso', Constants::FEEDBACK_INFO)
             ]);
-        } catch (\Exception $e) { //erros não trabalhados front-end
+        } catch (\Exception $e) {
+            $errors = new MessageBag();
+            $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
+            return redirect()->back()->withErrors($errors);
+        }
+    }
+    public function cancel(Request $request)
+    {
+        try {
+            $event = Event::find($request->id);
+            if ($event->status == EventStatus::CANCELED->value || $event->status == EventStatus::CONCLUDED->value) {
+                return redirect()->back()->with([
+                    'message' => Settings::alert('Atenção!', 'Eventos concluidos ou cancelados não podem ser cancelados', Constants::FEEDBACK_WARNING)
+                ]);
+            } else {
+                $event->update([
+                    'status' => 'canceled'
+                ]);
+                Historic::create(['registry' => "O evento " . Event::find($request->id)->name . " foi cancelado"]);
+                return redirect()->back()->with([
+                    'message' => Settings::alert('Sucesso', 'Evento cancelado com sucesso', Constants::FEEDBACK_INFO)
+                ]);
+            }
+        } catch (\Exception $e) {
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);
@@ -149,7 +183,7 @@ class EventController extends Controller
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento deletado com sucesso', Constants::FEEDBACK_INFO)
             ]);
-        } catch (\Exception $e) { //erros não trabalhados front-end
+        } catch (\Exception $e) {
             $errors = new MessageBag();
             $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
             return redirect()->back()->withErrors($errors);
