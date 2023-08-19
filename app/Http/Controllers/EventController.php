@@ -13,6 +13,7 @@ use App\Models\Historic;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\MessageBag;
+use ReflectionClass;
 
 class EventController extends Controller
 {
@@ -48,10 +49,12 @@ class EventController extends Controller
             $event->getStatusInPortuguesBr();
             return $event;
         });
-
+        //nativa do php, usada para trabalhar com classes e suas propiedades
+        $reflectionClass = new ReflectionClass(EventStatus::class);
         return Inertia::render('Evento', [
             'pageValue' => 1,
             'events' => $events,
+            'eventStatus' => $reflectionClass->getConstants()
         ]);
     }
 

@@ -3,7 +3,7 @@
         <div>
             <v-row class="mb-3">
                 <v-col cols="12 d-flex justify-end">
-                    <v-btn color="secondary" class="mr-2" dark>
+                    <v-btn color="secondary" class="mr-2" dark @click="reload()">
                         Recarregar
                     </v-btn>
                     <v-btn color="primary" class="" dark @click="openDialog(typeOperationObj.create)">
@@ -11,7 +11,7 @@
                     </v-btn>
                     <!-- Dialog -->
                     <dialog-event ref="dialogForm" :show="show" :typeOperation="typeOperation" @close="closeDialog"
-                        @openAlert="openAlert" @cancelEventQuestion="cancelEventQuestion"></dialog-event>
+                        @openAlert="openAlert" :eventStatus="$page.props.eventStatus" @cancelEventQuestion="cancelEventQuestion"></dialog-event>
                 </v-col>
             </v-row>
             <!-- DataTable -->
@@ -128,7 +128,7 @@ export default {
         },
         //abrir dialog de create ou update
         openDialog(typeOperation, object = null) {
-            //define o tipo da operação
+            this.$refs.dialogForm.defaultValuesForm();
             this.typeOperation = typeOperation;
             this.event = null;
             this.show = true;
@@ -184,6 +184,9 @@ export default {
         eventForCalendar(event) {
             let route_url = this.$route('index');
             router.get(route_url, { valueCalendar: event.date_start });
+        },
+        reload(){
+            router.reload();
         }
     },
     mounted() {

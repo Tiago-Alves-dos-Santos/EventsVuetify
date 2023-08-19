@@ -102,8 +102,9 @@
                             <v-btn color="primary" type="submit" :loading="load_form" :disabled="load_form">
                                 Salvar
                             </v-btn>
-                            <v-btn color="error" v-if="dataTypeOperation.update == typeOperation && (event.status != 'concluded' && event.status != 'canceled')"
-                            @click="$emit('cancelEventQuestion', event)">
+                            <v-btn color="error" v-if="dataTypeOperation.update == typeOperation &&
+                                (event.status != eventStatus.CONCLUDED && event.status != eventStatus.CANCELED)"
+                                @click="$emit('cancelEventQuestion', event)">
                                 Cancelar
                             </v-btn>
                             <v-btn color="error" @click="$emit('close')">
@@ -157,6 +158,10 @@ export default {
             type: Boolean,
             default: false
         },
+        eventStatus: {
+            type: String,
+            required: true
+        }
     },
     computed: { //datas formatadas selecionados v-date-picker
         pickerInputStartDateFormatted() {
