@@ -3,7 +3,8 @@
         <div>
             <v-row class="mb-3">
                 <v-col cols="12 d-flex justify-center justify-md-end  flex-wrap">
-                    <v-btn :color="$page.props.visibleDeletedEvents ? 'green darken-4' : 'deep-orange darken-4'" class="mr-2 mt-2" style="color:white" @click="toggleDeletedEvents"
+                    <v-btn :color="$page.props.visibleDeletedEvents ? 'green darken-4' : 'deep-orange darken-4'"
+                        class="mr-2 mt-2" style="color:white" @click="toggleDeletedEvents"
                         :loading="loads.visibleDeletedEvents" :disabled="loads.visibleDeletedEvents">
                         {{ $page.props.visibleDeletedEvents ? 'Ativos' : 'Deletados' }}
                     </v-btn>
@@ -22,8 +23,8 @@
             </v-row>
             <!-- DataTable -->
             <v-data-table locale="pt" :headers="headers" :items="$page.props.events" item-key="name" class="elevation-1"
-                :search="search" :custom-filter="filter" :loading="loads.dataTable"
-                loading-text="Aguarde..." mobile-breakpoint>
+                :search="search" :custom-filter="filter" :loading="loads.dataTable" loading-text="Aguarde..."
+                mobile-breakpoint>
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
                         <v-col cols="6">
@@ -106,7 +107,7 @@ export default {
             loads: {
                 reload: false,
                 visibleDeletedEvents: false,
-                dataTable:false
+                dataTable: false
             },
             //dialog
             show: false,
@@ -116,10 +117,10 @@ export default {
             typeAlertObj: TypeAlert,
             data_confirm: {},
             data_confirm_alert: {},
-            functions:{
-                deleteEvent:'deleteEvent',
-                cancelEvent:'cancelEvent',
-                restoreEvent:'restoreEvent',
+            functions: {
+                deleteEvent: 'deleteEvent',
+                cancelEvent: 'cancelEvent',
+                restoreEvent: 'restoreEvent',
             },
             functionCallback: null,
             //model
@@ -200,7 +201,7 @@ export default {
         },
         cancelEvent() {
             let route_url = this.$route('event.cancel');
-            router.put(route_url,{ id: this.event.id },{
+            router.put(route_url, { id: this.event.id }, {
                 onSuccess: () => {
                     this.$refs.alert_question.close();
                     this.closeDialog();
@@ -221,32 +222,26 @@ export default {
                 }
             });
         },
-        restoreQuestion(event){
+        restoreQuestion(event) {
             this.event = event;
             this.functionCallback = this.manageAlertFunctions(this.functions.restoreEvent);
             this.data_confirm = Settings.alertData('Atenção!', 'Deseja restaurar o evento: ' + event.name + '?', TypeAlertIcon.question);
             this.$refs.alert_question.open();
         },
-        restoreEvent(){
+        restoreEvent() {
             let route_url = this.$route('event.restore');
-            router.put(route_url, {id: this.event.id} ,{
+            router.put(route_url, { id: this.event.id }, {
                 onSuccess: () => {
                     this.$refs.alert_question.close();
                 }
             });
         },
-        manageAlertFunctions(value){
-            switch (value) {
-                case this.functions.restoreEvent:
-                    return this.restoreEvent;
-                case this.functions.deleteEvent:
-                    return this.deleteEvent;
-                case this.functions.cancelEvent:
-                    return this.cancelEvent;
-                default:
-                    this.data_confirm_alert = Settings.alertData('Erro: manageAlertFunctions', 'O valor '+value+' não se encaixa nas condições de caso', TypeAlertIcon.error)
-                    this.$refs.alert_client.open();
-                    break;
+        manageAlertFunctions(value) {
+            if (typeof this[value] === 'function') {
+                return this[value]; // Chama a função pelo nome passado como valor, necessarios existir no methods
+            } else {
+                this.data_confirm_alert = Settings.alertData('Erro: manageAlertFunctions', 'O valor ' + value + ' não se encaixa como uma função', TypeAlertIcon.error);
+                this.$refs.alert_client.open();
             }
         },
         eventForCalendar(event) {
@@ -254,7 +249,7 @@ export default {
             router.get(route_url, { valueCalendar: event.date_start });
         },
         reload() {
-            router.get(this.$route('event.viewEvents'),{},{
+            router.get(this.$route('event.viewEvents'), {}, {
                 onStart: () => this.loads.reload = true,
                 onFinish: () => this.loads.reload = false,
             });
@@ -265,9 +260,9 @@ export default {
             if (this.$page.props.visibleDeletedEvents == false) {//ativos
                 value = '';
             }
-            router.get(this.$inertia.page.url,{visibleDeletedEvents: value} ,{
-                preserveState:true,
-                onStart: () =>{
+            router.get(this.$inertia.page.url, { visibleDeletedEvents: value }, {
+                preserveState: true,
+                onStart: () => {
                     this.loads.visibleDeletedEvents = true;
                     this.loads.dataTable = true;
                 },
@@ -277,9 +272,9 @@ export default {
                 }
             });
         },
-        getEventsTime(){
-            router.get(this.$inertia.page.url, {eventTimeFilter: this.select}, {
-                preserveState:true,
+        getEventsTime() {
+            router.get(this.$inertia.page.url, { eventTimeFilter: this.select }, {
+                preserveState: true,
                 onStart: () => this.loads.dataTable = true,
                 onFinish: () => this.loads.dataTable = false,
             });
