@@ -51,7 +51,7 @@
                         <v-icon small @click="deleteEventQuestion(item)">
                             mdi-delete
                         </v-icon>
-                        <v-tooltip top>
+                        <v-tooltip top v-if="item.status != $page.props.eventStatus.CANCELED">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon small v-bind="attrs" v-on="on" @click="eventForCalendar(item)">
                                     mdi-calendar-clock
@@ -74,16 +74,10 @@
             </v-data-table>
             <!-- Alerts -->
             <alert-confirm ref="alert_question" :typeAlert="typeAlertObj.question" :data="data_confirm"
-                :yesCallback="manageAlertFunctions"></alert-confirm>
-
-            <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
-                :yesCallback="deleteEvent"></alert-confirm>
-            <alert-confirm ref="question_cancel_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
-                :yesCallback="cancelEvent"></alert-confirm>
-            <alert-confirm ref="question_restore_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
-                :yesCallback="restoreEvent"></alert-confirm>
-
-            <alert-confirm ref="alert_client" :typeAlert="typeAlertObj.alert" :data="data_confirm"></alert-confirm>
+                :yesCallback="functionCallback"></alert-confirm>
+            <!-- alerta chamado via js -->
+            <alert-confirm ref="alert_client" :typeAlert="typeAlertObj.alert" :data="data_confirm_alert"></alert-confirm>
+            <!-- alerta vindo do inertia - flash messages -->
             <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"
                 :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
         </div>
@@ -121,12 +115,13 @@ export default {
             //alert
             typeAlertObj: TypeAlert,
             data_confirm: {},
+            data_confirm_alert: {},
             functions:{
                 deleteEvent:'deleteEvent',
                 cancelEvent:'cancelEvent',
                 restoreEvent:'restoreEvent',
             },
-            functionSelected: '',
+            functionCallback: null,
             //model
             event: {},
             //mostrar registros deletados
@@ -190,55 +185,69 @@ export default {
             this.$page.props.flash.message.show = false;
         },
         openAlert(object = null) {
-            this.data_confirm = object;
+            this.data_confirm_alert = object;
             this.$refs.alert_client.open();
         },
         cancelEventQuestion(event) {
             this.event = event;
+            this.functionCallback = this.manageAlertFunctions(this.functions.cancelEvent);
             this.data_confirm = Settings.alertData(
                 'Atenção!',
                 "Deseja prosseguir com o cancelamento do evento: " + event.name + "? <br> Após o cancelamento do evento não é possivel reverter.",
                 TypeAlertIcon.question
             );
-            this.$refs.question_cancel_event.open();
+            this.$refs.alert_question.open();
         },
         cancelEvent() {
-            let route_url = this.$route('event.cancel', { id: this.event.id });
-            router.delete(route_url, {
+            let route_url = this.$route('event.cancel');
+            router.put(route_url,{ id: this.event.id },{
                 onSuccess: () => {
-                    this.$refs.question_cancel_event.close();
+                    this.$refs.alert_question.close();
                     this.closeDialog();
                 }
             });
         },
         deleteEventQuestion(event) {
             this.event = event;
+            this.functionCallback = this.manageAlertFunctions(this.functions.deleteEvent);
             this.data_confirm = Settings.alertData('Atenção!', 'Deseja prosseguir com a deleção do evento: ' + event.name + '?', TypeAlertIcon.question);
-            this.$refs.question_delete_event.open();
+            this.$refs.alert_question.open();
         },
         deleteEvent() {
             let route_url = this.$route('event.delete', { id: this.event.id });
             router.delete(route_url, {
                 onSuccess: () => {
-                    this.$refs.question_delete_event.close();
+                    this.$refs.alert_question.close();
                 }
             });
         },
         restoreQuestion(event){
             this.event = event;
+            this.functionCallback = this.manageAlertFunctions(this.functions.restoreEvent);
             this.data_confirm = Settings.alertData('Atenção!', 'Deseja restaurar o evento: ' + event.name + '?', TypeAlertIcon.question);
-            this.$refs.question_restore_event.open();
+            this.$refs.alert_question.open();
         },
         restoreEvent(){
             let route_url = this.$route('event.restore');
             router.put(route_url, {id: this.event.id} ,{
                 onSuccess: () => {
-                    this.$refs.question_restore_event.close();
+                    this.$refs.alert_question.close();
                 }
             });
         },
-        manageAlertFunctions(){
-
+        manageAlertFunctions(value){
+            switch (value) {
+                case this.functions.restoreEvent:
+                    return this.restoreEvent;
+                case this.functions.deleteEvent:
+                    return this.deleteEvent;
+                case this.functions.cancelEvent:
+                    return this.cancelEvent;
+                default:
+                    this.data_confirm_alert = Settings.alertData('Erro: manageAlertFunctions', 'O valor '+value+' não se encaixa nas condições de caso', TypeAlertIcon.error)
+                    this.$refs.alert_client.open();
+                    break;
+            }
         },
         eventForCalendar(event) {
             let route_url = this.$route('index');

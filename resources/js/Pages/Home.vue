@@ -60,8 +60,10 @@ export default {
         }
     },
     methods: {
-        clickEvent(event) {//clicar no evento do calendario, não implementada
-            console.log(event);
+        clickEvent({day:{date}}) {//clicar no evento do calendario, não implementada
+            console.log(date);
+            this.$page.props.valueCalendar = date;
+            this.type = 'day';
         },
         //retornando o evento em mudança de calendario
         getEvents({ start, end }) {

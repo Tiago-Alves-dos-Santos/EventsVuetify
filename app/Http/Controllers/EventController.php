@@ -21,7 +21,7 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $valueCalendar = $request->valueCalendar ?? Carbon::now();
-        $events = Event::get();
+        $events = Event::where('status', '!=', EventStatus::CANCELED->value)->cursor();
         //montagem de array de acordo com o que v-calendar pede e com acrescimos de cor
         $events = $events->map(function ($event) {
             return [
