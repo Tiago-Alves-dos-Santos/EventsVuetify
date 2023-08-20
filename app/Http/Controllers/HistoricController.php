@@ -17,7 +17,7 @@ class HistoricController extends Controller
             return $historic;
         });
         return Inertia::render('Historic', [
-            'pageValue' => 2,
+            'pageValue' => 'historic.index',
             'historics' => $historics
         ]);
     }

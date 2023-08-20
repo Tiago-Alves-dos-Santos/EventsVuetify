@@ -33,7 +33,7 @@ class EventController extends Controller
             ];
         });
         return Inertia::render('Home', [
-            'pageValue' => 0,
+            'pageValue' => 'index',
             'events' => $events,
             'valueCalendar' => $valueCalendar
         ]);
@@ -58,7 +58,7 @@ class EventController extends Controller
         //nativa do php, usada para trabalhar com classes e suas propiedades
         $reflectionClass = new ReflectionClass(EventStatus::class);
         return Inertia::render('Evento', [
-            'pageValue' => 1,
+            'pageValue' => 'event.viewEvents',
             'events' => $events,
             'eventStatus' => $reflectionClass->getConstants(), //retorna os atributos do enum
             'visibleDeletedEvents' => $visibleDeletedEvents,
