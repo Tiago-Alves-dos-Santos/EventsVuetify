@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Enums\EventTime;
 use App\Enums\EventStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,10 +33,28 @@ class Event extends Model
         return  Carbon::parse($this->attributes['date_end_formated'])->format('d/m/Y H:i:s');
     }
     /*************************************ESCOPOS LOCAIS*******************************************/
-    // public function scopePopular($query)
-    // {
-    //     return $query->where('votes', '>', 100);
-    // }
+    public function scopeEventOf($query, string $type)
+    {
+        switch ($type) {
+            case EventTime::EVENTS_ALL->value:
+                return $query;
+                break;
+            case EventTime::EVENTS_YEAR->value:
+                $query->whereYear('date_start', date('Y'));
+                break;
+            case EventTime::EVENTS_MONTH->value:
+                $query->whereMonth('date_start', date('m'));
+                break;
+            case EventTime::EVENTS_FUTURE->value:
+                $query->where('status', EventStatus::FUTURE->value);
+                break;
+
+            default:
+                throw new \Exception("O paramêtro 'type': $type não se classifca nas opções de " . EventTime::class);
+                break;
+        }
+        return $query;
+    }
 
 
     /*************************************METODOS STATICS*******************************************/

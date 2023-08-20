@@ -3,13 +3,13 @@
         <div>
             <v-row class="mb-3">
                 <v-col cols="12 d-flex justify-end">
-                    <v-btn color="deep-orange darken-4" class="mr-2" style="color:white" @click="toggleDeletedEvents"
+                    <v-btn :color="$page.props.visibleDeletedEvents ? 'green darken-4' : 'deep-orange darken-4'" class="mr-2" style="color:white" @click="toggleDeletedEvents"
                         :loading="loads.visibleDeletedEvents" :disabled="loads.visibleDeletedEvents">
                         {{ $page.props.visibleDeletedEvents ? 'Ativos' : 'Deletados' }}
                     </v-btn>
                     <v-btn color="primary" class="mr-2" @click="reload()" :loading="loads.reload"
                         :disabled="loads.reload">
-                        Recarregar
+                        Recarregar / Limpar filtro
                     </v-btn>
                     <v-btn color="primary" class="" @click="openDialog(typeOperationObj.create)">
                         Novo Evento
@@ -22,7 +22,8 @@
             </v-row>
             <!-- DataTable -->
             <v-data-table locale="pt" :headers="headers" :items="$page.props.events" item-key="name" class="elevation-1"
-                :search="search" :custom-filter="filter" mobile-breakpoint>
+                :search="search" :custom-filter="filter" :loading="loads.dataTable"
+                loading-text="Aguarde..." mobile-breakpoint>
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
                         <v-col cols="6">
@@ -30,7 +31,7 @@
                         </v-col>
                         <v-col cols="6">
                             <v-select v-model="select" :items="items" item-text="text" item-value="value" label="Eventos"
-                                solo></v-select>
+                                solo @change="getEventsTime"></v-select>
                         </v-col>
                     </v-row>
                 </template>
@@ -99,11 +100,13 @@ export default {
                 { text: 'Todos os eventos', value: 'events_all' },
                 { text: 'Eventos deste ano', value: 'events_year' },
                 { text: 'Eventos deste mês', value: 'events_month' },
+                { text: 'Eventos futuros', value: 'events_future' },
             ],
             //loads
             loads: {
                 reload: false,
-                visibleDeletedEvents: false
+                visibleDeletedEvents: false,
+                dataTable:false
             },
             //dialog
             show: false,
@@ -190,7 +193,7 @@ export default {
         cancelEvent() {
             let route_url = this.$route('event.cancel', { id: this.event.id });
             router.delete(route_url, {
-                onSuccess: page => {
+                onSuccess: () => {
                     this.$refs.question_cancel_event.close();
                     this.closeDialog();
                 }
@@ -204,7 +207,7 @@ export default {
         deleteEvent() {
             let route_url = this.$route('event.delete', { id: this.event.id });
             router.delete(route_url, {
-                onSuccess: page => {
+                onSuccess: () => {
                     this.$refs.question_delete_event.close();
                 }
             });
@@ -214,9 +217,9 @@ export default {
             router.get(route_url, { valueCalendar: event.date_start });
         },
         reload() {
-            router.reload({
-                onStart: visit => this.loads.reload = true,
-                onFinish: visit => this.loads.reload = false,
+            router.get(this.$route('event.viewEvents'),{},{
+                onStart: () => this.loads.reload = true,
+                onFinish: () => this.loads.reload = false,
             });
         },
         toggleDeletedEvents() {
@@ -225,17 +228,27 @@ export default {
             if (this.$page.props.visibleDeletedEvents == false) {//ativos
                 value = '';
             }
-            router.get(this.$route('event.viewEvents', [value]),{} ,{
-                onStart: () => this.loads.visibleDeletedEvents = true,
-                onFinish: visit => this.loads.visibleDeletedEvents = false,
+            router.get(this.$inertia.page.url,{visibleDeletedEvents: value} ,{
+                preserveState:true,
+                onStart: () =>{
+                    this.loads.visibleDeletedEvents = true;
+                    this.loads.dataTable = true;
+                },
+                onFinish: () => {
+                    this.loads.visibleDeletedEvents = false;
+                    this.loads.dataTable = false;
+                }
+            });
+        },
+        getEventsTime(){
+            router.get(this.$inertia.page.url, {eventTimeFilter: this.select}, {
+                preserveState:true,
+                onStart: () => this.loads.dataTable = true,
+                onFinish: () => this.loads.dataTable = false,
             });
         }
     },
-    watch: {
-        load_reload(value){
-            console.log(value)
-        }
-    },
+
     mounted() {
     },
 }

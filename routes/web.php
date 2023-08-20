@@ -17,7 +17,7 @@ use App\Http\Controllers\HistoricController;
 
 Route::get('/', [EventController::class, 'index'])->name('index');
 Route::group(['prefix' => '/events'], function () {
-    Route::get('/{visibleDeletedEvents?}', [EventController::class, 'viewEvents'])->name('event.viewEvents');
+    Route::get('/', [EventController::class, 'viewEvents'])->name('event.viewEvents');
     Route::post('/events/create', [EventController::class, 'create'])->name('event.create');
     Route::put('/events/update', [EventController::class, 'update'])->name('event.update');
     Route::delete('/events/delete/{id}', [EventController::class, 'delete'])->name('event.delete');

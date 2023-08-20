@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Class\Settings;
 use App\Class\Constants;
 use App\Enums\EventStatus;
+use App\Enums\EventTime;
 use App\Models\Historic;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -41,10 +42,11 @@ class EventController extends Controller
     public function viewEvents(Request $request)
     {
         $visibleDeletedEvents = (bool)$request->visibleDeletedEvents ?? false;
+        $eventTimeFilter = $request->eventTimeFilter ?? EventTime::EVENTS_YEAR->value;
         if($visibleDeletedEvents){
-            $events = Event::onlyTrashed()->get();
+            $events = Event::onlyTrashed()->eventOf($eventTimeFilter)->cursor();
         }else{
-            $events = Event::get();
+            $events = Event::eventOf($eventTimeFilter)->cursor();
         }
 
         //formatação de datas e status em português
@@ -60,7 +62,7 @@ class EventController extends Controller
             'pageValue' => 1,
             'events' => $events,
             'eventStatus' => $reflectionClass->getConstants(), //retorna os atributos do enum
-            'visibleDeletedEvents' => $visibleDeletedEvents
+            'visibleDeletedEvents' => $visibleDeletedEvents,
         ]);
     }
 

@@ -190,13 +190,13 @@ export default {
                     onStart: () => {
                         this.load_form = true;
                     },
-                    onSuccess: page => {
+                    onSuccess: () => {
                         this.$emit('close');
                     },
                     onError: errors => {
                         this.$emit('openAlert', errors.error);
                     },
-                    onFinish: visit => {
+                    onFinish: () => {
                         this.load_form = false;
                     }
                 });
@@ -210,13 +210,13 @@ export default {
                     onStart: () => {
                         this.load_form = true;
                     },
-                    onSuccess: page => {
+                    onSuccess: () => {
                         this.$emit('close');
                     },
                     onError: errors => {
                         this.$emit('openAlert', errors.error);
                     },
-                    onFinish: visit => {
+                    onFinish: () => {
                         this.load_form = false;
                     }
                 });
