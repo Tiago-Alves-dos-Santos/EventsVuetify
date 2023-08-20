@@ -2,16 +2,16 @@
     <layout-bottom-navigation>
         <div>
             <v-row class="mb-3">
-                <v-col cols="12 d-flex justify-end">
-                    <v-btn :color="$page.props.visibleDeletedEvents ? 'green darken-4' : 'deep-orange darken-4'" class="mr-2" style="color:white" @click="toggleDeletedEvents"
+                <v-col cols="12 d-flex justify-center justify-md-end  flex-wrap">
+                    <v-btn :color="$page.props.visibleDeletedEvents ? 'green darken-4' : 'deep-orange darken-4'" class="mr-2 mt-2" style="color:white" @click="toggleDeletedEvents"
                         :loading="loads.visibleDeletedEvents" :disabled="loads.visibleDeletedEvents">
                         {{ $page.props.visibleDeletedEvents ? 'Ativos' : 'Deletados' }}
                     </v-btn>
-                    <v-btn color="primary" class="mr-2" @click="reload()" :loading="loads.reload"
+                    <v-btn color="primary" class="mr-2 mt-2" @click="reload()" :loading="loads.reload"
                         :disabled="loads.reload">
                         Recarregar / Limpar filtro
                     </v-btn>
-                    <v-btn color="primary" class="" @click="openDialog(typeOperationObj.create)">
+                    <v-btn color="primary" class="mt-2" @click="openDialog(typeOperationObj.create)">
                         Novo Evento
                     </v-btn>
                     <!-- Dialog -->
