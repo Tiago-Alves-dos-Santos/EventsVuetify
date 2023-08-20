@@ -21,7 +21,6 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $valueCalendar = $request->valueCalendar ?? Carbon::now();
-
         $events = Event::get();
         //montagem de array de acordo com o que v-calendar pede e com acrescimos de cor
         $events = $events->map(function ($event) {
@@ -43,10 +42,10 @@ class EventController extends Controller
     {
         $visibleDeletedEvents = (bool)$request->visibleDeletedEvents ?? false;
         $eventTimeFilter = $request->eventTimeFilter ?? EventTime::EVENTS_YEAR->value;
-        if($visibleDeletedEvents){
-            $events = Event::onlyTrashed()->eventOf($eventTimeFilter)->cursor();
-        }else{
-            $events = Event::eventOf($eventTimeFilter)->cursor();
+        if ($visibleDeletedEvents) {
+            $events = Event::onlyTrashed()->eventsOf($eventTimeFilter)->cursor();
+        } else {
+            $events = Event::eventsOf($eventTimeFilter)->cursor();
         }
 
         //formatação de datas e status em português
@@ -184,6 +183,19 @@ class EventController extends Controller
             Event::find($request->id)->delete();
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento deletado com sucesso', Constants::FEEDBACK_INFO)
+            ]);
+        } catch (\Exception $e) {
+            $errors = new MessageBag();
+            $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
+            return redirect()->back()->withErrors($errors);
+        }
+    }
+    public function restore(Request $request)
+    {
+        try {
+            Event::withTrashed()->find($request->id)->restore();
+            return redirect()->back()->with([
+                'message' => Settings::alert('Sucesso', 'Evento resaturado com sucesso', Constants::FEEDBACK_INFO)
             ]);
         } catch (\Exception $e) {
             $errors = new MessageBag();

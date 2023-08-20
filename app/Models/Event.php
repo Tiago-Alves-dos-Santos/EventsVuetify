@@ -33,7 +33,7 @@ class Event extends Model
         return  Carbon::parse($this->attributes['date_end_formated'])->format('d/m/Y H:i:s');
     }
     /*************************************ESCOPOS LOCAIS*******************************************/
-    public function scopeEventOf($query, string $type)
+    public function scopeEventsOf($query, string $type)
     {
         switch ($type) {
             case EventTime::EVENTS_ALL->value:

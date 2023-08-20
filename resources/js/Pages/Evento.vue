@@ -63,7 +63,7 @@
                     <div v-else>
                         <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
-                                <v-icon small v-bind="attrs" v-on="on">
+                                <v-icon small v-bind="attrs" v-on="on" @click="restoreQuestion(item)">
                                     mdi-delete-restore
                                 </v-icon>
                             </template>
@@ -73,10 +73,16 @@
                 </template>
             </v-data-table>
             <!-- Alerts -->
+            <alert-confirm ref="alert_question" :typeAlert="typeAlertObj.question" :data="data_confirm"
+                :yesCallback="manageAlertFunctions"></alert-confirm>
+
             <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
                 :yesCallback="deleteEvent"></alert-confirm>
             <alert-confirm ref="question_cancel_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
                 :yesCallback="cancelEvent"></alert-confirm>
+            <alert-confirm ref="question_restore_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
+                :yesCallback="restoreEvent"></alert-confirm>
+
             <alert-confirm ref="alert_client" :typeAlert="typeAlertObj.alert" :data="data_confirm"></alert-confirm>
             <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"
                 :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
@@ -115,10 +121,16 @@ export default {
             //alert
             typeAlertObj: TypeAlert,
             data_confirm: {},
+            functions:{
+                deleteEvent:'deleteEvent',
+                cancelEvent:'cancelEvent',
+                restoreEvent:'restoreEvent',
+            },
+            functionSelected: '',
             //model
             event: {},
             //mostrar registros deletados
-            visibleDeletedEvents: false
+            visibleDeletedEvents: false,
         }
     },
     computed: {
@@ -211,6 +223,22 @@ export default {
                     this.$refs.question_delete_event.close();
                 }
             });
+        },
+        restoreQuestion(event){
+            this.event = event;
+            this.data_confirm = Settings.alertData('Atenção!', 'Deseja restaurar o evento: ' + event.name + '?', TypeAlertIcon.question);
+            this.$refs.question_restore_event.open();
+        },
+        restoreEvent(){
+            let route_url = this.$route('event.restore');
+            router.put(route_url, {id: this.event.id} ,{
+                onSuccess: () => {
+                    this.$refs.question_restore_event.close();
+                }
+            });
+        },
+        manageAlertFunctions(){
+
         },
         eventForCalendar(event) {
             let route_url = this.$route('index');
