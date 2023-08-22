@@ -20,8 +20,8 @@ Route::group(['prefix' => '/events'], function () {
     Route::get('/', [EventController::class, 'viewEvents'])->name('event.viewEvents');
     Route::post('/events/create', [EventController::class, 'create'])->name('event.create');
     Route::put('/events/update', [EventController::class, 'update'])->name('event.update');
-    Route::delete('/events/delete/{id}', [EventController::class, 'delete'])->name('event.delete');
     Route::put('/events/cancel', [EventController::class, 'cancel'])->name('event.cancel');
+    Route::delete('/events/delete/{id}', [EventController::class, 'delete'])->name('event.delete');
     Route::put('/events/restore', [EventController::class, 'restore'])->name('event.restore');
 });
 Route::group(['prefix' => '/historic'], function () {

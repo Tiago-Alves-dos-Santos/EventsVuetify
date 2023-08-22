@@ -41,10 +41,11 @@ class EventController extends Controller
     public function viewEvents(Request $request)
     {
         $visibleDeletedEvents = (bool)$request->visibleDeletedEvents ?? false;
+        //filtro de tempo
         $eventTimeFilter = $request->eventTimeFilter ?? EventTime::EVENTS_YEAR->value;
-        if ($visibleDeletedEvents) {
+        if ($visibleDeletedEvents) {//aplica consulta de deletados e por tempo
             $events = Event::onlyTrashed()->eventsOf($eventTimeFilter)->cursor();
-        } else {
+        } else { //apenas por tempo
             $events = Event::eventsOf($eventTimeFilter)->cursor();
         }
 
@@ -193,7 +194,8 @@ class EventController extends Controller
     public function restore(Request $request)
     {
         try {
-            Event::withTrashed()->find($request->id)->restore();
+            //restaura apenas deletados
+            Event::onlyTrashed()->find($request->id)->restore();
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento resaturado com sucesso', Constants::FEEDBACK_INFO)
             ]);
