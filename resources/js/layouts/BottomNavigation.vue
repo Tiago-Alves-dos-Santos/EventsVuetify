@@ -1,24 +1,19 @@
 <template>
     <v-app app>
         <v-bottom-navigation v-model="this.$page.props.pageValue" :background-color="color" dark shift absolute>
-            <v-btn @click="navigateUrl($route('index'))">
+            <v-btn @click="navigateUrl($route('index'))" value='index'>
                 <span>Calendário</span>
                 <v-icon>mdi-calendar-clock</v-icon>
             </v-btn>
 
-            <v-btn @click="navigateUrl($route('event.viewEvents'))">
+            <v-btn @click="navigateUrl($route('event.viewEvents'))" value="event.viewEvents">
                 <span>Eventos</span>
                 <v-icon>mdi-calendar-plus</v-icon>
             </v-btn>
 
-            <v-btn @click="navigateUrl($route('historic.index'))">
+            <v-btn @click="navigateUrl($route('historic.index'))" value="historic.index">
                 <span>Histórico</span>
                 <v-icon>mdi-history</v-icon>
-            </v-btn>
-
-            <v-btn>
-                <span>Lixeira</span>
-                <v-icon>mdi-trash-can-outline</v-icon>
             </v-btn>
         </v-bottom-navigation>
         <v-container style="margin-bottom: 90px;">
@@ -43,10 +38,9 @@ export default {
     computed: {
         color() {
             switch (this.$page.props.pageValue) {
-                case 0: return 'indigo darken-4'
-                case 1: return 'pink darken-4'
-                case 2: return 'purple darken-4'
-                case 3: return 'deep-purple darken-4'
+                case 'index': return 'indigo darken-4'
+                case 'event.viewEvents': return 'pink darken-4'
+                case 'historic.index': return 'purple darken-4'
                 default: return 'blue-grey'
             }
         },

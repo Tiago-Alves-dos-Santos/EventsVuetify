@@ -2,16 +2,17 @@
     <layout-bottom-navigation>
         <div>
             <v-row class="mb-3">
-                <v-col cols="12 d-flex justify-end">
-                    <v-btn color="deep-orange darken-4" class="mr-2" style="color:white" @click="toggleDeletedEvents"
+                <v-col cols="12 d-flex justify-center justify-md-end  flex-wrap">
+                    <v-btn :color="$page.props.visibleDeletedEvents ? 'green darken-4' : 'deep-orange darken-4'"
+                        class="mr-2 mt-2" style="color:white" @click="toggleDeletedEvents"
                         :loading="loads.visibleDeletedEvents" :disabled="loads.visibleDeletedEvents">
                         {{ $page.props.visibleDeletedEvents ? 'Ativos' : 'Deletados' }}
                     </v-btn>
-                    <v-btn color="primary" class="mr-2" @click="reload()" :loading="loads.reload"
+                    <v-btn color="primary" class="mr-2 mt-2" @click="reload()" :loading="loads.reload"
                         :disabled="loads.reload">
-                        Recarregar
+                        Recarregar / Limpar filtro
                     </v-btn>
-                    <v-btn color="primary" class="" @click="openDialog(typeOperationObj.create)">
+                    <v-btn color="primary" class="mt-2" @click="openDialog(typeOperationObj.create)">
                         Novo Evento
                     </v-btn>
                     <!-- Dialog -->
@@ -22,7 +23,8 @@
             </v-row>
             <!-- DataTable -->
             <v-data-table locale="pt" :headers="headers" :items="$page.props.events" item-key="name" class="elevation-1"
-                :search="search" :custom-filter="filter" mobile-breakpoint>
+                :search="search" :custom-filter="filter" :loading="loads.dataTable" loading-text="Aguarde..."
+                mobile-breakpoint>
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
                         <v-col cols="6">
@@ -30,7 +32,7 @@
                         </v-col>
                         <v-col cols="6">
                             <v-select v-model="select" :items="items" item-text="text" item-value="value" label="Eventos"
-                                solo></v-select>
+                                solo @change="getEventsTime"></v-select>
                         </v-col>
                     </v-row>
                 </template>
@@ -50,7 +52,7 @@
                         <v-icon small @click="deleteEventQuestion(item)">
                             mdi-delete
                         </v-icon>
-                        <v-tooltip top>
+                        <v-tooltip top v-if="item.status != $page.props.eventStatus.CANCELED">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-icon small v-bind="attrs" v-on="on" @click="eventForCalendar(item)">
                                     mdi-calendar-clock
@@ -62,7 +64,7 @@
                     <div v-else>
                         <v-tooltip top>
                             <template v-slot:activator="{ on, attrs }">
-                                <v-icon small v-bind="attrs" v-on="on">
+                                <v-icon small v-bind="attrs" v-on="on" @click="restoreQuestion(item)">
                                     mdi-delete-restore
                                 </v-icon>
                             </template>
@@ -72,11 +74,11 @@
                 </template>
             </v-data-table>
             <!-- Alerts -->
-            <alert-confirm ref="question_delete_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
-                :yesCallback="deleteEvent"></alert-confirm>
-            <alert-confirm ref="question_cancel_event" :typeAlert="typeAlertObj.question" :data="data_confirm"
-                :yesCallback="cancelEvent"></alert-confirm>
-            <alert-confirm ref="alert_client" :typeAlert="typeAlertObj.alert" :data="data_confirm"></alert-confirm>
+            <alert-confirm ref="alert_question" :typeAlert="typeAlertObj.question" :data="data_confirm"
+                :yesCallback="functionCallback"></alert-confirm>
+            <!-- alerta chamado via js -->
+            <alert-confirm ref="alert_client" :typeAlert="typeAlertObj.alert" :data="data_confirm_alert"></alert-confirm>
+            <!-- alerta vindo do inertia - flash messages -->
             <alert-confirm :typeAlert="typeAlertObj.alert" :show="this.$page.props.flash.message.show"
                 :data="this.$page.props.flash.message" @close="closeAlert"></alert-confirm>
         </div>
@@ -99,11 +101,13 @@ export default {
                 { text: 'Todos os eventos', value: 'events_all' },
                 { text: 'Eventos deste ano', value: 'events_year' },
                 { text: 'Eventos deste mês', value: 'events_month' },
+                { text: 'Eventos futuros', value: 'events_future' },
             ],
             //loads
             loads: {
                 reload: false,
-                visibleDeletedEvents: false
+                visibleDeletedEvents: false,
+                dataTable: false
             },
             //dialog
             show: false,
@@ -112,10 +116,17 @@ export default {
             //alert
             typeAlertObj: TypeAlert,
             data_confirm: {},
+            data_confirm_alert: {},
+            functions: {
+                deleteEvent: 'deleteEvent',
+                cancelEvent: 'cancelEvent',
+                restoreEvent: 'restoreEvent',
+            },
+            functionCallback: null,
             //model
             event: {},
             //mostrar registros deletados
-            visibleDeletedEvents: false
+            visibleDeletedEvents: false,
         }
     },
     computed: {
@@ -175,48 +186,72 @@ export default {
             this.$page.props.flash.message.show = false;
         },
         openAlert(object = null) {
-            this.data_confirm = object;
+            this.data_confirm_alert = object;
             this.$refs.alert_client.open();
         },
         cancelEventQuestion(event) {
             this.event = event;
+            this.functionCallback = this.manageAlertFunctions(this.functions.cancelEvent);
             this.data_confirm = Settings.alertData(
                 'Atenção!',
                 "Deseja prosseguir com o cancelamento do evento: " + event.name + "? <br> Após o cancelamento do evento não é possivel reverter.",
                 TypeAlertIcon.question
             );
-            this.$refs.question_cancel_event.open();
+            this.$refs.alert_question.open();
         },
         cancelEvent() {
-            let route_url = this.$route('event.cancel', { id: this.event.id });
-            router.delete(route_url, {
-                onSuccess: page => {
-                    this.$refs.question_cancel_event.close();
+            let route_url = this.$route('event.cancel');
+            router.put(route_url, { id: this.event.id }, {
+                onSuccess: () => {
+                    this.$refs.alert_question.close();
                     this.closeDialog();
                 }
             });
         },
         deleteEventQuestion(event) {
             this.event = event;
+            this.functionCallback = this.manageAlertFunctions(this.functions.deleteEvent);
             this.data_confirm = Settings.alertData('Atenção!', 'Deseja prosseguir com a deleção do evento: ' + event.name + '?', TypeAlertIcon.question);
-            this.$refs.question_delete_event.open();
+            this.$refs.alert_question.open();
         },
         deleteEvent() {
             let route_url = this.$route('event.delete', { id: this.event.id });
             router.delete(route_url, {
-                onSuccess: page => {
-                    this.$refs.question_delete_event.close();
+                onSuccess: () => {
+                    this.$refs.alert_question.close();
                 }
             });
+        },
+        restoreQuestion(event) {
+            this.event = event;
+            this.functionCallback = this.manageAlertFunctions(this.functions.restoreEvent);
+            this.data_confirm = Settings.alertData('Atenção!', 'Deseja restaurar o evento: ' + event.name + '?', TypeAlertIcon.question);
+            this.$refs.alert_question.open();
+        },
+        restoreEvent() {
+            let route_url = this.$route('event.restore');
+            router.put(route_url, { id: this.event.id }, {
+                onSuccess: () => {
+                    this.$refs.alert_question.close();
+                }
+            });
+        },
+        manageAlertFunctions(value) {
+            if (typeof this[value] === 'function') {
+                return this[value]; // Chama a função pelo nome passado como valor, necessarios existir no methods
+            } else {
+                this.data_confirm_alert = Settings.alertData('Erro: manageAlertFunctions', 'O valor ' + value + ' não se encaixa como uma função', TypeAlertIcon.error);
+                this.$refs.alert_client.open();
+            }
         },
         eventForCalendar(event) {
             let route_url = this.$route('index');
             router.get(route_url, { valueCalendar: event.date_start });
         },
         reload() {
-            router.reload({
-                onStart: visit => this.loads.reload = true,
-                onFinish: visit => this.loads.reload = false,
+            router.get(this.$route('event.viewEvents'), {}, {
+                onStart: () => this.loads.reload = true,
+                onFinish: () => this.loads.reload = false,
             });
         },
         toggleDeletedEvents() {
@@ -225,17 +260,27 @@ export default {
             if (this.$page.props.visibleDeletedEvents == false) {//ativos
                 value = '';
             }
-            router.get(this.$route('event.viewEvents', [value]),{} ,{
-                onStart: () => this.loads.visibleDeletedEvents = true,
-                onFinish: visit => this.loads.visibleDeletedEvents = false,
+            router.get(this.$inertia.page.url, { visibleDeletedEvents: value }, {
+                preserveState: true,
+                onStart: () => {
+                    this.loads.visibleDeletedEvents = true;
+                    this.loads.dataTable = true;
+                },
+                onFinish: () => {
+                    this.loads.visibleDeletedEvents = false;
+                    this.loads.dataTable = false;
+                }
+            });
+        },
+        getEventsTime() {
+            router.get(this.$inertia.page.url, { eventTimeFilter: this.select }, {
+                preserveState: true,
+                onStart: () => this.loads.dataTable = true,
+                onFinish: () => this.loads.dataTable = false,
             });
         }
     },
-    watch: {
-        load_reload(value){
-            console.log(value)
-        }
-    },
+
     mounted() {
     },
 }

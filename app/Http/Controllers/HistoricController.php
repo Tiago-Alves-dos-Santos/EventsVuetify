@@ -10,14 +10,14 @@ class HistoricController extends Controller
 {
     public function index(Request $request)
     {
-        $historics = Historic::orderBy('id', 'desc')->get();
+        $historics = Historic::orderBy('id', 'desc')->lazy();
         //formatação de datas e status em português
         $historics = $historics->map(function ($historic) {
             $historic->created_at_formatted =  $historic->created_at;
             return $historic;
         });
         return Inertia::render('Historic', [
-            'pageValue' => 2,
+            'pageValue' => 'historic.index',
             'historics' => $historics
         ]);
     }

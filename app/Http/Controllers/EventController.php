@@ -9,6 +9,7 @@ use App\Models\Event;
 use App\Class\Settings;
 use App\Class\Constants;
 use App\Enums\EventStatus;
+use App\Enums\EventTime;
 use App\Models\Historic;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -20,8 +21,7 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $valueCalendar = $request->valueCalendar ?? Carbon::now();
-
-        $events = Event::get();
+        $events = Event::where('status', '!=', EventStatus::CANCELED->value)->cursor();
         //montagem de array de acordo com o que v-calendar pede e com acrescimos de cor
         $events = $events->map(function ($event) {
             return [
@@ -33,7 +33,7 @@ class EventController extends Controller
             ];
         });
         return Inertia::render('Home', [
-            'pageValue' => 0,
+            'pageValue' => 'index',
             'events' => $events,
             'valueCalendar' => $valueCalendar
         ]);
@@ -41,10 +41,12 @@ class EventController extends Controller
     public function viewEvents(Request $request)
     {
         $visibleDeletedEvents = (bool)$request->visibleDeletedEvents ?? false;
-        if($visibleDeletedEvents){
-            $events = Event::onlyTrashed()->get();
-        }else{
-            $events = Event::get();
+        //filtro de tempo
+        $eventTimeFilter = $request->eventTimeFilter ?? EventTime::EVENTS_YEAR->value;
+        if ($visibleDeletedEvents) {//aplica consulta de deletados e por tempo
+            $events = Event::onlyTrashed()->eventsOf($eventTimeFilter)->cursor();
+        } else { //apenas por tempo
+            $events = Event::eventsOf($eventTimeFilter)->cursor();
         }
 
         //formatação de datas e status em português
@@ -57,10 +59,10 @@ class EventController extends Controller
         //nativa do php, usada para trabalhar com classes e suas propiedades
         $reflectionClass = new ReflectionClass(EventStatus::class);
         return Inertia::render('Evento', [
-            'pageValue' => 1,
+            'pageValue' => 'event.viewEvents',
             'events' => $events,
             'eventStatus' => $reflectionClass->getConstants(), //retorna os atributos do enum
-            'visibleDeletedEvents' => $visibleDeletedEvents
+            'visibleDeletedEvents' => $visibleDeletedEvents,
         ]);
     }
 
@@ -182,6 +184,20 @@ class EventController extends Controller
             Event::find($request->id)->delete();
             return redirect()->back()->with([
                 'message' => Settings::alert('Sucesso', 'Evento deletado com sucesso', Constants::FEEDBACK_INFO)
+            ]);
+        } catch (\Exception $e) {
+            $errors = new MessageBag();
+            $errors->add('error', Settings::erroInesperadoAlert($e->getMessage()));
+            return redirect()->back()->withErrors($errors);
+        }
+    }
+    public function restore(Request $request)
+    {
+        try {
+            //restaura apenas deletados
+            Event::onlyTrashed()->find($request->id)->restore();
+            return redirect()->back()->with([
+                'message' => Settings::alert('Sucesso', 'Evento resaturado com sucesso', Constants::FEEDBACK_INFO)
             ]);
         } catch (\Exception $e) {
             $errors = new MessageBag();
