@@ -33,6 +33,7 @@
     <li><a href="#modo-de-uso">Modo de uso</a></li>
     <li><a href="#colaboradores">Colaboradores</a></li>
     <li><a href="#versão-atual">Versão atual</a></li>
+    <li><a href="#implementações-futuras">Implementações futuras</a></li>
     <li><a href="#licença">Licença</a></li>
     <li><a href="#contato">Contato</a></li>
     <li><a href="#observação">Observação</a></li>
