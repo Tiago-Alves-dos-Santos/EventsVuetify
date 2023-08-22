@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Tiago-Alves-dos-Santos/Covid19">
-    <img src="public/img/favicon/favicon_100px.png" alt="Logo" width="80" height="80">
+    <img src="public/img/favicon/favico.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Evento Fácil</h3>
@@ -111,11 +111,11 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
     ~~~
         php artisan serve
     ~~~
-8. Em outro terminal execute para executar as CRON JOBS 
-~~~
-    php artisan schedule:work
-~~~
-6. Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
+9. Em outro terminal execute para executar as CRON JOBS 
+    ~~~
+        php artisan schedule:work
+    ~~~
+10. Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
     ~~~js
         npm install && npm run dev
     ~~~ 
