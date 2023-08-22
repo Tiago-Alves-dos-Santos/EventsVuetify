@@ -3,7 +3,7 @@
 <!-- PROJETO LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/Tiago-Alves-dos-Santos/Covid19">
+  <a href="https://github.com/Tiago-Alves-dos-Santos/EventsVuetify">
     <img src="public/img/favicon/favico.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -44,7 +44,7 @@
 
 <!-- SOBRE -->
 ## Sobre
-<img src="public/img/readme/index.png" />
+<img src="public/img/readme/index-2.png" />
 O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que exibe de forma fácil os eventos. O sistema tem por maior finalidade fins estudantis, usado para demonstrar domínio sobre as tecnologias utilizadas.
 <!-- --- **N/A** --- -->
 
