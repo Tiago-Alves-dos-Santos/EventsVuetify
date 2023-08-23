@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Tiago-Alves-dos-Santos/EventsVuetify">
-    <img src="public/img/favicon/favico.png" alt="Logo" width="80" height="80">
+    <img src="public/img/favicon/favico_100.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Evento Fácil</h3>
@@ -63,6 +63,8 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
     - [x] Cancelado
 - [ ] Execução em tempo real
 - [x] Testes unitários, usando a abordagem TDD
+- [x] Controlar formatos do calendário
+- [x] Lixeira. Restaurar eventos deletados
 
 <p align="right">(<a href="#readme-top">Voltar ao topo</a>)</p>
 
@@ -99,9 +101,9 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
     ~~~php
         composer install 
     ~~~
-6. Instale as migrations com as seeds 
+6. Instale as migrations(sem seeds ou fakers)
    ~~~php
-        php artisan migrate --seed
+        php artisan migrate
    ~~~
 7. Execute 
    ~~~php
