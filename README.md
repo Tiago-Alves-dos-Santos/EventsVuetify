@@ -142,7 +142,7 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
 
 ## Versão atual
-:heavy_check_mark:    **v1.0.0-beta** 
+:heavy_check_mark:    **v1.0.1-beta** 
 
 ## Implementações futuras
 
