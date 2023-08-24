@@ -188,6 +188,6 @@ Não fiz o sistema em tempo real pois quis deixar ele simples, apenas um agendad
 [linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
 [linkedin-url]: https://www.linkedin.com/in/tiago-alves-96699a189/
 [portfolio-shield]: https://img.shields.io/badge/PORTFOLIO-%20CLIQUE%20AQUI%20-%20BLACK
-[portfolio-url]: https://wa.link/h5vlzo
+[portfolio-url]: https://tiago-alves-dos-santos.github.io/portfolio/
 
 
