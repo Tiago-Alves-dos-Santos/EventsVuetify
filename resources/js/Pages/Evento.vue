@@ -158,9 +158,9 @@ export default {
         //cor status do evento
         getColor(status) {
             switch (status) {
-                case 'Em andamento': return '#0D47A1'
-                case 'Agendado': return 'yellow'
-                case 'Concluído': return 'blue'
+                case 'Em andamento': return '#896c4f'
+                case 'Agendado': return '#0D47A1'
+                case 'Concluído': return 'green'
                 case 'Cancelado': return 'red'
                 default: return 'purple'
             }
