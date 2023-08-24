@@ -90,62 +90,39 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
 <!-- GETTING STARTED -->
 ## Instalação
-<ol>
-    <li>
-        Certifique-se de ter instalado na sua máquina o php e node(npm) correto
-    </li>
-    <li>
-        Para usar o 'sqlite' verfique as extensões do seu php `extension=pdo_sqlite` e `extension=sqlite3`
-    </li>
-    <li>
-        Faça o 
-        ~~~git
-            git clone --depth 1 --branch <tag_name> <repo_url> || git clone url_projeto -b main
-        ~~~
-    </li>
-    <li>
-        Duplique o arquivo `.env.example` e retire o `.example`
-    </li>
-    <li>
-        Configure as variaveis de conexao com o banco de dados
-    </li>
-    <li>
-        Execute 
-        ~~~php
-            composer install 
-        ~~~
-    </li>
-    <li>
-        Instale as migrations(sem seeds ou fakers)
-        ~~~php
-                php artisan migrate
-        ~~~
-    </li>
-    <li>
-        Execute 
-        ~~~php
-                php artisan key:generate 
-        ~~~
-    </li>
-    <li>
-        Execute para iniciar o servidor
-        ~~~
-            php artisan serve
-        ~~~
-    </li>
-    <li>
-        Em outro terminal execute para executar as CRON JOBS 
-        ~~~
-            php artisan schedule:work
-        ~~~
-    </li>
-    <li>
-        Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
-        ~~~js
-            npm install && npm run dev
-        ~~~ 
-    </li>
-</ol>
+
+1. Certifique-se de ter instalado na sua máquina o php e node(npm) correto, se usa docker verificar a imagem
+2. Para usar o 'sqlite' verfique as extensões do seu php `extension=pdo_sqlite` e `extension=sqlite3`
+3. Faça o 
+    ~~~git
+        git clone --depth 1 --branch <tag_name> <repo_url> || git clone url_projeto -b main
+    ~~~
+4. Duplique o arquivo `.env.example` e retire o `.example`
+5. Configure as variaveis de conexao com o banco de dados
+6. Execute 
+    ~~~php
+        composer install 
+    ~~~
+7. Instale as migrations(sem seeds ou fakers)
+   ~~~php
+        php artisan migrate
+   ~~~
+8. Execute 
+   ~~~php
+        php artisan key:generate 
+   ~~~
+9. Execute para iniciar o servidor
+    ~~~
+        php artisan serve
+    ~~~
+10. Em outro terminal execute para executar as CRON JOBS 
+    ~~~
+        php artisan schedule:work
+    ~~~
+11. Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
+    ~~~js
+        npm install && npm run dev
+    ~~~ 
 
 
 <p align="right">(<a href="#readme-top">Voltar ao topo</a>)</p>
