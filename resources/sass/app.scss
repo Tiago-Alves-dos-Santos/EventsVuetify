@@ -3,9 +3,5 @@
 
 // Variables
 @import 'variables';
-
-// Bootstrap
-// @import '~bootstrap/scss/bootstrap';
-.message-error{
-    color: red;
-}
+@import 'global.scss';
+@import 'page.scss';

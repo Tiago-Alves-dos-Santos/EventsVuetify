@@ -1,4 +1,57 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.w-100 {
+  width: 100%;
+}
+
 .message-error {
   color: red;
 }
+
+/*****************************************HOME************************************************/
+div#home div.container_calendar_navigation {
+  display: flex;
+  flex-direction: row;
+}
+div#home div.container_calendar_navigation_sm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+div#home div.container_calendar_navigation_sm div.arrow_navigation {
+  display: none;
+}
+div#home div.container_calendar_navigation_sm div.info_navigation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+div#home div.container_calendar_navigation_sm div.info_navigation span {
+  text-transform: uppercase;
+}
+div#home div.row_calendar {
+  margin-top: 150px;
+}
+@media (max-width: 564px) {
+  div#home div.container_calendar_navigation {
+    flex-direction: column;
+  }
+  div#home div.container_calendar_navigation button {
+    display: none;
+  }
+  div#home div.container_calendar_navigation_sm div.arrow_navigation {
+    display: flex;
+  }
+  div#home div.row_calendar {
+    margin-top: 260px;
+  }
+}
+
+/*****************************************EVENTO************************************************/

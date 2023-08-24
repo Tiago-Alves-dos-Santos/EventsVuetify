@@ -1,5 +1,4 @@
 require('./bootstrap');
-
 window.Vue = require('vue').default;
 import vuetify from './vuetify';
 import { createInertiaApp } from '@inertiajs/vue2'

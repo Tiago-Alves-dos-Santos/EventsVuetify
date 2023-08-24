@@ -24,13 +24,13 @@
             <!-- DataTable -->
             <v-data-table locale="pt" :headers="headers" :items="$page.props.events" item-key="name" class="elevation-1"
                 :search="search" :custom-filter="filter" :loading="loads.dataTable" loading-text="Aguarde..."
-                mobile-breakpoint>
+                >
                 <template v-slot:top>
                     <v-row class="mt-1 pa-3">
-                        <v-col cols="6">
+                        <v-col cols="12" sm="6" md="6">
                             <v-text-field v-model="search" label="Buscar..."></v-text-field>
                         </v-col>
-                        <v-col cols="6">
+                        <v-col cols="12" sm="6" md="6">
                             <v-select v-model="select" :items="items" item-text="text" item-value="value" label="Eventos"
                                 solo @change="getEventsTime"></v-select>
                         </v-col>
@@ -158,9 +158,9 @@ export default {
         //cor status do evento
         getColor(status) {
             switch (status) {
-                case 'Em andamento': return '#0D47A1'
-                case 'Agendado': return 'yellow'
-                case 'Concluído': return 'blue'
+                case 'Em andamento': return '#896c4f'
+                case 'Agendado': return '#0D47A1'
+                case 'Concluído': return 'green'
                 case 'Cancelado': return 'red'
                 default: return 'purple'
             }

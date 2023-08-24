@@ -10,7 +10,7 @@
             </v-row>
             <!-- DataTable -->
             <v-data-table locale="pt" :headers="headers" :items="$page.props.historics" item-key="name" class="elevation-1"
-                :search="search" :custom-filter="filter" mobile-breakpoint>
+                :search="search" :custom-filter="filter" mobile-breakpoint="420">
                 <template v-slot:item.registry="{ item }">
                     <p v-html="item.registry"></p>
                   </template>
