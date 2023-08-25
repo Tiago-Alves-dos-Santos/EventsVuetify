@@ -93,10 +93,11 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
 1. Certifique-se de ter instalado na sua máquina o php e node(npm) correto, se usa docker verificar a imagem
 2. Para usar o 'sqlite' verfique as extensões do seu php `extension=pdo_sqlite` e `extension=sqlite3`
-3. Faça o 
+3. Caso seja um colobaorador faça o 
     ~~~git
         git clone --depth 1 --branch <tag_name> <repo_url> || git clone url_projeto -b main
     ~~~
+3.1 Caso não, baixe o <a href="https://github.com/Tiago-Alves-dos-Santos/EventsVuetify/releases" target="_blank">arquivo.zip</a> da versão mais atual ou faça o FORK
 4. Duplique o arquivo `.env.example` e retire o `.example`
 5. Configure as variaveis de conexao com o banco de dados
 6. Execute 
@@ -121,7 +122,7 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
     ~~~
 11. Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
     ~~~js
-        npm install && npm run dev
+        npm install && (npm run dev || npm run watch)
     ~~~ 
 
 
@@ -129,7 +130,7 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
 
 
-<!-- USAGE EXAMPLES -->
+<!-- MODO DE USO -->
 ## Modo de uso
 --- **N/A** ---
 
@@ -176,7 +177,7 @@ Formas de contato:
 <p align="right">(<a href="#readme-top">Voltar ao topo</a>)</p>
 
 ### Observação
-Não fiz o sistema em tempo real pois quis deixar ele simples, apenas um agendador de eventos com controle de 'status', deixei uma lista de implementações que o projeto poderia ou poderá receber
+Não fiz o sistema em tempo real pois quis deixar ele simples, apenas um agendador de eventos com controle de 'status', deixei uma lista de implementações que o projeto poderia ou poderá receber.
 
 
 
