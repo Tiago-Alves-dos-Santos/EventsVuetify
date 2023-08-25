@@ -103,19 +103,19 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
    3.1 Caso não, baixe o <a href="https://github.com/Tiago-Alves-dos-Santos/EventsVuetify/releases" target="_blank">arquivo.zip</a> da versão mais atual ou faça o FORK
 
-5. Duplique o arquivo `.env.example` e retire o `.example`
+5. Duplique o arquivo `.env.example` e retire o `.example`. Crie o arquivo do banco 'sqlite'.
 6. Configure as variaveis de conexao com o banco de dados
 7. Execute 
     ~~~php
         composer install 
     ~~~
-8. Instale as migrations(sem seeds ou fakers)
-   ~~~php
-        php artisan migrate
-   ~~~
-9. Execute 
+8. Execute 
    ~~~php
         php artisan key:generate 
+   ~~~
+9. Instale as migrations(sem seeds ou fakers)
+   ~~~php
+        php artisan migrate
    ~~~
 10. Execute para iniciar o servidor
     ~~~
