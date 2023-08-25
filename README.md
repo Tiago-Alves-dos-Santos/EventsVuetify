@@ -93,7 +93,7 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
 1. Certifique-se de ter instalado na sua máquina o php e node(npm) correto, se usa docker verificar a imagem
 2. Para usar o 'sqlite' verfique as extensões do seu php `extension=pdo_sqlite` e `extension=sqlite3`
-3. Caso seja um colobaorador faça o 
+3. Caso seja um coloborador faça o 
     ~~~git
         git clone --depth 1 --branch <tag_name> <repo_url> || git clone url_projeto -b main
     ~~~
