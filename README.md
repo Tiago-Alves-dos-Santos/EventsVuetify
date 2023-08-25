@@ -97,30 +97,32 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
     ~~~git
         git clone --depth 1 --branch <tag_name> <repo_url> || git clone url_projeto -b main
     ~~~
-3.1 Caso não, baixe o <a href="https://github.com/Tiago-Alves-dos-Santos/EventsVuetify/releases" target="_blank">arquivo.zip</a> da versão mais atual ou faça o FORK
-4. Duplique o arquivo `.env.example` e retire o `.example`
-5. Configure as variaveis de conexao com o banco de dados
-6. Execute 
+
+   3.1 Caso não, baixe o <a href="https://github.com/Tiago-Alves-dos-Santos/EventsVuetify/releases" target="_blank">arquivo.zip</a> da versão mais atual ou faça o FORK
+
+5. Duplique o arquivo `.env.example` e retire o `.example`
+6. Configure as variaveis de conexao com o banco de dados
+7. Execute 
     ~~~php
         composer install 
     ~~~
-7. Instale as migrations(sem seeds ou fakers)
+8. Instale as migrations(sem seeds ou fakers)
    ~~~php
         php artisan migrate
    ~~~
-8. Execute 
+9. Execute 
    ~~~php
         php artisan key:generate 
    ~~~
-9. Execute para iniciar o servidor
+10. Execute para iniciar o servidor
     ~~~
         php artisan serve
     ~~~
-10. Em outro terminal execute para executar as CRON JOBS 
+11. Em outro terminal execute para executar as CRON JOBS 
     ~~~
         php artisan schedule:work
     ~~~
-11. Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
+12. Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
     ~~~js
         npm install && (npm run dev || npm run watch)
     ~~~ 
