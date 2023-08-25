@@ -93,9 +93,15 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
 1. Certifique-se de ter instalado na sua máquina o php e node(npm) correto, se usa docker verificar a imagem
 2. Para usar o 'sqlite' verfique as extensões do seu php `extension=pdo_sqlite` e `extension=sqlite3`
-3. Caso seja um colaborador faça o 
+3. Caso seja um colaborador execute um dos comandos abaixo. Caso queira algo mais "limpo" use `git clone --depth 1 <restante>`
     ~~~git
-        git clone --depth 1 --branch <tag_name> <repo_url> || git clone url_projeto -b main
+        git clone -b <tag_name/branch> https://github.com/Tiago-Alves-dos-Santos/EventsVuetify.git || git clone url_projeto -b main
+    ~~~
+    ~~~git
+         git clone https://github.com/Tiago-Alves-dos-Santos/EventsVuetify.git -b main
+    ~~~
+    ~~~git
+        git clone -b <tag_name/branch> git@github.com:Tiago-Alves-dos-Santos/EventsVuetify.git
     ~~~
 
    3.1 Caso não, baixe o <a href="https://github.com/Tiago-Alves-dos-Santos/EventsVuetify/releases" target="_blank">arquivo.zip</a> da versão mais atual ou faça o FORK
