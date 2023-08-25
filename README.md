@@ -183,6 +183,7 @@ Formas de contato:
 
 ### Observação
 Não fiz o sistema em tempo real pois quis deixar ele simples, apenas um agendador de eventos com controle de 'status', deixei uma lista de implementações que o projeto poderia ou poderá receber.
+Coloquei a parte de colaboradores apenas como demonstração de 'doc' de instalação.
 
 
 
