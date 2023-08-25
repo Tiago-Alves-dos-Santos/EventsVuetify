@@ -82,6 +82,7 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
     * PHP 8.1.9
     * LARAVEL 8.6.12
     * INERTIA 0.6.9
+3. DATABASE: SQLITE 3
 
 
 
@@ -91,35 +92,42 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 ## Instalação
 
 1. Certifique-se de ter instalado na sua máquina o php e node(npm) correto, se usa docker verificar a imagem
-2. Faça o 
+2. Para usar o 'sqlite' verfique as extensões do seu php `extension=pdo_sqlite` e `extension=sqlite3`
+3. Caso seja um colaborador execute um dos comandos abaixo. Caso queira algo mais "limpo" use `git clone --depth 1 <restante>`
     ~~~git
-        git clone --depth 1 --branch <tag_name> <repo_url> || git clone url_projeto -b main
+        git clone -b <tag_name/branch> https://github.com/Tiago-Alves-dos-Santos/EventsVuetify.git
     ~~~
-3. Duplique o arquivo `.env.example` e retire o `.example`
-4. Configure as variaveis de conexao com o banco de dados
-5. Execute 
+    ~~~git
+        git clone -b <tag_name/branch> git@github.com:Tiago-Alves-dos-Santos/EventsVuetify.git
+    ~~~
+
+   3.1 Caso não, baixe o <a href="https://github.com/Tiago-Alves-dos-Santos/EventsVuetify/releases" target="_blank">arquivo.zip</a> da versão mais atual ou faça o FORK
+
+5. Duplique o arquivo `.env.example` e retire o `.example`
+6. Configure as variaveis de conexao com o banco de dados
+7. Execute 
     ~~~php
         composer install 
     ~~~
-6. Instale as migrations(sem seeds ou fakers)
+8. Instale as migrations(sem seeds ou fakers)
    ~~~php
         php artisan migrate
    ~~~
-7. Execute 
+9. Execute 
    ~~~php
         php artisan key:generate 
    ~~~
-8. Execute para iniciar o servidor
+10. Execute para iniciar o servidor
     ~~~
         php artisan serve
     ~~~
-9. Em outro terminal execute para executar as CRON JOBS 
+11. Em outro terminal execute para executar as CRON JOBS 
     ~~~
         php artisan schedule:work
     ~~~
-10. Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
+12. Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
     ~~~js
-        npm install && npm run dev
+        npm install && (npm run dev || npm run watch)
     ~~~ 
 
 
@@ -127,7 +135,7 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
 
 
-<!-- USAGE EXAMPLES -->
+<!-- MODO DE USO -->
 ## Modo de uso
 --- **N/A** ---
 
@@ -142,7 +150,7 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
 
 ## Versão atual
-:heavy_check_mark:    **v1.0.1-beta** 
+:heavy_check_mark:    **v1.0.2-beta** 
 
 ## Implementações futuras
 
@@ -174,7 +182,8 @@ Formas de contato:
 <p align="right">(<a href="#readme-top">Voltar ao topo</a>)</p>
 
 ### Observação
-Não fiz o sistema em tempo real pois quis deixar ele simples, apenas um agendador de eventos com controle de 'status', deixei uma lista de implementações que o projeto poderia ou poderá receber
+Não fiz o sistema em tempo real pois quis deixar ele simples, apenas um agendador de eventos com controle de 'status', deixei uma lista de implementações que o projeto poderia ou poderá receber.
+Coloquei a parte de colaboradores apenas como demonstração de 'doc' de instalação.
 
 
 
@@ -184,8 +193,8 @@ Não fiz o sistema em tempo real pois quis deixar ele simples, apenas um agendad
 [telegram-shield]: https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white
 [telegram-url]: https://t.me/TiagoAlves2001
 [linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
-[linkedin-url]: https://www.linkedin.com/in/tiago-alves-96699a189/
+[linkedin-url]: https://www.linkedin.com/in/tiago-alves-dos-santos-de-oliveira-96699a189/
 [portfolio-shield]: https://img.shields.io/badge/PORTFOLIO-%20CLIQUE%20AQUI%20-%20BLACK
-[portfolio-url]: https://wa.link/h5vlzo
+[portfolio-url]: https://tiago-alves-dos-santos.github.io/portfolio/
 
 
