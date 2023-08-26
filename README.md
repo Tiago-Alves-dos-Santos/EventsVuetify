@@ -30,7 +30,7 @@
     <li><a href="#funcionalidades">Funcionalidades</a></li>
     <li><a href="#tecnologias-utilizadas">Tecnologias Utilizadas</a></li>
     <li><a href="#instalação">Instalação</a></li>
-    <li><a href="#modo-de-uso">Modo de uso</a></li>
+    <!-- <li><a href="#modo-de-uso">Modo de uso</a></li> -->
     <li><a href="#colaboradores">Colaboradores</a></li>
     <li><a href="#versão-atual">Versão atual</a></li>
     <li><a href="#implementações-futuras">Implementações futuras</a></li>
@@ -95,10 +95,10 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 2. Para usar o 'sqlite' verfique as extensões do seu php `extension=pdo_sqlite` e `extension=sqlite3`
 3. Caso seja um colaborador execute um dos comandos abaixo. Caso queira algo mais "limpo" use `git clone --depth 1 <restante>`
     ~~~git
-        git clone -b <tag_name/branch> https://github.com/Tiago-Alves-dos-Santos/EventsVuetify.git
+    git clone -b <tag_name/branch> https://github.com/Tiago-Alves-dos-Santos/EventsVuetify.git
     ~~~
     ~~~git
-        git clone -b <tag_name/branch> git@github.com:Tiago-Alves-dos-Santos/EventsVuetify.git
+    git clone -b <tag_name/branch> git@github.com:Tiago-Alves-dos-Santos/EventsVuetify.git
     ~~~
 
    3.1 Caso não, baixe o <a href="https://github.com/Tiago-Alves-dos-Santos/EventsVuetify/releases" target="_blank">arquivo.zip</a> da versão mais atual ou faça o FORK
@@ -107,27 +107,27 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 6. Configure as variaveis de conexao com o banco de dados
 7. Execute 
     ~~~php
-        composer install 
+    composer install 
     ~~~
 8. Execute 
    ~~~php
-        php artisan key:generate 
+   php artisan key:generate 
    ~~~
 9. Instale as migrations(sem seeds ou fakers)
    ~~~php
-        php artisan migrate
+   php artisan migrate
    ~~~
 10. Execute para iniciar o servidor
     ~~~
-        php artisan serve
+    php artisan serve
     ~~~
 11. Em outro terminal execute para executar as CRON JOBS 
     ~~~
-        php artisan schedule:work
+    php artisan schedule:work
     ~~~
 12. Passo opcional, caso queira fazer mudanças no front-end (vue || sass)
     ~~~js
-        npm install && (npm run dev || npm run watch)
+    npm install && (npm run dev || npm run watch)
     ~~~ 
 
 
@@ -136,10 +136,10 @@ O sistema ‘Evento Fácil’ é um sistema de cadastro de eventos básico, que 
 
 
 <!-- MODO DE USO -->
-## Modo de uso
---- **N/A** ---
+<!-- ## Modo de uso
+--- **N/A** --- -->
 
-<p align="right">(<a href="#readme-top">Voltar ao topo</a>)</p>
+<!-- <p align="right">(<a href="#readme-top">Voltar ao topo</a>)</p> -->
 
 
 <!-- COLABORADORES -->
